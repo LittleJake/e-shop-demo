@@ -70,7 +70,7 @@ return [
     // 操作方法前缀
     'use_action_prefix'      => false,
     // 操作方法后缀
-    'action_suffix'          => '',
+    'action_suffix'          => 'Action',
     // 自动搜索控制器
     'controller_auto_search' => false,
 
