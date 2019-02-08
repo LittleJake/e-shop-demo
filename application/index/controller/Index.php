@@ -8,6 +8,16 @@ class Index extends Base
         return secret(123);
     }
 
+    //店铺商品
+    public function shopInfoAction(){}
+
+    //店铺列表
+    public function shopListAction(){}
+
+    //下单
+    public function orderAction(){}
+    //商品详情
+    public function goodAction(){}
 
     public function helloAction($name = 'ThinkPHP5')
     {
