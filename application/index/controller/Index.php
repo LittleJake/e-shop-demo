@@ -9,7 +9,9 @@ class Index extends Base
     }
 
     //店铺商品
-    public function shopInfoAction(){}
+    public function shopInfoAction(){
+        return $this->fetch();
+    }
 
     //店铺列表
     public function shopListAction(){}
