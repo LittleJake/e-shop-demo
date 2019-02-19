@@ -1,7 +1,10 @@
 {include file="default/header"}
 <div class="container">
-{foreach $goods as $v}
-<div></div>
-{/foreach}
+	{foreach $goods as $v}
+		<div>
+			<a href="{:url('index/good', ['id' => $v.good_id])}">{$v.title}</a>
+			<h5>${$v.p}</h5>
+		</div>
+	{/foreach}
 </div>
 {include file="default/footer"}

@@ -13,6 +13,12 @@ use think\Controller;
 
 class Base extends Controller
 {
+	public function __construct(){
+		parent::__construct();
+		
+		$this->assign('is_login', $this ->isLogin());
+	}
+
 
     function isLogin() {
         if(session('?user') && session('?token'))
@@ -20,4 +26,6 @@ class Base extends Controller
 
         return false;
     }
+	
+	
 }

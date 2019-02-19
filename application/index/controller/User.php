@@ -16,9 +16,14 @@ class User extends Base
 
     }
     //登出
-    public function logoutAction(){}
+    public function logoutAction(){
+		
+	}
     //购物车
-    public function cartAction(){}
+    public function cartAction(){
+		
+		
+	}
     //个人订单
     public function orderAction(){}
     //地址
