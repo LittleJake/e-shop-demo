@@ -1,3 +1,29 @@
 {include file="default/header"}
-
+<div class="container">
+	<h4>第{$page.cur}页</h4>
+	{foreach $shops as $v}
+		<div class="shop-list">
+			<div class="container">
+				<a href="{:url('index/shopInfo', ['id' => $v.shop_id])}">{$v.shop_name}</a>
+				<br>
+				<br>
+				{foreach $goods[$v.shop_id] as $k}
+					<div class="col-sm-4">
+						<div class="container">
+							<a>{$k.title}</a>
+							<h5>${$k.p}</h5>
+						</div>
+					</div>
+				{/foreach}
+			</div>
+		</div>
+	{/foreach}
+	<br>
+	{if $page.cur > $page.min}
+		<a class="pull-left" href="{:url('index/shopList', ['page' => $page.cur-1])}">← 上一页</a>
+	{/if}
+	{if $page.cur < $page.max}
+		<a class="pull-right" href="{:url('index/shopList', ['page' => $page.cur+1])}">下一页 →</a>
+	{/if}
+</div>
 {include file="default/footer"}

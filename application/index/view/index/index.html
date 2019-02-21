@@ -1,10 +1,18 @@
 {include file="default/header"}
 <div class="container">
+	<h4>第{$page.cur}页</h4>
 	{foreach $goods as $v}
-		<div>
+		<div class="good-list">
 			<a href="{:url('index/good', ['id' => $v.good_id])}">{$v.title}</a>
 			<h5>${$v.p}</h5>
 		</div>
 	{/foreach}
+	<br>
+	{if $page.cur > $page.min}
+		<a class="pull-left" href="{:url('index/index', ['page' => $page.cur-1])}">← 上一页</a>
+	{/if}
+	{if $page.cur < $page.max}
+		<a class="pull-right" href="{:url('index/index', ['page' => $page.cur+1])}">下一页 →</a>
+	{/if}
 </div>
 {include file="default/footer"}

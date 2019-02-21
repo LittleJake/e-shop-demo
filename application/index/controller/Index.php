@@ -3,11 +3,26 @@ namespace app\index\controller;
 
 class Index extends Base
 {
-    public function indexAction()
+    public function indexAction($page = 1)
     {
+		if($page < 1)
+			return $this->error('参数错误');
+		
 		$query = \think\Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id");
 		
-		$this ->assign('goods', $query);
+		$m = count($query) / 5;
+		
+		if($page > $m)
+			return $this->error('参数错误');
+		
+		$goods = array_slice($query, ($page - 1) * 5, 5);
+		
+		$page = ['min' => 1,
+				'max' => $m,
+				'cur' => $page];
+		
+		$this->assign('page', $page);
+		$this ->assign('goods', $goods);
 		$this->assign('page_title', '首页');
         return $this->fetch();
     }
@@ -19,7 +34,31 @@ class Index extends Base
     }
 
     //店铺列表
-    public function shopListAction(){
+    public function shopListAction($page = 1){
+		if($page < 1)
+			return $this->error('参数错误');
+		
+		$query = \think\Db::query("select * from `shop`");
+		
+		$m = count($query) / 5;
+		
+		if($page > $m)
+			return $this->error('参数错误');
+		
+		$shops = array_slice($query, ($page - 1) * 5, 5);
+		$goods = array();
+		
+		foreach($shops as $k)
+			$goods[$k['shop_id']] = \think\Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id where G.shop_id = $k[shop_id] limit 3");
+		
+		
+		$page = ['min' => 1,
+				'max' => $m,
+				'cur' => $page];
+		
+		$this->assign('goods', $goods);
+		$this->assign('page', $page);
+		$this ->assign('shops', $shops);
 		
 		$this->assign('page_title', '店铺列表');
         return $this->fetch();
