@@ -1,3 +1,30 @@
 {include file="default/header"}
-
+<div class="container">
+	
+	<h4>{$shop_name} —— 第{$page.cur}页</h4>
+	<hr>
+	{foreach $goods as $v}
+		<div class="good-list">
+			<a href="{:url('index/good', ['id' => $v.good_id])}">
+			<img src="/static/img/null.png" alt="{$v.title}" width="150px">
+			{$v.title}
+			</a>
+			
+			<div class="pull-right">
+			
+				<h4>${$v.p}</h4>
+				<p>+ 邮费</p>
+			</div>
+			
+			
+		</div>
+	{/foreach}
+	<br>
+	{if $page.cur > $page.min}
+		<a class="pull-left" href="{:url('index/index', ['page' => $page.cur-1])}">← 上一页</a>
+	{/if}
+	{if $page.cur < $page.max}
+		<a class="pull-right" href="{:url('index/index', ['page' => $page.cur+1])}">下一页 →</a>
+	{/if}
+</div>
 {include file="default/footer"}

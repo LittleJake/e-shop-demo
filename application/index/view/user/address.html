@@ -1,3 +1,16 @@
 {include file="default/header"}
-
+<div class="container">
+	{if isset($address)}
+		{foreach $address as $k}
+			<div class="address-list">
+				<h5>姓名：{$k.name}</h5>
+				<p>联系方式：{$k.contact}</p>
+				<p>地址：{$k.region} {$k.province} {$k.city} {$k.district} {$k.street}</p>
+				<p>邮编：{$k.code}</p>
+			</div>
+			<hr>
+		{/foreach}
+	{/if}
+	<a class="btn btn-default" href="{:url('user/addAddress')}">添加地址</a>
+</div>
 {include file="default/footer"}

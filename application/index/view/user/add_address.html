@@ -1,5 +1,23 @@
 {include file="default/header"}
 <div class="container">
-	<a></a>
+	<form action="{:url('user/addAddress')}" method="post">
+		<input name="name" class="form-control" placeholder="联系人" maxlength="20" required>
+		<br>
+		<input name="region" class="form-control" placeholder="国家" maxlength="20" required>
+		<br>
+		<input name="province" class="form-control" placeholder="省份" maxlength="20" required>
+		<br>
+		<input name="city" class="form-control" placeholder="城市" maxlength="20" required>
+		<br>
+		<input name="district" class="form-control" placeholder="行政区" maxlength="20" required>
+		<br>
+		<input name="street" class="form-control" placeholder="街道地址" maxlength="100" required>
+		<br>
+		<input name="code" class="form-control" placeholder="邮编" type="number" maxlength="20" required>
+		<br>
+		<input name="contact" class="form-control" placeholder="联系方式" type="number" maxlength="20" required>
+		<hr>
+		<button type="submit" class="btn btn-default">添加</button>
+	</form>
 </div>
 {include file="default/footer"}
