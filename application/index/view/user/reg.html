@@ -1,0 +1,19 @@
+{include file="default/header"}
+<div class="container">
+	<div class="col-sm-6">
+		<div class="container">
+			<h3>注册</h3>
+			<hr>
+			<form method="post" action="{:url('user/reg')}">
+				<input class="form-control" placeholder="电子邮箱" name="email" type="email" required>
+				<br>
+				<input class="form-control" placeholder="用户名" name="user" required>
+				<br>
+				<input class="form-control" placeholder="密码" name="pass" type="password" required>
+				<hr>
+				<button class="btn btn-default" type="submit">注册</button>
+			</form>
+		</div>
+	</div>
+</div>
+{include file="default/footer"}
