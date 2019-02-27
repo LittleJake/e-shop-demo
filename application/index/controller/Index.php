@@ -12,7 +12,7 @@ class Index extends Base
 		
 		$query = Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id");
 		
-		$m = floor(count($query) / 5);
+		$m = (0 == (ceil(count($query) / 5)?1:ceil(count($query) / 5)));
 		
 		if($page > $m)
 			return $this->error('参数错误');
@@ -40,7 +40,7 @@ class Index extends Base
 		
 		$query = Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id where G.shop_id = $id");
 		
-		$m = floor(count($query) / 5);
+		$m = (0 == (ceil(count($query) / 5)?1:ceil(count($query) / 5)));
 		
 		if($page > $m)
 			return $this->error('参数错误');
@@ -64,7 +64,8 @@ class Index extends Base
 		
 		$query = Db::query("select * from `shop`");
 		
-		$m = floor(count($query) / 5);
+		$m = (0 == (ceil(count($query) / 5)?1:ceil(count($query) / 5)));
+		
 		
 		if($page > $m)
 			return $this->error('参数错误');
