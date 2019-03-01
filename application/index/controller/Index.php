@@ -113,7 +113,7 @@ class Index extends Base
 
         $this->assign('price', $price);
         $this->assign('good', $good);
-		$this->assign('page_title', '详情');
+		$this->assign('page_title', $good['title']);
         return $this->fetch();
 	}
 
