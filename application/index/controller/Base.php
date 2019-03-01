@@ -16,6 +16,7 @@ class Base extends Controller
 	public function __construct(){
 		parent::__construct();
 		
+		define('PAGE', 4);
 		$this->assign('is_login', $this ->isLogin());
 	}
 

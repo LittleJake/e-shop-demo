@@ -4,7 +4,8 @@ namespace app\index\controller;
 use think\Db;
 
 class Index extends Base
-{
+{	
+	
     public function indexAction($page = 1)
     {
 		if($page < 1)
@@ -12,12 +13,12 @@ class Index extends Base
 		
 		$query = Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id");
 		
-		$m = (0 == (ceil(count($query) / 5)?1:ceil(count($query) / 5)));
-		
+		$m = (0 == (ceil(count($query) / PAGE))?1:ceil(count($query) / PAGE));
+
 		if($page > $m)
 			return $this->error('参数错误');
 		
-		$goods = array_slice($query, ($page - 1) * 5, 5);
+		$goods = array_slice($query, ($page - 1) * PAGE, PAGE);
 		
 		$page = ['min' => 1,
 				'max' => $m,
@@ -40,12 +41,12 @@ class Index extends Base
 		
 		$query = Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id where G.shop_id = $id");
 		
-		$m = (0 == (ceil(count($query) / 5)?1:ceil(count($query) / 5)));
+		$m = (0 == (ceil(count($query) / PAGE))?1:ceil(count($query) / PAGE));
 		
 		if($page > $m)
 			return $this->error('参数错误');
 		
-		$goods = array_slice($query, ($page - 1) * 5, 5);
+		$goods = array_slice($query, ($page - 1) * PAGE, PAGE);
 		
 		$page = ['min' => 1,
 				'max' => $m,
@@ -64,13 +65,13 @@ class Index extends Base
 		
 		$query = Db::query("select * from `shop`");
 		
-		$m = (0 == (ceil(count($query) / 5)?1:ceil(count($query) / 5)));
+		$m = (0 == (ceil(count($query) / PAGE))?1:ceil(count($query) / PAGE));
 		
 		
 		if($page > $m)
 			return $this->error('参数错误');
 		
-		$shops = array_slice($query, ($page - 1) * 5, 5);
+		$shops = array_slice($query, ($page - 1) * PAGE, PAGE);
 		$goods = array();
 		
 		foreach($shops as $k)
@@ -96,8 +97,22 @@ class Index extends Base
         return $this->fetch();
 	}
     //商品详情
-    public function goodAction(){
-		
+    public function goodAction($id = ''){
+
+        $good = Db::table('good')
+            ->where('good_id', $id)
+            ->find();
+
+        if(!isset($good))
+            return $this->error('参数错误');
+
+        $price = Db::query("select p from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id where G.good_id = $id")[0]['p'];
+
+        if(!isset($price))
+            return $this->error('参数错误');
+
+        $this->assign('price', $price);
+        $this->assign('good', $good);
 		$this->assign('page_title', '详情');
         return $this->fetch();
 	}

@@ -1,3 +1,62 @@
 {include file="default/header"}
+<div class="container">
+    <div class="main-info">
+        <div class="col-sm-4">
+            <div class="container">
+                <br>
+                <img class="img-responsive" src="/static/img/null.png" alt="{$good.title}">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <h5>{$good.title}</h5>
+            <p class="subtitle red">{$good.subtitle}</p>
+            <form action="{:url('index/checkout')}" method="post">
+                <table class="table table-striped describe">
+                    <tr>
+                        <th>价格&nbsp;&nbsp;</th>
+                        <td><span class="red">¥ {$price}</span> 起</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>运费&nbsp;&nbsp;</th>
+                        <td><span class="red">¥ {$price}</span> 起</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>数量&nbsp;&nbsp;</th>
+                        <td width="10"><input id="num" name="num" value="1" type="number" min="1"> 件&nbsp;</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td style="font-size: smaller">累计评价</td>
+                        <th style="font-size: smaller"><span class="red">{$price}</span></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>
+                            <button type="submit" class="btn btn-danger">立即购买</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-default">加入购物车</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
 
+    <div class="sub-info">
+        <div class="container">
+
+        </div>
+    </div>
+
+    <div class="comment">
+        <div class="container">
+
+        </div>
+    </div>
+</div>
 {include file="default/footer"}

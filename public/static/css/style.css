@@ -19,3 +19,33 @@ footer
 	padding: 10px 30px;
 	border-bottom: solid 1px;
 }
+
+.main-info
+{
+
+}
+
+.sub-info
+{
+
+}
+
+.comment
+{
+
+}
+
+.describe tbody th
+{
+	font-size: 10px;
+}
+
+.red
+{
+	color: red;
+}
+
+#num
+{
+	width: 70%;
+}
