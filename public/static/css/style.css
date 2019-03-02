@@ -35,9 +35,10 @@ footer
 
 }
 
-.describe tbody th
+.describe tbody th,
+.cat-list
 {
-	font-size: 10px;
+	font-size: 10px !important;
 }
 
 .red

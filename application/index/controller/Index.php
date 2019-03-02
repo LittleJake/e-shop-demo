@@ -111,12 +111,26 @@ class Index extends Base
         if(!isset($price))
             return $this->error('参数错误');
 
+        $cat = Db::table('category')
+            ->where('good_id', $id)
+            ->select();
+
+        if(!isset($cat))
+            return $this->error('参数错误');
+
+        $this->assign('cat', $cat);
         $this->assign('price', $price);
         $this->assign('good', $good);
 		$this->assign('page_title', $good['title']);
         return $this->fetch();
 	}
 
+	public function checkoutAction()
+    {
+        dump(input());
+        exit();
+        return;
+    }
     public function helloAction($a = '')
     {
         return secret('123');
