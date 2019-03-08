@@ -22,7 +22,7 @@ class Base extends Controller
 
 
     function isLogin() {
-        if(session('?user'))
+        if(session('?user') && session('?user_id'))
             return true;
 
         return false;

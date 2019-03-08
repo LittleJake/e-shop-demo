@@ -48,7 +48,8 @@ class User extends Base
 	}
     //购物车
     public function cartAction(){
-		
+        if(!$this->isLogin())
+            return $this->redirect('user/login');
 		
 		$this->assign('page_title', '购物车');
 		return $this->fetch();
@@ -56,6 +57,9 @@ class User extends Base
 	}
     //个人订单
     public function orderAction($page = 1){
+        if(!$this->isLogin())
+            return $this->redirect('user/login');
+
 		if($page < 1)
 			return $this->error('参数错误');
 		
@@ -94,7 +98,10 @@ class User extends Base
 	}
     //地址
     public function addressAction(){
-		
+		if(!$this->isLogin())
+		    return $this->redirect('user/login');
+
+
 		$query = Db::query("select * from `address` where user_id = " . session('user_id'));
 		
 		$this->assign('address', $query);

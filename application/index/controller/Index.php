@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use think\Db;
+use think\Exception;
 
 class Index extends Base
 {	
@@ -131,6 +132,59 @@ class Index extends Base
         exit();
         return;
     }
+
+    public function addCartAction()
+    {
+        if(!$this->isLogin()){
+            return json(['status' => -1, 'msg' => 'need login']);
+        }
+
+
+
+        if($this->request->isAjax()) {
+            $cat = input('cat');
+            $num = input('num');
+            $user = session('user_id');
+
+            Db::startTrans();
+            try{
+                $query = Db::table('category')
+                    ->where('cat_id', $cat)
+                    ->where('sku', '>=', $num)
+                    ->find();
+
+                if(isset($query)) {
+                    $query = Db::table('cart')->where([
+                        'user_id' => $user,
+                        'cat_id' => $cat
+                    ])->find();
+
+                    if(isset($query))
+                        Db::table('cart')-> query("update `cart` set num = num + $num where cat_id = $cat and user_id = $user");
+                    else
+                        Db::table('cart')->insert([
+                            'cat_id' => $cat,
+                            'num' => $num,
+                            'user_id' => $user
+                        ]);
+                }
+                else
+                    throw new \Exception;
+
+                Db::commit();
+
+            } catch (\Exception $e) {
+                Db::rollback();
+                return json(['status' => -2, 'msg' => 'failed']);
+            }
+
+
+            return json(['status' => 0, 'msg' => 'success']);
+        }
+        else
+            return $this->error('参数有误');
+    }
+
     public function helloAction($a = '')
     {
         return secret('123');

@@ -17,8 +17,9 @@
                         </tr>
                         <tr>
                             <th>数量&nbsp;&nbsp;</th>
-                            <td width="10"><input id="num" name="num" value="1" type="number" min="1"> 件&nbsp;</td>
+                            <td width="10"><input  data-toggle="tooltip" data-trigger="manual" data-placement="top" title="库存不足" id="num" name="num" value="1" type="number" min="1"> 件&nbsp;</td>
                             <td id="sku"></td>
+
                         </tr>
                         <tr>
                             <th>分类&nbsp;&nbsp;</th>
@@ -44,7 +45,7 @@
                                 <button type="submit" class="btn btn-info">立即购买</button>
                             </td>
                             <td>
-                                <button class="btn btn-default">加入购物车</button>
+                                <button id="add" type="button" class="btn btn-default" onclick="addCart();" data-toggle="tooltip" data-trigger="manual" data-placement="top" title="已加入购物车">加入购物车</button>
                             </td>
                         </tr>
                     </table>
@@ -73,6 +74,8 @@
 
 {include file="default/footer"}
 <script>
+
+
     $('label').on('click', function () {
         var a = this.firstElementChild;
         a.click();
@@ -81,5 +84,39 @@
     function setPrice(a, b){
         $('#price').html('<span class="red">¥ '+ a +'</span>');
         $('#sku').html('库存 '+ b +' 件');
+    }
+
+    function addCart(){
+        var cat = $("input[name='cat']").val();
+        var num = $("input[name='num']").val();
+
+
+        $.ajax({
+            type: 'post',
+            url: "{:url('index/addCart')}",
+            data: {'cat': cat, 'num': num},
+            success: function (xhr) {
+                if(xhr.status == -1){
+                    window.location = "{:url('user/login')}";
+                }
+                else if(xhr.status == 0) {
+                    $('#add').tooltip('toggle');
+                    setTimeout( function () {
+                        $('#add').tooltip('hide');
+                    }, 1500);
+                }
+                else if(xhr.status == -2) {
+                    $('#num').tooltip('toggle');
+                    setTimeout( function () {
+                        $('#num').tooltip('hide');
+                    }, 1500);
+                }
+
+
+
+
+            },
+        })
+
     }
 </script>
