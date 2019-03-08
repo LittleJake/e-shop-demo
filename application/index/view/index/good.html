@@ -37,7 +37,7 @@
                         <tr>
                             <th></th>
                             <td style="font-size: smaller">累计评价</td>
-                            <th style="font-size: smaller"><span class="red">{$price}</span></th>
+                            <th style="font-size: smaller"><a href="#comment"><span class="red">{$comment_total}</span></a></th>
                         </tr>
                         <tr>
                             <th></th>
@@ -68,6 +68,29 @@
         <div class="container">
             <h4>评价</h4>
             <hr>
+            <div id="comment">
+                {if isset($comments)}
+                    <table class="table table-striped">
+                        {foreach $comments as $v}
+                            <tr>
+                                <th>#{$v.comment_id}</th>
+                                <th>评分：</th>
+                                <th>{$v.rate}</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>评价：</th>
+                                <td>{$v.comment_content}</td>
+                            </tr>
+                        {/foreach}
+                    </table>
+                    {if isset($page)}
+                        {$page|raw}
+                    {/if}
+                {else}
+                    <p>暂无评价</p>
+                {/if}
+            </div>
 
         </div>
     </div>
@@ -75,6 +98,21 @@
 {include file="default/footer"}
 <script>
 
+    $("#comment").on('click', ".pagination li a",function(){
+        var pageObj = this;
+        var url = pageObj.href;
+        $.ajax({
+            type:'get',
+            url:url,
+            success:function(res){
+                $("#comment").html(res);
+
+            },
+
+
+        });
+        return false;
+    });
 
     $('label').on('click', function () {
         var a = this.firstElementChild;

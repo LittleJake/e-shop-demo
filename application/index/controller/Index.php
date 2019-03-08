@@ -97,8 +97,20 @@ class Index extends Base
 		$this->assign('page_title', '确认订单');
         return $this->fetch();
 	}
+
     //商品详情
     public function goodAction($id = ''){
+        $comment = Db::table('comment')
+                -> where('good_id', $id)
+            -> paginate(10);
+        $page = $comment ->render();
+        $total = $comment->total();
+
+        $this->assign('comments', ($total == 0) ?null:$comment);
+        $this->assign('page', $page);
+
+        if($this->request->isAjax())
+            return $this->fetch('index/ajaxComment');
 
         $good = Db::table('good')
             ->where('good_id', $id)
@@ -119,6 +131,9 @@ class Index extends Base
         if(!isset($cat))
             return $this->error('参数错误');
 
+
+
+        $this->assign('comment_total', $total);
         $this->assign('cat', $cat);
         $this->assign('price', $price);
         $this->assign('good', $good);
@@ -138,7 +153,6 @@ class Index extends Base
         if(!$this->isLogin()){
             return json(['status' => -1, 'msg' => 'need login']);
         }
-
 
 
         if($this->request->isAjax()) {

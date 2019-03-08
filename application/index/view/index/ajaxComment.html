@@ -1,0 +1,21 @@
+{if isset($comments)}
+<table class="table table-striped">
+    {foreach $comments as $v}
+    <tr>
+        <th>#{$v.comment_id}</th>
+        <th>评分：</th>
+        <th>{$v.rate}</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>评价：</th>
+        <td>{$v.comment_content}</td>
+    </tr>
+    {/foreach}
+</table>
+{if isset($page)}
+{$page|raw}
+{/if}
+{else}
+<p>暂无评价</p>
+{/if}
