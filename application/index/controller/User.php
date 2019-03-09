@@ -50,8 +50,33 @@ class User extends Base
     public function cartAction(){
         if(!$this->isLogin())
             return $this->redirect('user/login');
-		
+        $user = session('user_id');
+
+        if($this->request->isAjax()){
+            $del = input('del');
+
+            Db::startTrans();
+            try{
+                Db::table('cart')
+                    ->where([
+                        'user_id' => $user,
+                        'cat_id' => $del
+                    ])
+                    ->delete();
+                Db::commit();
+            }catch (\Exception $e){
+                Db::rollback();
+            }
+        }
+
+        $goods = Db::query("select * from `cart` left join `category` on cart.cat_id = category.cat_id left join `good` on category.good_id = good.good_id where cart.user_id = $user");
+
+
+        $this->assign('goods', $goods);
 		$this->assign('page_title', '购物车');
+
+		if($this->request->isAjax())
+            return $this->fetch('user/ajaxCart');
 		return $this->fetch();
 		
 	}

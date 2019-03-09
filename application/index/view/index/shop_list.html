@@ -11,7 +11,10 @@
 					<div class="col-sm-4">
 						<div class="container">
 							<a href="{:url('index/good', ['id' => $k.good_id])}">
-								<img src="/static/img/null.png" width="150px" class="img img-responsive" alt="{$k.title}">
+								<img href="{:url('index/good', ['id' => $k.good_id])}" src="/static/img/null.png" width="150px" class="img img-responsive" alt="{$k.title}">
+							</a>
+							<br>
+							<a href="{:url('index/good', ['id' => $k.good_id])}">
 								{$k.title}
 							</a>
 							<h5>${$k.p}</h5>

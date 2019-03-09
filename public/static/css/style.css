@@ -16,24 +16,23 @@ footer
 {
 	margin: 0 auto;
 	display: block;
-	padding: 10px 30px;
-	border-bottom: solid 1px;
+	padding: 20px 20px;
+	border-bottom: solid 1px grey;
 }
 
-.main-info
+.cart-list
 {
-
+	padding: 15px 10px;
 }
 
-.sub-info
+.detail
 {
-
+	top: 0;
+	padding: 10px 20px;
+	display: inline-block;
 }
 
-.comment
-{
 
-}
 
 .describe tbody th,
 .cat-list

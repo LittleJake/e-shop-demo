@@ -5,9 +5,15 @@
 	{foreach $goods as $v}
 		<div class="good-list">
 			<a href="{:url('index/good', ['id' => $v.good_id])}">
-			<img src="/static/img/null.png" alt="{$v.title}" width="150px">
-			{$v.title}
+			<img src="/static/img/null.png" alt="{$v.title}" width="120px">
 			</a>
+			<div class="detail">
+
+					<a href="{:url('index/good', ['id' => $v.good_id])}">
+					{$v.title}
+				</a>
+				<p>{$v.subtitle}</p>
+			</div>
 			
 			<div class="pull-right">
 			

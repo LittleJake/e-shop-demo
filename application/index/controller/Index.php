@@ -160,6 +160,12 @@ class Index extends Base
             $num = input('num');
             $user = session('user_id');
 
+            if( !isset($num)||!isset($user))
+                return json(['status' => -2, 'msg' => 'failed']);
+
+            if(!isset($cat))
+                return json(['status' => -3, 'msg' => 'failed']);
+
             Db::startTrans();
             try{
                 $query = Db::table('category')
@@ -193,7 +199,7 @@ class Index extends Base
             }
 
 
-            return json(['status' => 0, 'msg' => 'success']);
+            return json(['status' => 0, 'msg' => "success, cat: $cat, num: $num"]);
         }
         else
             return $this->error('参数有误');

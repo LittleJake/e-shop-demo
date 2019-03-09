@@ -1,0 +1,29 @@
+<h4>购物车</h4>
+<hr>
+{foreach $goods as $v}
+<div class="cart-list">
+    <input type="checkbox" name="cat-id" value="{$v.cat_id}">
+    <a href="{:url('index/good', ['id' => $v.good_id])}">
+        <img src="/static/img/null.png" alt="{$v.title}" width="70px">
+    </a>
+
+    <div class="detail">
+        <a href="{:url('index/good', ['id' => $v.good_id])}">{$v.title}</a>
+        <p>{$v.cat_name}</p>
+    </div>
+
+
+    <div class="pull-right">
+        <p>${$v.price}</p>
+        <input type="number" name="cat-num" value="{$v.num}" min="1" style="width: 70px">
+        <input type="button" class="btn btn-default" onclick="" value="删除">
+    </div>
+
+
+</div>
+{/foreach}
+<form action="{:url('index/checkout')}" method="post" id="shop">
+    <input name="cat" hidden>
+    <input name="num" hidden>
+    <input type="button" value="提交订单" class="btn btn-info" style="position: fixed; bottom: 10px; right: 10px;" onclick="check();">
+</form>
