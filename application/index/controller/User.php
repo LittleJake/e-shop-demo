@@ -140,8 +140,33 @@ class User extends Base
 		if(!$this->isLogin())
 		    return $this->redirect('user/login');
 
+		$user = session('user_id');
 
-		$query = Db::query("select * from `address` where user_id = " . session('user_id'));
+        if(input('?del'))
+        {
+            $del = input('del');
+
+            Db::startTrans();
+
+            try{
+                Db::table('address')
+                    ->where([
+                        'user_id' =>$user,
+                        'address_id' => $del
+                    ])
+                    ->delete();
+                Db::commit();
+            }
+            catch (\Exception $e) {
+                Db::rollback();
+                return $this->error("错误",url('user/address'));
+            }
+
+
+            return $this->success("成功",'user/address');
+        }
+
+		$query = Db::query("select * from `address` where user_id = $user");
 		
 		$this->assign('address', $query);
 		$this->assign('page_title', '地址列表');

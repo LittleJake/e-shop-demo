@@ -20,7 +20,9 @@
                     </div>
                     <div class="modal-body">
                         {foreach $address as $k}
+                        <div class="radio">
                             <label><input type="radio" name="add_id" value="{$k.address_id}">{$k.name} ，{$k.province} {$k.city} {$k.district} {$k.street}</label>
+                        </div>
                         {/foreach}
                     </div>
                     <div class="modal-footer">
@@ -65,6 +67,7 @@
 {include file="default/footer"}
 <script>
     $('input[name=add_id]')[0].click();
+    $('input[name=pay]')[0].click();
 
     function change_add() {
         var id = $('input[name=add_id]:checked').val();

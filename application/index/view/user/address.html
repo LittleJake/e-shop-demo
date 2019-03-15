@@ -7,6 +7,7 @@
 				<p>联系方式：{$k.contact}</p>
 				<p>地址：{$k.region} {$k.province} {$k.city} {$k.district} {$k.street}</p>
 				<p>邮编：{$k.code}</p>
+				<a class="btn btn-danger" href="{:url('user/address', ['del' => $k['address_id']])}">删除</a>
 			</div>
 			<hr>
 		{/foreach}
