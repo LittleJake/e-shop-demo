@@ -143,9 +143,48 @@ class Index extends Base
 
 	public function checkoutAction()
     {
-        dump(input());
-        exit();
-        return;
+        if(!$this->isLogin())
+            return $this->redirect('user/login');
+
+        if(!input('?cat') || !input('?num'))
+            return $this->redirect('/');
+
+        $cat = input('cat');
+        $num = input('num');
+
+
+
+        $user = session('user_id');
+
+        $query = Db::query("select * from `address` where user_id = $user");
+
+        $this->assign('address', $query);
+
+        $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in ($cat)");
+
+        $cat = explode(',', $cat);
+        $num = explode(',', $num);
+
+        $order = array_combine($cat, $num);
+
+        foreach ($goods as $c => $d) {
+            foreach ($order as $a => $b) {
+                if($d['cat_id'] == $a){
+                    $goods[$c]['num'] = $b;
+                    break;
+                }
+            }
+        }
+
+        $this->assign('goods', $goods);
+
+        $query = Db::query("select * from `payment`");
+
+        $this->assign('payments', $query);
+
+
+        $this->assign('page_title', '结算');
+        return $this->fetch();
     }
 
     public function addCartAction()

@@ -1,0 +1,86 @@
+{include file="default/header"}
+<form method="post" action="{:url('index/order')}">
+    <div class="container">
+        <div class="address-list" id="address-list">
+            {if isset($address)}
+            <p>姓名：{$address[0]['name']}</p>
+            <p>地址：{$address[0]['province']} {$address[0]['city']} {$address[0]['district']} {$address[0]['street']}</p>
+            {else}
+            <p>暂无地址</p>
+            {/if}
+        </div>
+        <input class="btn btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
+
+        <div class="modal fade" id="changeAddress" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">地址列表</h4>
+                    </div>
+                    <div class="modal-body">
+                        {foreach $address as $k}
+                            <label><input type="radio" name="add_id" value="{$k.address_id}">{$k.name} ，{$k.province} {$k.city} {$k.district} {$k.street}</label>
+                        {/foreach}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="change_add();">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        {foreach $payments as $v}
+        <div class="radio-inline">
+            <label>
+                <input name="pay" type="radio" value="{$v.payment_id}">
+                {$v.payment_name}
+            </label>
+        </div>
+        {/foreach}
+
+        <hr>
+        {foreach $goods as $v}
+        <div class="cart-list">
+            <img src="/static/img/null.png" alt="{$v.title}" width="70px">
+
+            <div class="detail">
+                <p>{$v.title}</p>
+                <p>{$v.cat_name}</p>
+            </div>
+
+            <div class="pull-right">
+                <p>${$v.price}</p>
+                <input type="number" name="cat-num" value="{$v.num}" min="1" style="width: 70px">
+            </div>
+
+        </div>
+        {/foreach}
+        <hr>
+        <input value="提交订单" class="btn btn-info pull-right" onclick="check();" type="button">
+    </div>
+
+</form>
+{include file="default/footer"}
+<script>
+    $('input[name=add_id]')[0].click();
+
+    function change_add() {
+        var id = $('input[name=add_id]:checked').val();
+
+        $.ajax({
+            url: "{:url('user/address')}",
+            data: {'id': id},
+            type: 'post',
+            success: function (data) {
+                $('#address-list').html(data);
+
+
+            }
+        })
+
+
+
+    }
+</script>

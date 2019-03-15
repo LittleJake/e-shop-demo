@@ -123,6 +123,20 @@ class User extends Base
 	}
     //地址
     public function addressAction(){
+        if($this->request->isAjax()) {
+            if(!$this->isLogin())
+                return null;
+            $user = session('user_id');
+
+            $id = (int)input('id');
+
+            $query = Db::query("select * from `address` where user_id = $user and address_id = $id");
+
+            $this->assign('address', $query);
+            return $this->fetch('index/ajaxAddress');
+        }
+
+
 		if(!$this->isLogin())
 		    return $this->redirect('user/login');
 

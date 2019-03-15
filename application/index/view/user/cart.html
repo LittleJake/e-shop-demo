@@ -27,7 +27,7 @@
     <form action="{:url('index/checkout')}" method="post" id="shop">
         <input name="cat" hidden>
         <input name="num" hidden>
-        <input type="button" value="提交订单" class="btn btn-info" style="position: fixed; bottom: 10px; right: 10px;" onclick="check();">
+        <input value="提交订单" class="btn btn-info" style="position: fixed; bottom: 10px; right: 10px;" onclick="check();" type="button">
     </form>
 </div>
 {include file="default/footer"}
@@ -62,12 +62,11 @@
         var cat = cat.join(',');
         var num = num.join(',');
 
-        console.log(cat);
-        console.log(num);
-
         $('input[name=cat]').val(cat);
         $('input[name=num]').val(num);
-        $('#shop').submit();
+
+        if(cat != '' && num != '')
+            $('#shop').submit();
     }
 
 
