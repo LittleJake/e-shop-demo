@@ -171,7 +171,15 @@ class Index extends Base
                             ]);
                         Db::table('category')
                             -> where('cat_id', $a)
-                            ->update(['sku' => $goods[$c]['sku'] - (int)$b]);
+                            ->update([
+                                'sku' => $goods[$c]['sku'] - (int)$b
+                            ]);
+                        Db::table('cart')
+                            -> where([
+                                'user_id' => $user,
+                                'cat_id' => $a
+                                ])
+                            ->delete();
 
                         Db::commit();
 
