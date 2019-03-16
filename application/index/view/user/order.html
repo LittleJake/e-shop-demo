@@ -12,22 +12,19 @@
 			</span>
 			{foreach $goods[$k.order_id] as $v}
 				<div class="good-list">
-					<h4>{$v.title} —— {$v.cat_name}</h4>
-					<h4>数量：{$v.num}</h4>
-					
-					<div class="pull-right">
-						<h4>${$v.p * $v.num}</h4>
-					</div>
+					<p>{$v.title} —— {$v.cat_name}</p>
+					<p>数量：{$v.num}</p>
+					<p>${$v.price * $v.num}</p>
 				</div>
 			{/foreach}
-			
+		<br>
 		{/foreach}
 		<br>
 		{if $page.cur > $page.min}
-			<a class="pull-left" href="{:url('index/index', ['page' => $page.cur-1])}">← 上一页</a>
+			<a class="pull-left" href="{:url('user/order', ['page' => $page.cur-1])}">← 上一页</a>
 		{/if}
 		{if $page.cur < $page.max}
-			<a class="pull-right" href="{:url('index/index', ['page' => $page.cur+1])}">下一页 →</a>
+			<a class="pull-right" href="{:url('user/order', ['page' => $page.cur+1])}">下一页 →</a>
 		{/if}
 	{else}
 		<h4>暂无订单</h4>

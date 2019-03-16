@@ -88,10 +88,10 @@ class User extends Base
 		if($page < 1)
 			return $this->error('参数错误');
 		
-		$query = \think\Db::query("select * from `order` where user_id = ". session('user_id'));
+		$query = Db::query("select * from `order` where user_id = ". session('user_id'));
 		
 		if(count($query) != 0)
-			$m = floor(count($query) / 5);
+            $m = (0 == (ceil(count($query) / PAGE))?1:ceil(count($query) / PAGE));
 		else {
 			$this->assign('page_title', '个人订单');
 			return $this->fetch();
@@ -100,13 +100,15 @@ class User extends Base
 		if($page > $m)
 			return $this->error('参数错误');
 		
-		$orders = array_slice($query, ($page - 1) * 5, 5);
+		$orders = array_slice($query, ($page - 1) * PAGE, PAGE);
 		$goods = array();
 		$total = 0;
 		foreach($orders as $k){
-			$goods[$k['order_id']] = \think\Db::query("select * from `order_good` as A where order_id = $k.order_id left join `category` as B on A.cat_id = B.cat_id left join `good` as C on B.good_id = C.good_id");
+
+			$goods[$k['order_id']] = Db::query("select * from `order_good` as A left join `category` as B on A.cat_id = B.cat_id left join `good` as C on B.good_id = C.good_id where A.order_id = $k[order_id]");
+
 			foreach($goods[$k['order_id']] as $v)
-			$total += ($v['price'] * $v['num']);
+			    $total += ($v['price'] * $v['num']);
 		}
 		
 		

@@ -93,9 +93,102 @@ class Index extends Base
 
     //下单
     public function orderAction(){
-		
-		$this->assign('page_title', '确认订单');
-        return $this->fetch();
+        if(!$this->isLogin())
+            return $this->redirect('user/login');
+
+        if(!input('?cat') || !input('?num') || !input('?pay')|| !input('?add_id') || !input('?total') || !input('?ship'))
+            return $this->redirect('/');
+
+        $user = session('user_id');
+        $cat = input('cat');
+        $num = input('num');
+        $ship = input('ship');
+        $pay = input('pay');
+        $add_id = input('add_id');
+        $total = input('total');
+        $time = time();
+        $date = date('Ymd');
+        while (true){
+            $order_id =  $date. substr('00' . rand(0, 99),-2,2);
+            $query = Db::query("select * from `order` where order_id = $order_id");
+            if(empty($query))
+                break;
+        }
+
+        Db::startTrans();
+        try{
+            Db::table('order')
+                -> insert([
+                    'order_id' => $order_id,
+                    'address_id' => $add_id,
+                    'payment_id' => $pay,
+                    'total_price' => $total,
+                    'shipping_id' => $ship,
+                    'time' => $time,
+                    'status' => 0,
+                    'user_id' =>$user
+                ]);
+            Db::commit();
+        }
+        catch (\Exception $e) {
+            Db::rollback();
+
+//            $this->error('错误', url('/'));
+        }
+
+
+
+
+
+        $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in ($cat)");
+
+
+        $cat = explode(',', $cat);
+        $num = explode(',', $num);
+
+        $order = array_combine($cat, $num);
+        $no_goods = array();
+
+        foreach ($goods as $c => $d) {
+            foreach ($order as $a => $b) {
+                if($d['cat_id'] == $a){
+                    if($goods[$c]['sku'] < $b)
+                    {
+                        //库存不足时
+                        $no_goods[] = array_pop($goods[$c]);
+
+
+                        break;
+                    }
+
+                    Db::startTrans();
+                    try{
+                        Db::table('order_good')
+                            -> insert([
+                                'order_id' => $order_id,
+                                'cat_id' => $a,
+                                'num' => $b
+                            ]);
+                        Db::table('category')
+                            -> where('cat_id', $a)
+                            ->update(['sku' => $goods[$c]['sku'] - (int)$b]);
+
+                        Db::commit();
+
+                    }
+                    catch (\Exception $e) {
+                        dump($e);
+                        exit;
+                        Db::rollback();
+                    }
+                    break;
+                }
+            }
+        }
+
+
+
+        return $this->success('成功', url('user/order'));
 	}
 
     //商品详情
@@ -151,8 +244,8 @@ class Index extends Base
 
         $cat = input('cat');
         $num = input('num');
-
-
+        $this->assign('cat', $cat);
+        $this->assign('num', $num);
 
         $user = session('user_id');
 
@@ -160,23 +253,29 @@ class Index extends Base
 
         $this->assign('address', $query);
 
+        $query = Db::query("select * from `shipping_fee`");
+
+        $this->assign('ships', $query);
+
         $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in ($cat)");
 
         $cat = explode(',', $cat);
         $num = explode(',', $num);
 
         $order = array_combine($cat, $num);
-
+        $total = 0;
         foreach ($goods as $c => $d) {
             foreach ($order as $a => $b) {
                 if($d['cat_id'] == $a){
                     $goods[$c]['num'] = $b;
+                    $total += $goods[$c]['price'] * $b;
                     break;
                 }
             }
         }
 
         $this->assign('goods', $goods);
+        $this->assign('total', $total);
 
         $query = Db::query("select * from `payment`");
 

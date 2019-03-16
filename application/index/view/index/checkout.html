@@ -43,6 +43,16 @@
         {/foreach}
 
         <hr>
+        {foreach $ships as $v}
+        <div class="radio-inline">
+            <label>
+                <input name="ship" type="radio" value="{$v.shipping_id}">
+                {$v.shipping_name} ￥{$v.fee}
+            </label>
+        </div>
+        {/foreach}
+
+        <hr>
         {foreach $goods as $v}
         <div class="cart-list">
             <img src="/static/img/null.png" alt="{$v.title}" width="70px">
@@ -54,19 +64,23 @@
 
             <div class="pull-right">
                 <p>${$v.price}</p>
-                <input type="number" name="cat-num" value="{$v.num}" min="1" style="width: 70px">
+                <p>x {$v.num}</p>
             </div>
 
         </div>
         {/foreach}
         <hr>
-        <input value="提交订单" class="btn btn-info pull-right" onclick="check();" type="button">
+        <input name="cat" value="{$cat}" hidden>
+        <input name="num" value="{$num}" hidden>
+        <input name="total" type="number" value="{$total}" hidden>
+        <input value="提交订单" class="btn btn-info pull-right"  type="submit">
     </div>
 
 </form>
 {include file="default/footer"}
 <script>
     $('input[name=add_id]')[0].click();
+    $('input[name=ship]')[0].click();
     $('input[name=pay]')[0].click();
 
     function change_add() {
