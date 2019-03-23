@@ -298,7 +298,7 @@ class User extends Base
                         -> insert([
                             'good_id' => $k['good_id'],
                             'rate' => $star,
-                            'comment_content' => $content
+                            'comment_content' => htmlspecialchars($content)
                         ]);
 
                     Db::commit();
