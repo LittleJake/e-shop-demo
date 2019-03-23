@@ -176,6 +176,9 @@ class User extends Base
 	}
     //增加地址
     public function addAddressAction(){
+        if(!$this->isLogin())
+            return $this->redirect('user/login');
+
 		if($this->request->isPost()){
 			$name = input('post.name');
 			$region = input('post.region');
@@ -273,6 +276,62 @@ class User extends Base
 	}
 	//商品评价
     public function commentAction(){
+        if(!$this->isLogin())
+            return $this->redirect('user/login');
 
+        $user = session('user_id');
+        $id = (int)input('id');
+        $query = Db::query("select * from `order` left join `order_good` on `order`.order_id = order_good.order_id left join `category` on order_good.cat_id = category.cat_id left join `good` on category.good_id = good.good_id where order_good.order_id = $id and user_id = $user");
+
+        if($this->request->isPost()){
+            $post = input();
+            foreach ($query as $k) {
+                $star = array_shift($post);
+                $content = array_shift($post);
+
+                if(empty($content))
+                    $content = '暂无文字评论';
+
+                Db::startTrans();
+                try{
+                    Db::table('comment')
+                        -> insert([
+                            'good_id' => $k['good_id'],
+                            'rate' => $star,
+                            'comment_content' => $content
+                        ]);
+
+                    Db::commit();
+
+                } catch (\Exception $e) {
+                    Db::rollback();
+                    return $this->error('错误', url('user/order'));
+                }
+
+            }
+
+            Db::startTrans();
+            try{
+                Db::table('order')
+                    -> where('order_id', $id)
+                    -> update([
+                        'status' => 50
+                    ]);
+
+                Db::commit();
+
+            } catch (\Exception $e) {
+                Db::rollback();
+                return $this->error('错误', url('user/order'));
+            }
+
+            return $this->success('成功', url('user/order'));
+        }
+
+        $this->assign('good', $query);
+
+
+        $this->assign('page_title', '评价商品');
+        return $this->fetch();
     }
 }

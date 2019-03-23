@@ -1,0 +1,25 @@
+{include file="default/header"}
+<div class="container">
+    <form method="post">
+        {foreach $good as $k}
+        <div class="good-list">
+            {$k.title}
+            <br>
+            <label><input name="{$k.good_id}-star" type="radio" value="5" checked>5</label>
+            <label><input name="{$k.good_id}-star" type="radio" value="4">4</label>
+            <label><input name="{$k.good_id}-star" type="radio" value="3">3</label>
+            <label><input name="{$k.good_id}-star" type="radio" value="2">2</label>
+            <label><input name="{$k.good_id}-star" type="radio" value="1">1</label>
+            <br>
+            <textarea name="{$k.good_id}-content"></textarea>
+
+        </div>
+        {/foreach}
+        <br>
+        <input type="submit" value="提交" class="btn btn-info">
+    </form>
+
+</div>
+
+
+{include file="default/footer"}
