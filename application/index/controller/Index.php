@@ -108,6 +108,8 @@ class Index extends Base
         $total = input('total');
         $time = time();
         $date = date('Ymd');
+
+        //订单号生成
         while (true){
             $order_id =  $date. substr('00' . rand(0, 99),-2,2);
             $query = Db::query("select * from `order` where order_id = $order_id");
@@ -132,16 +134,10 @@ class Index extends Base
         }
         catch (\Exception $e) {
             Db::rollback();
-
-//            $this->error('错误', url('/'));
+            $this->error('错误', url('/'));
         }
 
-
-
-
-
         $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in ($cat)");
-
 
         $cat = explode(',', $cat);
         $num = explode(',', $num);
@@ -152,28 +148,28 @@ class Index extends Base
         foreach ($goods as $c => $d) {
             foreach ($order as $a => $b) {
                 if($d['cat_id'] == $a){
-                    if($goods[$c]['sku'] < $b)
-                    {
+                    if($goods[$c]['sku'] < $b) {
                         //库存不足时
                         $no_goods[] = array_pop($goods[$c]);
-
-
                         break;
                     }
 
                     Db::startTrans();
-                    try{
+                    try {
+                        //订单物品添加
                         Db::table('order_good')
                             -> insert([
                                 'order_id' => $order_id,
                                 'cat_id' => $a,
                                 'num' => $b
                             ]);
+                        //减少库存
                         Db::table('category')
                             -> where('cat_id', $a)
                             ->update([
                                 'sku' => $goods[$c]['sku'] - (int)$b
                             ]);
+                        //删除购物车
                         Db::table('cart')
                             -> where([
                                 'user_id' => $user,
@@ -185,8 +181,6 @@ class Index extends Base
 
                     }
                     catch (\Exception $e) {
-                        dump($e);
-                        exit;
                         Db::rollback();
                     }
                     break;

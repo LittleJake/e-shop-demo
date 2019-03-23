@@ -271,5 +271,8 @@ class User extends Base
 		$this->assign('page_title', '注册');
 		return $this->fetch();
 	}
-	
+	//商品评价
+    public function commentAction(){
+
+    }
 }

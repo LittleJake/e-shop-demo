@@ -15,13 +15,15 @@ class Base extends Controller
 {
 	public function __construct(){
 		parent::__construct();
-		
+
+		//分页个数
 		define('PAGE', 4);
 		$this->assign('is_login', $this ->isLogin());
 	}
 
 
     function isLogin() {
+	    //登录判断
         if(session('?user') && session('?user_id'))
             return true;
 

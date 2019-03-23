@@ -5,19 +5,24 @@
 		<hr>
 		
 		{foreach $orders as $k}
-			<span>订单号：{$k.order_id}</span>
-			<span class="pull-right">
-				状态：
-				<a></a>
-			</span>
-			{foreach $goods[$k.order_id] as $v}
-				<div class="good-list">
-					<p>{$v.title} —— {$v.cat_name}</p>
-					<p>数量：{$v.num}</p>
-					<p>${$v.price * $v.num}</p>
-				</div>
-			{/foreach}
-		<br>
+			{if !empty($goods[$k.order_id])}
+				<span>订单号：{$k.order_id}</span>
+
+				<span class="pull-right">
+					<a class="btn btn-info" href="{:url('user/comment', ['id' => $k.order_id])}">评价</a>
+					状态：
+					123
+				</span>
+				{foreach $goods[$k.order_id] as $v}
+					<div class="good-list">
+						<p>{$v.title} —— {$v.cat_name}</p>
+						<p>数量：{$v.num}</p>
+						<p>${$v.price * $v.num}</p>
+					</div>
+				{/foreach}
+
+				<br>
+			{/if}
 		{/foreach}
 		<br>
 		{if $page.cur > $page.min}
