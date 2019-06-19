@@ -8,7 +8,9 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="{:url('/')}">e-shop-demo</a>
-			<sub>{$page_title}</sub>
+			{if mb_strlen($page_title) <= 4}
+				<sub>{$page_title}</sub>
+			{/if}
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav">
