@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use think\Db;
+use think\facade\Log;
 
 class User extends Base
 {
@@ -161,6 +162,7 @@ class User extends Base
             }
             catch (\Exception $e) {
                 Db::rollback();
+                Log::error($e->getMessage());
                 return $this->error("错误",url('user/address'));
             }
 
