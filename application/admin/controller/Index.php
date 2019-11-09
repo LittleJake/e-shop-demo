@@ -20,4 +20,9 @@ class Index extends Base
     {
         return $this->fetch();
     }
+
+    public function homeAction()
+    {
+        return $this->fetch();
+    }
 }
