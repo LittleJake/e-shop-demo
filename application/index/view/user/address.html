@@ -4,7 +4,7 @@
 		{foreach $address as $k}
 			<div class="address-list">
 				<h5>姓名：{$k.name}</h5>
-				<p>联系方式：{$k.contact}</p>
+				<p>联系电话：{$k.contact}</p>
 				<p>地址：{$k.region} {$k.province} {$k.city} {$k.district} {$k.street}</p>
 				<p>邮编：{$k.code}</p>
 				<a class="btn btn-danger" href="{:url('user/address', ['del' => $k['address_id']])}">删除</a>
