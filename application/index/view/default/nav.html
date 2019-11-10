@@ -22,7 +22,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="{:url('user/reg')}">注册</a></li>
-						<li><a href="{:url('user/login')}">登录</a></li>
+						<li><a href="{:url('user/login',['r'=>urlencode(request()->url(true))])}">登录</a></li>
 					</ul>
 				</li>
 			{else}
@@ -31,7 +31,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="{:url('user/order')}">订单</a></li>
 						<li><a href="{:url('user/address')}">地址管理</a></li>
-						<li><a href="{:url('user/logout')}">退出</a></li>
+						<li><a href="{:url('user/logout',['r'=>urlencode(request()->url(true))])}">退出</a></li>
 					</ul>
 				</li>
 			{/if}

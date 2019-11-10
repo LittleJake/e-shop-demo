@@ -44,8 +44,9 @@ class User extends Base
     //登出
     public function logoutAction(){
 		session(null);
-		
-		return $this->success('登出成功', url('/'));
+        $url = urldecode($this->request->param('r'));
+
+		return $this->success('登出成功', empty($url)?"/":$url);
 	}
     //购物车
     public function cartAction(){
