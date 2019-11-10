@@ -32,8 +32,8 @@ class User extends Base
 			
 			session('user', $query['user_name']);
 			session('user_id', $query['user_id']);
-			
-			return $this->success($query['user_name'] . '，欢迎回来', url('/'));
+            $url = urldecode($this->request->param('r'));
+			return $this->success($query['user_name'] . '，欢迎回来', empty($url)?"/":$url);
 				
 		}
 			
@@ -50,7 +50,8 @@ class User extends Base
     //购物车
     public function cartAction(){
         if(!$this->isLogin())
-            return $this->redirect('user/login');
+            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
+
         $user = session('user_id');
 
         if($this->request->isAjax()){
@@ -84,7 +85,7 @@ class User extends Base
     //个人订单
     public function orderAction($page = 1){
         if(!$this->isLogin())
-            return $this->redirect('user/login');
+            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
 
 		if($page < 1)
 			return $this->error('参数错误');
@@ -141,9 +142,10 @@ class User extends Base
 
 
 		if(!$this->isLogin())
-		    return $this->redirect('user/login');
+            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
 
-		$user = session('user_id');
+
+        $user = session('user_id');
 
         if(input('?del'))
         {

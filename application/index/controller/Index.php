@@ -7,27 +7,15 @@ use think\Exception;
 class Index extends Base
 {	
 	
-    public function indexAction($page = 1)
+    public function indexAction()
     {
-		if($page < 1)
-			return $this->error('参数错误');
-		
-		$query = Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id");
-		
-		$m = (0 == (ceil(count($query) / PAGE))?1:ceil(count($query) / PAGE));
+        $cat = '(SELECT good_id, min(price) as p from `category` group by good_id)';
 
-		if($page > $m)
-			return $this->error('参数错误');
-		
-		$goods = array_slice($query, ($page - 1) * PAGE, PAGE);
-		
-		$page = ['min' => 1,
-				'max' => $m,
-				'cur' => $page];
-		
-		$this->assign('page', $page);
+        $goods = Db::table("good")->alias('G')->leftJoin("$cat C", 'G.good_id = C.good_id')->paginate(5);
+
 		$this ->assign('goods', $goods);
 		$this->assign('page_title', '首页');
+
         return $this->fetch();
     }
 
@@ -39,22 +27,13 @@ class Index extends Base
 		$query = Db::table('shop') -> where('shop_id', $id) -> find();
 		
 		$this -> assign('shop_name', $query['shop_name']);
-		
-		$query = Db::query("select * from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id where G.shop_id = $id");
-		
-		$m = (0 == (ceil(count($query) / PAGE))?1:ceil(count($query) / PAGE));
-		
-		if($page > $m)
-			return $this->error('参数错误');
-		
-		$goods = array_slice($query, ($page - 1) * PAGE, PAGE);
-		
-		$page = ['min' => 1,
-				'max' => $m,
-				'cur' => $page];
-		
-		$this->assign('page', $page);
-		$this ->assign('goods', $goods);
+
+        $cat = '(SELECT good_id, min(price) as p from `category` group by good_id)';
+
+        $goods = Db::table("good")->alias('G')->leftJoin("$cat C", 'G.good_id = C.good_id')->where(['shop_id' => $id])->paginate(5);
+
+
+        $this ->assign('goods', $goods);
 		$this->assign('page_title', '店铺商品');
         return $this->fetch();
     }
@@ -94,7 +73,7 @@ class Index extends Base
     //下单
     public function orderAction(){
         if(!$this->isLogin())
-            return $this->redirect('user/login');
+            return $this->redirect('user/login', ['r' => urlencode($this->request->url())]);
 
         if(!input('?cat') || !input('?num') || !input('?pay')|| !input('?add_id') || !input('?total') || !input('?ship'))
             return $this->redirect('/');
@@ -239,7 +218,7 @@ class Index extends Base
 	public function checkoutAction()
     {
         if(!$this->isLogin())
-            return $this->redirect('user/login');
+            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
 
         if(!input('?cat') || !input('?num'))
             return $this->redirect('/');

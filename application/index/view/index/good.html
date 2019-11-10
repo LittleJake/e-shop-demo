@@ -148,7 +148,7 @@
             data: {'cat': cat, 'num': num},
             success: function (xhr) {
                 if(xhr.status == -1){
-                    window.location = "{:url('user/login')}";
+                    window.location = "{:url('user/login')}?r={:urlencode(request()->url(true))}";
                 }
                 else if(xhr.status == 0) {
                     $('#add').tooltip('toggle');

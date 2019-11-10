@@ -1,35 +1,32 @@
 {include file="default/header"}
 <div class="container">
-	<h4>第{$page.cur}页</h4>
+	<h4>第 {$goods->currentPage()} 页</h4>
 	<hr>
 	{foreach $goods as $v}
-		<div class="good-list">
-			<a href="{:url('index/good', ['id' => $v.good_id])}">
-			<img src="/static/img/null.png" alt="{$v.title}" width="120px">
-			</a>
-			<div class="detail">
+	<div class="good-list container">
+		<a href="{:url('index/good', ['id' => $v.good_id])}">
+			<div class="col-md-2">
+				<img src="/static/img/null.png" alt="{$v.title}" width="120px">
+			</div>
+		</a>
 
-					<a href="{:url('index/good', ['id' => $v.good_id])}">
-					{$v.title}
-				</a>
-				<p>{$v.subtitle}</p>
-			</div>
-			
-			<div class="pull-right">
-			
-				<h4>${$v.p}</h4>
-				<p>+ 邮费</p>
-			</div>
-			
-			
+		<div class="detail col-md-8">
+			<a href="{:url('index/good', ['id' => $v.good_id])}">
+				{$v.title}
+			</a>
+			<p>{$v.subtitle}</p>
 		</div>
+
+		<div class="col-md-2">
+
+			<h4>${$v.p}</h4>
+			<p>+ 邮费</p>
+		</div>
+
+
+	</div>
 	{/foreach}
 	<br>
-	{if $page.cur > $page.min}
-		<a class="pull-left" href="{:url('index/index', ['page' => $page.cur-1])}">← 上一页</a>
-	{/if}
-	{if $page.cur < $page.max}
-		<a class="pull-right" href="{:url('index/index', ['page' => $page.cur+1])}">下一页 →</a>
-	{/if}
+	{$goods->render()|raw}
 </div>
 {include file="default/footer"}
