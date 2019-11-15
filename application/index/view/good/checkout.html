@@ -1,5 +1,5 @@
 {include file="default/header"}
-<form method="post" action="{:url('index/order')}">
+<form method="post" action="{:url('index/good/order')}">
     <div class="container">
         <div class="address-list" id="address-list">
             {if isset($address)}
@@ -87,7 +87,7 @@
         var id = $('input[name=add_id]:checked').val();
 
         $.ajax({
-            url: "{:url('user/address')}",
+            url: "{:url('index/user/address')}",
             data: {'id': id},
             type: 'post',
             success: function (data) {

@@ -8,7 +8,7 @@
         <div class="col-sm-8">
             <h5>{$good.title}</h5>
             <p class="subtitle red">{$good.subtitle}</p>
-            <form action="{:url('index/checkout')}" method="post" id="shop" class="form-inline">
+            <form action="{:url('index/good/checkout')}" method="post" id="shop" class="form-inline">
                 <table class="table table-striped describe">
                     <tr>
                         <th>价格&nbsp;&nbsp;</th>
@@ -148,11 +148,11 @@
 
         $.ajax({
             type: 'post',
-            url: "{:url('index/addCart')}",
+            url: "{:url('index/user/addCart')}",
             data: {'cat': cat, 'num': num},
             success: function (xhr) {
                 if(xhr.status == -1){
-                    window.location = "{:url('user/login')}?r={:urlencode(request()->url(true))}";
+                    window.location = "{:url('index/user/login')}?r={:urlencode(request()->url(true))}";
                 }
                 else if(xhr.status == 0) {
                     $('#add').tooltip('toggle');

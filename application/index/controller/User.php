@@ -13,28 +13,83 @@ use think\facade\Log;
 
 class User extends Base
 {
+    public function addCartAction()
+    {
+        if(!$this->isLogin()){
+            return json(['status' => -1, 'msg' => 'need login']);
+        }
+
+
+        if($this->request->isAjax()) {
+            $cat = input('cat');
+            $num = input('num');
+            $user = session('user_id');
+
+            if( !isset($num)||!isset($user))
+                return json(['status' => -2, 'msg' => 'failed']);
+
+            if(!isset($cat))
+                return json(['status' => -3, 'msg' => 'failed']);
+
+            Db::startTrans();
+            try{
+                $query = Db::table('category')
+                    ->where('cat_id', $cat)
+                    ->where('sku', '>=', $num)
+                    ->find();
+
+                if(isset($query)) {
+                    $query = Db::table('cart')->where([
+                        'user_id' => $user,
+                        'cat_id' => $cat
+                    ])->find();
+
+                    if(isset($query))
+                        Db::table('cart')-> query("update `cart` set num = num + $num where cat_id = $cat and user_id = $user");
+                    else
+                        Db::table('cart')->insert([
+                            'cat_id' => $cat,
+                            'num' => $num,
+                            'user_id' => $user
+                        ]);
+                }
+                else
+                    throw new \Exception;
+
+                Db::commit();
+
+            } catch (\Exception $e) {
+                Db::rollback();
+                return json(['status' => -2, 'msg' => 'failed']);
+            }
+
+
+            return json(['status' => 0, 'msg' => "success, cat: $cat, num: $num"]);
+        }
+        else
+            return $this->error('参数有误');
+    }
     //登录
     public function loginAction(){
 		if($this->request->isPost()){
-			$email = input('post.email');
-			$pass = input('post.pass');
-			
-			if(!isset($email) || !isset($pass))
-				return $this->error('参数错误');
-			
-			$query = db('user') -> where('email', $email)-> find();
+		    $data = input('post.a');
+
+		    $validator = validate('user');
+
+			if(!$validator -> scene('login') -> check($data))
+				return $this->error($validator->getError());
+
+			$data['password'] = secret($data['password']);
+
+			$query = db('user') -> where($data)-> find();
 			
 			if(!isset($query))
-				return $this->error('参数错误');
-			
-			if($query['password'] != secret($pass))
-				return $this->error('密码错误');
+				return $this->error('用户名或密码错误');
 			
 			session('user', $query['user_name']);
 			session('user_id', $query['user_id']);
             $url = urldecode($this->request->param('r'));
 			return $this->success($query['user_name'] . '，欢迎回来', empty($url)?"/":$url);
-				
 		}
 			
 		
@@ -51,7 +106,7 @@ class User extends Base
     //购物车
     public function cartAction(){
         if(!$this->isLogin())
-            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
+            return $this->redirect('index/user/login', ['r' =>  urlencode($this->request->url(true))]);
 
         $user = session('user_id');
 
@@ -80,13 +135,14 @@ class User extends Base
 
 		if($this->request->isAjax())
             return $this->fetch('user/ajaxCart');
+
 		return $this->fetch();
 		
 	}
     //个人订单
     public function orderAction($page = 1){
         if(!$this->isLogin())
-            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
+            return $this->redirect('index/user/login', ['r' =>  urlencode($this->request->url(true))]);
 
 		if($page < 1)
 			return $this->error('参数错误');
@@ -138,12 +194,12 @@ class User extends Base
             $query = Db::query("select * from `address` where user_id = $user and address_id = $id");
 
             $this->assign('address', $query);
-            return $this->fetch('index/ajaxAddress');
+            return $this->fetch('index/user/ajaxAddress');
         }
 
 
 		if(!$this->isLogin())
-            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
+            return $this->redirect('index/user/login', ['r' =>  urlencode($this->request->url(true))]);
 
 
         $user = session('user_id');
@@ -165,12 +221,11 @@ class User extends Base
             }
             catch (\Exception $e) {
                 Db::rollback();
-                Log::error($e->getMessage());
-                return $this->error("错误",url('user/address'));
+                return $this->error($e->getMessage()."错误",url('index/user/address'));
             }
 
 
-            return $this->success("成功",'user/address');
+            return $this->success("成功",'index/user/address');
         }
 
 		$query = Db::query("select * from `address` where user_id = $user");
@@ -182,43 +237,28 @@ class User extends Base
     //增加地址
     public function addAddressAction(){
         if(!$this->isLogin())
-            return $this->redirect('user/login');
+            return $this->redirect('index/user/login');
 
 		if($this->request->isPost()){
-			$name = input('post.name');
-			$region = input('post.region');
-			$province = input('post.province');
-			$city = input('post.city');
-			$district = input('post.district');
-			$street = input('post.street');
-			$code = input('post.code');
-			$contact = input('post.contact');
+		    $data = input('post.a');
+
+            $validator = validate('address');
+
+			if(!$validator->check($data))
+				return $this->error($validator->getError());
 			
-			if(!isset($name) || !isset($region)||!isset($province)|| !isset($city)|| !isset($district)|| !isset($street)||!isset($code) || !isset($contact))
-				return $this->error('参数错误');
-			
-			
+			$data['user_id'] = session('user_id');
+
 			Db::startTrans();
 			try{
-				Db::table('address')->insert([
-					'name' => $name,
-					'region' => $region,
-					'province' => $province,
-					'city' => $city,
-					'district' => $district,
-					'street' => $street,
-					'code' => $code,
-					'contact' => $contact,
-					'user_id' => session('user_id')
-				
-				]);
+				Db::table('address')->insert($data);
 				Db::commit();
 			} catch(\Exception $e) {
 				Db::rollback();
-				return $this->error('参数错误');
+				return $this->error($e->getMessage().'参数错误');
 			}
 			
-			return $this->success('添加成功', url('user/address'));
+			return $this->success('添加成功', url('index/user/address'));
 			
 		}
 			
@@ -230,49 +270,25 @@ class User extends Base
 	//注册
 	public function regAction(){
 		if($this->request->isPost()){
-			$email = input('post.email');
-			$pass = input('post.pass');
-			$user = input('post.user');
-			$mobile = input('post.mobile');
-			
-			if(!isset($email) || !isset($pass) || !isset($user) || !isset($mobile))
-				return $this->error('参数错误');
-			
-			$db = db('user');
-			
-			$query =  $db -> where('email', $email)-> find();
-			
-			if(isset($query))
-				return $this->error('参数错误');
-			
-			$query = $db -> where('user_name', $user)-> find();
-			
-			if(isset($query))
-				return $this->error('参数错误');
-			
-			$query = $db -> where('mobile', $mobile)-> find();
-			
-			if(isset($query))
-				return $this->error('参数错误');
-			
+			$data = input('post.a');
+
+			$validator = validate('user');
+
+			if(!$validator->scene('reg')-> check($data))
+				return $this->error($validator->getError());
+
+			$data['password'] = secret($data['password']);
+
 			Db::startTrans();
 			try{
-				Db::table('user') -> insert([
-					'user_name' => $user,
-					'password' => secret($pass),
-					'email' => $email,
-					'mobile' => $mobile
-				]);
+				Db::table('user') -> insert($data);
 				Db::commit();
 			} catch (\Exception $e) {
 				Db::rollback();
 				return $this->error('注册失败');
-			
 			}
-			
 
-			
-			return $this->success('注册成功', url('user/login'));
+			return $this->success('注册成功', url('index/user/login'));
 				
 		}
 		
@@ -282,7 +298,7 @@ class User extends Base
 	//商品评价
     public function commentAction(){
         if(!$this->isLogin())
-            return $this->redirect('user/login');
+            return $this->redirect('index/user/login');
 
         $user = session('user_id');
         $id = (int)input('id');

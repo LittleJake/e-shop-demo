@@ -10,7 +10,7 @@
 
 				<span class="pull-right">
 					{if $k.status < 10}
-					<a class="btn btn-info" href="{:url('user/comment', ['id' => $k.order_id])}">评价</a>
+					<a class="btn btn-info" href="{:url('index/user/comment', ['id' => $k.order_id])}">评价</a>
 					{/if}
 					状态：
 					{$k.status}

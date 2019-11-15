@@ -5,12 +5,12 @@
     {foreach $goods as $v}
     <div class="cart-list">
         <input type="checkbox" name="cat-id" value="{$v.cat_id}">
-        <a href="{:url('index/good', ['id' => $v.good_id])}">
+        <a href="{:url('index/good/good', ['id' => $v.good_id])}">
             <img src="/static/img/null.png" alt="{$v.title}" width="70px">
         </a>
 
         <div class="detail">
-            <a href="{:url('index/good', ['id' => $v.good_id])}">{$v.title}</a>
+            <a href="{:url('index/good/good', ['id' => $v.good_id])}">{$v.title}</a>
             <p>{$v.cat_name}</p>
         </div>
 
@@ -24,7 +24,7 @@
 
     </div>
     {/foreach}
-    <form action="{:url('index/checkout')}" method="post" id="shop">
+    <form action="{:url('index/good/checkout')}" method="post" id="shop">
         <input name="cat" hidden>
         <input name="num" hidden>
         <input value="提交订单" class="btn btn-info" style="position: fixed; bottom: 10px; right: 10px;" onclick="check();" type="button">

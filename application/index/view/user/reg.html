@@ -4,25 +4,25 @@
 		<div class="container">
 			<h3>注册</h3>
 			<hr>
-			<form method="post" action="{:url('user/reg')}">
+			<form method="post" action="{:url('index/user/reg')}">
 				<div class="input-group">
 					<span class="input-group-addon" id="addon1">电子邮箱</span>
-					<input class="form-control" placeholder="电子邮箱" name="email" type="email" aria-describedby="addon1" required>
+					<input class="form-control" placeholder="电子邮箱" name="a[email]" type="email" aria-describedby="addon1" required>
 				</div>
 				<br>
 				<div class="input-group">
 					<span class="input-group-addon" id="addon2">用户名</span>
-					<input class="form-control" placeholder="用户名" name="user" aria-describedby="addon2" required>
+					<input class="form-control" placeholder="用户名" name="a[user_name]" aria-describedby="addon2" required>
 				</div>
 				<br>
 				<div class="input-group">
 					<span class="input-group-addon" id="addon3">密码</span>
-					<input class="form-control" placeholder="密码" name="pass" type="password" aria-describedby="addon3" required>
+					<input class="form-control" placeholder="密码" name="a[password]" type="password" aria-describedby="addon3" required>
 				</div>
 				<br>
 				<div class="input-group">
 					<span class="input-group-addon" id="addon4">手机</span>
-					<input class="form-control" placeholder="手机" name="mobile" type="number" aria-describedby="addon4" required>
+					<input class="form-control" placeholder="手机" name="a[mobile]" type="number" aria-describedby="addon4" required>
 				</div>
 				<hr>
 				<button class="btn btn-default" type="submit">注册</button>

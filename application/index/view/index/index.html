@@ -1,17 +1,15 @@
 {include file="default/header"}
 <div class="container">
-	<h4>第 {$goods->currentPage()} 页</h4>
-	<hr>
 	{foreach $goods as $v}
 	<div class="good-list container">
-		<a href="{:url('index/good', ['id' => $v.good_id])}">
+		<a href="{:url('index/good/good', ['id' => $v.good_id])}">
 			<div class="col-md-2">
 				<img src="/static/img/null.png" alt="{$v.title}" width="120px">
 			</div>
 		</a>
 
 		<div class="detail col-md-8">
-			<a href="{:url('index/good', ['id' => $v.good_id])}">
+			<a href="{:url('index/good/good', ['id' => $v.good_id])}">
 				{$v.title}
 			</a>
 			<p>{$v.subtitle}</p>
