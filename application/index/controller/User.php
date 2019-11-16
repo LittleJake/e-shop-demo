@@ -9,7 +9,6 @@
 namespace app\index\controller;
 
 use think\Db;
-use think\facade\Log;
 
 class User extends Base
 {
@@ -69,44 +68,8 @@ class User extends Base
         else
             return $this->error('参数有误');
     }
-    //登录
-    public function loginAction(){
-		if($this->request->isPost()){
-		    $data = input('post.a');
-
-		    $validator = validate('user');
-
-			if(!$validator -> scene('login') -> check($data))
-				return $this->error($validator->getError());
-
-			$data['password'] = secret($data['password']);
-
-			$query = db('user') -> where($data)-> find();
-			
-			if(!isset($query))
-				return $this->error('用户名或密码错误');
-			
-			session('user', $query['user_name']);
-			session('user_id', $query['user_id']);
-            $url = urldecode($this->request->param('r'));
-			return $this->success($query['user_name'] . '，欢迎回来', empty($url)?"/":$url);
-		}
-			
-		
-		$this->assign('page_title', '登录');
-		return $this->fetch();
-    }
-    //登出
-    public function logoutAction(){
-		session(null);
-        $url = urldecode($this->request->param('r'));
-
-		return $this->success('登出成功', empty($url)?"/":$url);
-	}
     //购物车
     public function cartAction(){
-        if(!$this->isLogin())
-            return $this->redirect('index/user/login', ['r' =>  urlencode($this->request->url(true))]);
 
         $user = session('user_id');
 
@@ -141,8 +104,6 @@ class User extends Base
 	}
     //个人订单
     public function orderAction($page = 1){
-        if(!$this->isLogin())
-            return $this->redirect('index/user/login', ['r' =>  urlencode($this->request->url(true))]);
 
 		if($page < 1)
 			return $this->error('参数错误');
@@ -197,11 +158,6 @@ class User extends Base
             return $this->fetch('index/user/ajaxAddress');
         }
 
-
-		if(!$this->isLogin())
-            return $this->redirect('index/user/login', ['r' =>  urlencode($this->request->url(true))]);
-
-
         $user = session('user_id');
 
         if(input('?del'))
@@ -236,9 +192,6 @@ class User extends Base
 	}
     //增加地址
     public function addAddressAction(){
-        if(!$this->isLogin())
-            return $this->redirect('index/user/login');
-
 		if($this->request->isPost()){
 		    $data = input('post.a');
 
@@ -267,38 +220,9 @@ class User extends Base
 		$this->assign('page_title', '添加地址');
 		return $this->fetch();
 	}
-	//注册
-	public function regAction(){
-		if($this->request->isPost()){
-			$data = input('post.a');
 
-			$validator = validate('user');
-
-			if(!$validator->scene('reg')-> check($data))
-				return $this->error($validator->getError());
-
-			$data['password'] = secret($data['password']);
-
-			Db::startTrans();
-			try{
-				Db::table('user') -> insert($data);
-				Db::commit();
-			} catch (\Exception $e) {
-				Db::rollback();
-				return $this->error('注册失败');
-			}
-
-			return $this->success('注册成功', url('index/user/login'));
-				
-		}
-		
-		$this->assign('page_title', '注册');
-		return $this->fetch();
-	}
 	//商品评价
     public function commentAction(){
-        if(!$this->isLogin())
-            return $this->redirect('index/user/login');
 
         $user = session('user_id');
         $id = (int)input('id');

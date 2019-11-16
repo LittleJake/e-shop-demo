@@ -14,26 +14,18 @@ use think\facade\Route;
 
 Route::get('good/info/[:id]', 'index/good/good');
 Route::get('shop/info/[:id]', 'index/shop/shopInfo');
-Route::get('logout', 'index/user/logout');
+Route::get('logout', 'index/login/logout');
 Route::get('user/order', 'index/user/order');
 Route::get('shop/list', 'index/shop/shopList');
 
 
 
 Route::any('user/address/add','index/user/addAddress');
-Route::any('login', 'index/user/login');
+Route::any('login', 'index/login/login');
 Route::any('user/address','index/user/address');
-Route::any('user/register','index/user/reg');
+Route::any('register','index/login/reg');
 
 
 Route::post('good/order','index/good/order');
 Route::post('good/checkout','index/good/checkout');
 
-
-//return [
-//    'good/[:id]' => 'good/good',
-//    'user/address' => 'user/address',
-//    'logout' => 'user/logout',
-//    'order' => 'user/order',
-//    'shoplist' => 'index/shoplist'
-//];

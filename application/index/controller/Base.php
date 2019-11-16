@@ -9,26 +9,14 @@
 namespace app\index\controller;
 
 
-use think\Controller;
-
-class Base extends Controller
+class Base extends Common
 {
-	public function __construct(){
-		parent::__construct();
 
-		//分页个数
-		define('PAGE', 4);
-		$this->assign('is_login', $this ->isLogin());
-	}
+    public function __construct(){
+        parent::__construct();
 
-
-    function isLogin() {
-	    //登录判断
-        if(session('?user') && session('?user_id'))
-            return true;
-
-        return false;
+        if(!$this->isLogin())
+            return $this->redirect('index/login/login', ['r' =>  urlencode($this->request->url(true))]);
     }
-	
-	
+
 }
