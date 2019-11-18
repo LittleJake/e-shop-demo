@@ -40,7 +40,6 @@ class Login extends Common
             return $this->success($query['user_name'] . '，欢迎回来', empty($url)?"/":$url);
         }
 
-
         $this->assign('page_title', '登录');
         return $this->fetch();
     }
