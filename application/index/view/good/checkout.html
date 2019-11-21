@@ -1,74 +1,89 @@
 {include file="default/header"}
 <form method="post" action="{:url('index/good/order')}">
     <div class="container">
-        <div class="address-list" id="address-list">
-            {if isset($address)}
-            <p>姓名：{$address[0]['name']}</p>
-            <p>地址：{$address[0]['province']} {$address[0]['city']} {$address[0]['district']} {$address[0]['street']}</p>
-            {else}
-            <p>暂无地址</p>
-            {/if}
-        </div>
-        <input class="btn btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
-
-        <div class="modal fade" id="changeAddress" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">地址列表</h4>
-                    </div>
-                    <div class="modal-body">
-                        {foreach $address as $k}
-                        <div class="radio">
-                            <label><input type="radio" name="add_id" value="{$k.address_id}">{$k.name} ，{$k.province} {$k.city} {$k.district} {$k.street}</label>
+        <div class="input-group">
+            <div class="col-sm-2">
+                <span class="glyphicon glyphicon-user checkout-icon"></span>
+            </div>
+            <div class="address-list col-sm-10" id="address-list">
+                {if isset($address)}
+                <p class="name-info">{$address[0]['name']} <span class="contact-info">{$address[0]['contact']}</span></p>
+                <p class="address-info">{$address[0]['province']} {$address[0]['city']} {$address[0]['district']} {$address[0]['street']}</p>
+                {else}
+                <p class="address-info">暂无地址</p>
+                {/if}
+                <input class="btn btn-sm btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
+            </div>
+            <div class="modal fade" id="changeAddress" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">地址列表</h4>
                         </div>
-                        {/foreach}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="change_add();">确定</button>
+                        <div class="modal-body">
+                            {foreach $address as $k}
+                            <div class="radio">
+                                <label><input type="radio" name="add_id" value="{$k.address_id}">{$k.name} ，{$k.province} {$k.city} {$k.district} {$k.street}</label>
+                            </div>
+                            {/foreach}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="change_add();">确定</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <hr>
-        {foreach $payments as $v}
-        <div class="radio-inline">
-            <label>
-                <input name="pay" type="radio" value="{$v.payment_id}">
-                {$v.payment_name}
-            </label>
-        </div>
-        {/foreach}
-
-        <hr>
-        {foreach $ships as $v}
-        <div class="radio-inline">
-            <label>
-                <input name="ship" type="radio" value="{$v.shipping_id}">
-                {$v.shipping_name} ￥{$v.fee}
-            </label>
-        </div>
-        {/foreach}
-
-        <hr>
-        {foreach $goods as $v}
-        <div class="cart-list">
-            <img src="/static/img/null.png" alt="{$v.title}" width="70px">
-
-            <div class="detail">
-                <p>{$v.title}</p>
-                <p>{$v.cat_name}</p>
+        <div class="input-group">
+            <div class="col-sm-3">
+                <span class="glyphicon glyphicon-yen checkout-icon"></span>
             </div>
-
-            <div class="pull-right">
-                <p>${$v.price}</p>
-                <p>x {$v.num}</p>
+            <div class="col-sm-9">
+                <div class="radio">
+                    <label>
+                        <input name="pay" type="radio" value="1" checked>
+                        余额支付：10000.00
+                    </label>
+                </div>
+                <p>
+                    <a class="btn btn-sm btn-primary" target="_blank" href="#">充值</a>
+                </p>
             </div>
-
         </div>
-        {/foreach}
+        <hr>
+        <div class="input-group">
+            <div class="col-sm-3">
+                <span class="glyphicon glyphicon-road checkout-icon"></span>
+            </div>
+            <div class="col-sm-9">
+                <select class="form-control">
+                    {foreach $ships as $v}
+                    <option value="{$v.shipping_id}">{$v.shipping_name} ￥{$v.fee}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <hr>
+        <div class="container">
+            {foreach $goods as $v}
+            <div class="cart-list">
+                <img src="/static/img/null.png" alt="{$v.title}" width="70px">
+
+                <div class="detail">
+                    <p>{$v.title}</p>
+                    <p>{$v.cat_name}</p>
+                </div>
+
+                <div class="pull-right">
+                    <p>${$v.price}</p>
+                    <p>x {$v.num}</p>
+                </div>
+
+            </div>
+            {/foreach}
+        </div>
         <hr>
         <input name="cat" value="{$cat}" hidden>
         <input name="num" value="{$num}" hidden>
@@ -80,8 +95,6 @@
 {include file="default/footer"}
 <script>
     $('input[name=add_id]')[0].click();
-    $('input[name=ship]')[0].click();
-    $('input[name=pay]')[0].click();
 
     function change_add() {
         var id = $('input[name=add_id]:checked').val();
