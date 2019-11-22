@@ -9,7 +9,7 @@
 namespace app\common\model;
 
 
-class GoodCategories extends BaseModel
+class GoodCat extends BaseModel
 {
 
 }

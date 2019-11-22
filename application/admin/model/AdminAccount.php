@@ -16,4 +16,10 @@ class AdminAccount extends BaseModel
     public function AdminMenu(){
         return $this->belongsToMany('AdminMenu', 'admin_privilege', 'menu_id', 'admin_id');
     }
+
+    public function AdminLog(){
+        return $this->hasMany('AdminLog','admin_id','id');
+    }
+
+
 }

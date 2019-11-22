@@ -13,5 +13,7 @@ use app\common\model\BaseModel;
 
 class AdminLog extends BaseModel
 {
-
+    public function AdminAccount(){
+        return $this->belongsTo('AdminAccount','id','admin_id');
+    }
 }
