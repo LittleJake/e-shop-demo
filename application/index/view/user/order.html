@@ -28,10 +28,10 @@
 		{/foreach}
 		<br>
 		{if $page.cur > $page.min}
-			<a class="pull-left" href="{:url('user/order', ['page' => $page.cur-1])}">← 上一页</a>
+			<a class="pull-left" href="{:url('index/user/order', ['page' => $page.cur-1])}">← 上一页</a>
 		{/if}
 		{if $page.cur < $page.max}
-			<a class="pull-right" href="{:url('user/order', ['page' => $page.cur+1])}">下一页 →</a>
+			<a class="pull-right" href="{:url('index/user/order', ['page' => $page.cur+1])}">下一页 →</a>
 		{/if}
 	{else}
 		<h4>暂无订单</h4>

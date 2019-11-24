@@ -4,7 +4,7 @@ namespace app\index\controller;
 use think\Db;
 use think\Exception;
 
-class Index extends Base
+class Index extends Common
 {	
 	
     public function indexAction()

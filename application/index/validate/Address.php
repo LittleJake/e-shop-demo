@@ -9,9 +9,9 @@
 namespace app\index\validate;
 
 
-use think\Validate;
+use app\common\validate\Common;
 
-class Address extends Validate
+class Address extends Common
 {
     protected $rule = [
         'name' => 'require',

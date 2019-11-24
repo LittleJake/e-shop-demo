@@ -17,7 +17,7 @@ class Common extends Controller
         parent::__construct();
 
         //分页个数
-        define('PAGE', 4);
+        !defined('PAGE')&&define('PAGE', 4);
         $this->assign('is_login', $this ->isLogin());
     }
 

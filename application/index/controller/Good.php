@@ -10,29 +10,26 @@ namespace app\index\controller;
 
 use think\Db;
 
-class Good extends Base
+class Good extends Common
 {
     //下单
     public function orderAction(){
         if(!$this->isLogin())
             return $this->redirect('user/login', ['r' => urlencode($this->request->url())]);
 
-        if(!input('?cat') || !input('?num') || !input('?pay')|| !input('?add_id') || !input('?total') || !input('?ship'))
-            return $this->redirect('/');
+        $data = input('post.a');
+        $orderValidate = validate('order');
+        if(!$orderValidate->check($data))
+            return $this->error($orderValidate->getError());
+
 
         $user = session('user_id');
-        $cat = input('cat');
-        $num = input('num');
-        $ship = input('ship');
-        $pay = input('pay');
-        $add_id = input('add_id');
-        $total = input('total');
         $time = time();
-        $date = date('Ymd');
+        $date = date('YmdHis');
 
         //订单号生成
         while (true){
-            $order_id =  $date. substr('00' . rand(0, 99),-2,2);
+            $order_id =  $date. substr('0000' . rand(0, 9999),-4,4);
             $query = Db::query("select * from `order` where order_id = $order_id");
             if(empty($query))
                 break;
@@ -43,10 +40,10 @@ class Good extends Base
             Db::table('order')
                 -> insert([
                     'order_id' => $order_id,
-                    'address_id' => $add_id,
-                    'payment_id' => $pay,
-                    'total_price' => $total,
-                    'shipping_id' => $ship,
+                    'address_id' => $data["add_id"],
+                    'payment_id' => $data["pay"],
+                    'total_price' => $data["total"],
+                    'shipping_id' => $data["ship"],
                     'time' => $time,
                     'status' => 0,
                     'user_id' =>$user
@@ -58,10 +55,10 @@ class Good extends Base
             $this->error('错误', url('/'));
         }
 
-        $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in ($cat)");
+        $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in (${data['cat']})");
 
-        $cat = explode(',', $cat);
-        $num = explode(',', $num);
+        $cat = explode(',', $data['cat']);
+        $num = explode(',', $data['num']);
 
         $order = array_combine($cat, $num);
         $no_goods = array();
@@ -129,22 +126,14 @@ class Good extends Base
             ->where('good_id', $id)
             ->find();
 
-        if(!isset($good))
-            return $this->error('参数错误');
-
         $price = Db::query("select p from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id where G.good_id = $id")[0]['p'];
-
-        if(!isset($price))
-            return $this->error('参数错误');
 
         $cat = Db::table('category')
             ->where('good_id', $id)
             ->select();
 
-        if(!isset($cat))
+        if(!isset($cat) ||!isset($price)||!isset($good))
             return $this->error('参数错误');
-
-
 
         $this->assign('comment_total', $total);
         $this->assign('cat', $cat);

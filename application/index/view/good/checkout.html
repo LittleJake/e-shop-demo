@@ -24,7 +24,7 @@
                         <div class="modal-body">
                             {foreach $address as $k}
                             <div class="radio">
-                                <label><input type="radio" name="add_id" value="{$k.address_id}">{$k.name} ，{$k.province} {$k.city} {$k.district} {$k.street}</label>
+                                <label><input type="radio" name="a[add_id]" value="{$k.address_id}">{$k.name} ，{$k.province} {$k.city} {$k.district} {$k.street}</label>
                             </div>
                             {/foreach}
                         </div>
@@ -43,7 +43,7 @@
             <div class="col-sm-9">
                 <div class="radio">
                     <label>
-                        <input name="pay" type="radio" value="1" checked>
+                        <input name="a[pay]" type="radio" value="1" checked>
                         余额支付：10000.00
                     </label>
                 </div>
@@ -58,7 +58,7 @@
                 <span class="glyphicon glyphicon-road checkout-icon"></span>
             </div>
             <div class="col-sm-9">
-                <select class="form-control">
+                <select class="form-control" name="a[ship]">
                     {foreach $ships as $v}
                     <option value="{$v.shipping_id}">{$v.shipping_name} ￥{$v.fee}</option>
                     {/foreach}
@@ -85,9 +85,9 @@
             {/foreach}
         </div>
         <hr>
-        <input name="cat" value="{$cat}" hidden>
-        <input name="num" value="{$num}" hidden>
-        <input name="total" type="number" value="{$total}" hidden>
+        <input name="a[cat]" value="{$cat}" hidden>
+        <input name="a[num]" value="{$num}" hidden>
+        <input name="a[total]" type="number" value="{$total}" hidden>
         <input value="提交订单" class="btn btn-info pull-right"  type="submit">
     </div>
 

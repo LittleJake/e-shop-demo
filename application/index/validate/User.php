@@ -8,10 +8,9 @@
 
 namespace app\index\validate;
 
+use app\common\validate\Common;
 
-use think\Validate;
-
-class User extends Validate
+class User extends Common
 {
     protected $rule = [
         'email' => 'require|email',
