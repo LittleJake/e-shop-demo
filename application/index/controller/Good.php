@@ -28,18 +28,15 @@ class Good extends Common
         $date = date('YmdHis');
 
         //订单号生成
-        while (true){
-            $order_id =  $date. substr('0000' . rand(0, 9999),-4,4);
-            $query = Db::query("select * from `order` where order_id = $order_id");
-            if(empty($query))
-                break;
-        }
+
+        $order_no =  $date. substr('0000' . rand(0, 9999),-4,4);
+
 
         Db::startTrans();
         try{
             Db::table('order')
                 -> insert([
-                    'order_id' => $order_id,
+                    'order_no' => $order_no,
                     'address_id' => $data["add_id"],
                     'payment_id' => $data["pay"],
                     'total_price' => $data["total"],
@@ -48,12 +45,15 @@ class Good extends Common
                     'status' => 0,
                     'user_id' =>$user
                 ]);
+            $order_id=Db::getLastInsID();
             Db::commit();
         }
         catch (\Exception $e) {
             Db::rollback();
             $this->error('错误', url('/'));
         }
+
+
 
         $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in (${data['cat']})");
 

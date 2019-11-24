@@ -109,6 +109,7 @@ class User extends Base
 			return $this->error('参数错误');
 		
 		$query = Db::query("select * from `order` where user_id = ". session('user_id') . "  order by `time` desc");
+
 		
 		if(count($query) != 0)
             $m = (0 == (ceil(count($query) / PAGE))?1:ceil(count($query) / PAGE));

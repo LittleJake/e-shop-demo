@@ -22,9 +22,9 @@
                             <h4 class="modal-title" id="myModalLabel">地址列表</h4>
                         </div>
                         <div class="modal-body">
-                            {foreach $address as $k}
+                            {foreach $address as $k => $v}
                             <div class="radio">
-                                <label><input type="radio" name="a[add_id]" value="{$k.address_id}">{$k.name} ，{$k.province} {$k.city} {$k.district} {$k.street}</label>
+                                <label><input type="radio" name="a[add_id]" value="{$v.address_id}" {if ($k == 0)}checked{/if}>{$v.name} ，{$v.province} {$v.city} {$v.district} {$v.street}</label>
                             </div>
                             {/foreach}
                         </div>
