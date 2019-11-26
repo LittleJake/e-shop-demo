@@ -12,11 +12,16 @@ footer
 }
 
 .good-list,
-.shop-list
+.shop-list,
+.order-good
 {
 	margin: 0 auto;
 	display: block;
 	padding: 20px 20px;
+}
+.good-list,
+.shop-list
+{
 	border-bottom: solid 1px #0001;
 }
 

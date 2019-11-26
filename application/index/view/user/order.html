@@ -1,40 +1,46 @@
 {include file="default/header"}
 <div class="container">
 	{if isset($orders)}
-		<h4>第{$page.cur}页</h4>
-		<hr>
-		
-		{foreach $orders as $k}
-			{if !empty($goods[$k.order_id])}
-				<span>订单号：{$k.order_no}</span>
+	{foreach $orders as $k}
+	<div class="row order-list">
+		<div class="col-sm-10">
 
-				<span class="pull-right">
-					{if $k.status < 10}
-					<a class="btn btn-info" href="{:url('index/user/comment', ['id' => $k.order_id])}">评价</a>
-					{/if}
-					状态：
-					{$k.status}
-				</span>
-				{foreach $goods[$k.order_id] as $v}
-					<div class="good-list">
-						<p>{$v.title} —— {$v.cat_name}</p>
-						<p>数量：{$v.num}</p>
-						<p>${$v.price * $v.num}</p>
-					</div>
-				{/foreach}
+			<span>订单号：{$k.order_no}</span>
 
-				<br>
+			{foreach $goods[$k.order_id] as $v}
+			<div class="order-good">
+				<p>{$v.title} —— {$v.cat_name}</p>
+				<p>数量：{$v.num}</p>
+				<p>${$v.price * $v.num}</p>
+			</div>
+			{/foreach}
+		</div>
+		<div class="col-sm-2">
+			状态：
+			{if $k.status == 0}
+			订单关闭
+			{elseif $k.status == 1}
+			支付成功
+			{elseif $k.status == 2}
+			未支付
+			{elseif $k.status == 3}
+			运送中
+			{elseif $k.status == 4}
+			待评价
+			<a class="btn btn-info" href="{:url('index/user/comment', ['id' => $k.order_id])}">评价</a>
+			{elseif $k.status == 5}
+			订单完成
+			{else}
+			订单异常
 			{/if}
-		{/foreach}
+		</div>
 		<br>
-		{if $page.cur > $page.min}
-			<a class="pull-left" href="{:url('index/user/order', ['page' => $page.cur-1])}">← 上一页</a>
-		{/if}
-		{if $page.cur < $page.max}
-			<a class="pull-right" href="{:url('index/user/order', ['page' => $page.cur+1])}">下一页 →</a>
-		{/if}
+	</div>
+	{/foreach}
+	<br>
+	{$orders->render()|raw}
 	{else}
-		<h4>暂无订单</h4>
+	<h4>暂无订单</h4>
 	{/if}
 </div>
 {include file="default/footer"}
