@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$page_title}—E-Shop</title>
+    {include file="default/css" /}
+</head>
+<body>
+{include file="default/nav" /}
+{block name="content"}
+{/block}
+
+<br>
+<footer>
+    <div class="container">
+        <a href="{:url('user/cart')}">购物车</a>
+    </div>
+</footer>
+{include file="default/js" /}
+{block name="extendjs"}
+{/block}
+</body>
+</html>

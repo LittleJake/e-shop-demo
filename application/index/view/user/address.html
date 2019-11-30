@@ -1,4 +1,5 @@
-{include file="default/header"}
+{extend name="default/base" /}
+{block name="content"}
 <div class="container">
 	{if isset($address)}
 		{foreach $address as $k}
@@ -14,4 +15,4 @@
 	{/if}
 	<a class="btn btn-default" href="{:url('index/user/addAddress')}">添加地址</a>
 </div>
-{include file="default/footer"}
+{/block}

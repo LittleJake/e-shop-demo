@@ -1,4 +1,5 @@
-{include file="default/header"}
+{extend name="default/base" /}
+{block name="content"}
 <div class="container">
 	{foreach $goods as $v}
 	<div class="good-list container">
@@ -27,4 +28,4 @@
 	<br>
 	{$goods->render()|raw}
 </div>
-{include file="default/footer"}
+{/block}

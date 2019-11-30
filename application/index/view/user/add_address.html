@@ -1,4 +1,5 @@
-{include file="default/header"}
+{extend name="default/base" /}
+{block name="content"}
 <div class="container">
 	<form class="form-horizontal" method="post">
 		<div class="form-group">
@@ -41,6 +42,12 @@
 				<input name="a[contact]" class="form-control" type="text" maxlength="20" required>
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">地图选择</label>
+			<div class="col-sm-10">
+				<div id="map"></div>
+			</div>
+		</div>
 		<hr>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
@@ -50,4 +57,42 @@
 
 	</form>
 </div>
-{include file="default/footer"}
+
+{/block}
+{block name="extendjs"}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=KpSly3kGZvlz383WinX5FHBtgW1iHwst"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("map");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    map.centerAndZoom(point,14);
+
+    function setLoc(result){
+        var cityName = result.name;
+        map.setCenter(cityName);
+    }
+
+    var myCity = new BMap.LocalCity();
+    myCity.get(setLoc);
+
+    var geoc = new BMap.Geocoder();
+    map.addEventListener("click", function(e){
+        var pt = e.point;
+
+		map.clearOverlays();
+        map.addOverlay(new BMap.Marker(new BMap.Point(pt.lng, pt.lat))); //标记
+
+
+        geoc.getLocation(pt, function(rs){
+            var addComp = rs.addressComponents;
+            document.getElementsByName('a[province]')[0].value = addComp.province;
+            document.getElementsByName('a[city]')[0].value = addComp.city;
+            document.getElementsByName('a[district]')[0].value = addComp.district;
+            document.getElementsByName('a[street]')[0].value = addComp.street+addComp.streetNumber;
+        });
+
+        return false;
+    });
+</script>
+{/block}
