@@ -69,3 +69,13 @@ footer
 {
 	font-size: 40px;
 }
+
+/* 百度地图api */
+#map {
+	width: 300px;
+	height: 300px;
+}
+
+.anchorBL{
+	display:none;
+}
