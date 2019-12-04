@@ -84,4 +84,9 @@ class Login extends Common
         $this->assign('page_title', '注册');
         return $this->fetch();
     }
+
+    public function vercodeAction(){
+
+        return $this -> fetch();
+    }
 }

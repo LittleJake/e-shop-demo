@@ -40,7 +40,18 @@ layui.define('form', function(exports){
     ] 
   });
   
-  
+  //TODO 改为发送邮件验证码
+  //发送短信验证码
+  admin.sendEmailCode({
+    elem: '#LAY-user-getemailcode'
+    ,elemEmail: '#LAY-user-login-email'
+    ,elemVercode: '#LAY-user-login-vercode'
+    ,elemEmailcode: '#LAY-user-login-emailcode'
+    ,ajax: {
+      url: layui.setter.base + 'json/user/sms.js' //实际使用请改成服务端真实接口
+    }
+  });
+
   //发送短信验证码
   admin.sendAuthCode({
     elem: '#LAY-user-getsmscode'
@@ -57,7 +68,7 @@ layui.define('form', function(exports){
   //更换图形验证码
   $body.on('click', '#LAY-user-get-vercode', function(){
     var othis = $(this);
-    this.src = 'https://www.oschina.net/action/user/captcha?t='+ new Date().getTime()
+    this.src = '/captcha.html?'+ new Date().getTime()
   });
   
   //对外暴露的接口
