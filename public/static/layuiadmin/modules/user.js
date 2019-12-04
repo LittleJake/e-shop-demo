@@ -39,9 +39,9 @@ layui.define('form', function(exports){
       ,'密码必须6到12位，且不能出现空格'
     ] 
   });
-  
+
   //TODO 改为发送邮件验证码
-  //发送短信验证码
+  //发送邮件验证码
   admin.sendEmailCode({
     elem: '#LAY-user-getemailcode'
     ,elemEmail: '#LAY-user-login-email'
