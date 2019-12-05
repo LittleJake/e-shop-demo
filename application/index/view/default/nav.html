@@ -42,10 +42,10 @@
 
             </ul>
 
-            <form class="navbar-form navbar-right" action="/">
+            <form class="navbar-form navbar-right" action="/"  onsubmit="return checkSearch();">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="{:input('get.q')}" placeholder="输入商品名...">
-                    <button class="btn btn-default" type="submit">搜索</button>
+                    <input data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="请输入商品名"  id="search-box" type="text" class="form-control" name="q" value="{:input('get.q')}" placeholder="输入商品名...">
+                    <input id="search" class="btn btn-default" value="搜索" type="submit">
                 </div>
             </form>
         </ul>

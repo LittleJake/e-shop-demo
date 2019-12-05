@@ -11,7 +11,8 @@ use think\facade\Route;
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-
+//index
+//index.get
 Route::get('good/info/[:id]', 'index/good/good');
 Route::get('shop/info/[:id]', 'index/shop/shopInfo');
 Route::get('logout', 'index/login/logout');
@@ -19,13 +20,21 @@ Route::get('user/order', 'index/user/order');
 Route::get('shop/list', 'index/shop/shopList');
 
 
-
+//index.any
 Route::any('user/address/add','index/user/addAddress');
 Route::any('login', 'index/login/login');
 Route::any('user/address','index/user/address');
 Route::any('register','index/login/reg');
 
-
+//index.post
 Route::post('good/order','index/good/order');
 Route::post('good/checkout','index/good/checkout');
+
+
+
+//admin
+//admin.get
+Route::get('admin/login','admin/login/login');
+Route::get('admin/forget','admin/login/forget');
+Route::get('admin/ajaxlogin','admin/login/ajaxLogin');
 

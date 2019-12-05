@@ -75,6 +75,10 @@ footer
 	font-size: 40px;
 }
 
+.login-extend {
+	margin: 10% auto;
+}
+
 /* 百度地图api */
 #map {
 	height: 300px;

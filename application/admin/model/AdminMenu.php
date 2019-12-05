@@ -13,7 +13,5 @@ use app\common\model\BaseModel;
 
 class AdminMenu extends BaseModel
 {
-    public function AdminAccount(){
-        return $this->belongsToMany('AdminAccount', 'admin_privilege', 'admin_id', 'menu_id');
-    }
+
 }

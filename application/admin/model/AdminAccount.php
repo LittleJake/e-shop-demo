@@ -13,12 +13,13 @@ use app\common\model\BaseModel;
 
 class AdminAccount extends BaseModel
 {
-    public function AdminMenu(){
-        return $this->belongsToMany('AdminMenu', 'admin_privilege', 'menu_id', 'admin_id');
-    }
 
     public function AdminLog(){
         return $this->hasMany('AdminLog','admin_id','id');
+    }
+
+    public function AdminRole(){
+        return $this->hasOne('AdminRole','id','role_id');
     }
 
 

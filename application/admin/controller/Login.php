@@ -15,8 +15,28 @@ namespace app\admin\controller;
 class Login extends Common
 {
     public function loginAction(){
-
         return $this -> fetch();
+    }
+
+    public function ajaxLoginAction(){
+        $data = [
+            'username' => input('get.username'),
+            'password' => input('get.password'),
+            'vercode' => input('get.vercode')
+        ];
+
+        $validate = validate('AdminAccount');
+
+        if(!$validate->check($data))
+            return json([
+                'code' => 0,
+                'msg' => $validate->getError()
+            ]);
+
+
+
+
+        return json(['code'=> 1, 'msg'=>'登陆成功']);
     }
     public function forgetAction(){
 

@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class Shipping extends BaseModel
 {
-
+    public function Order(){
+        return $this->belongsToMany('Order','Order','shipping_type','id');
+    }
 }

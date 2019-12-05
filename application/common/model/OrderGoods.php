@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class OrderGoods extends BaseModel
 {
-
+    public function Order(){
+        return $this->belongsTo('Order', 'id', 'order_id');
+    }
 }

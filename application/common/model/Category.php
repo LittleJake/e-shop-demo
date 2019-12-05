@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class Category extends BaseModel
 {
-
+    public function Good(){
+        return $this->hasMany('Good','cat_id', 'id');
+    }
 }

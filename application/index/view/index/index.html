@@ -1,6 +1,7 @@
 {extend name="default/base" /}
 {block name="content"}
 <div class="container">
+	{if sizeof($goods) != 0}
 	{foreach $goods as $v}
 	<div class="good-list container">
 		<a href="{:url('index/good/good', ['id' => $v.good_id])}">
@@ -27,5 +28,8 @@
 	{/foreach}
 	<br>
 	{$goods->render()|raw}
+	{else}
+	<h3>暂时没有商品</h3>
+	{/if}
 </div>
 {/block}

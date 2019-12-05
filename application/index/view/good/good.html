@@ -12,23 +12,21 @@
             <form action="{:url('index/good/checkout')}" method="post" id="shop" class="form-inline">
                 <table class="table table-striped describe">
                     <tr>
-                        <th>价格&nbsp;&nbsp;</th>
+                        <td width="80">价格</td>
                         <td id="price"><span class="red">¥ {$price}</span> 起</td>
-                        <td></td>
                     </tr>
                     <tr>
-                        <th>数量&nbsp;&nbsp;</th>
-                        <td width="20">
+                        <td width="80">数量</td>
+                        <td>
                             <div class="input-group">
                                 <input class="form-control" data-toggle="tooltip" data-trigger="manual" data-placement="top" title="库存不足" id="num" name="num" value="1" type="number" min="1">
                             </div>
-
+                            <span id="sku"></span>
                         </td>
-                        <td id="sku"></td>
                     </tr>
                     <tr>
-                        <th>分类&nbsp;&nbsp;</th>
-                        <td id="cat" data-toggle="tooltip" data-trigger="manual" data-placement="top" title="选择分类"  width="70">
+                        <td width="80">分类</td>
+                        <td id="cat" data-toggle="tooltip" data-trigger="manual" data-placement="left" title="选择分类">
                             <div class="btn-group" data-toggle="buttons">
                                 {foreach $cat as $k}
                                 <label class="cat-list btn btn-default">
@@ -37,19 +35,19 @@
                                 {/foreach}
                             </div>
                         </td>
+                    </tr>
+                    <tr>
+                        <td width="80">累计评价</td>
+                        <td>
+                            <a href="#comment">
+                                <span class="red">{$comment_total}</span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
                         <td></td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td style="font-size: smaller">累计评价</td>
-                        <th style="font-size: smaller"><a href="#comment"><span class="red">{$comment_total}</span></a></th>
-                    </tr>
-                    <tr>
-                        <th></th>
                         <td>
                             <button type="button" onclick="check()" class="btn btn-info">立即购买</button>
-                        </td>
-                        <td>
                             <button id="add" type="button" class="btn btn-default" onclick="addCart();" data-toggle="tooltip" data-trigger="manual" data-placement="top" title="已加入购物车">加入购物车</button>
                         </td>
                     </tr>
@@ -153,10 +151,7 @@
             url: "{:url('index/user/addCart')}",
             data: {'cat': cat, 'num': num},
             success: function (xhr) {
-                if(xhr.status == -1){
-                    window.location = "{:url('index/login/login')}?r={:urlencode(request()->url(true))}";
-                }
-                else if(xhr.status == 0) {
+                if(xhr.status == 0) {
                     $('#add').tooltip('toggle');
                     setTimeout( function () {
                         $('#add').tooltip('hide');
@@ -173,11 +168,9 @@
                     setTimeout( function () {
                         $('#cat').tooltip('hide');
                     }, 1500);
+                }else {
+                    window.location = "{:url('index/login/login')}?r={:urlencode(request()->url(true))}";
                 }
-
-
-
-
             },
         })
 

@@ -89,4 +89,8 @@ class Login extends Common
 
         return $this -> fetch();
     }
+
+    public function OAuthCallbackAction(){
+        return $this -> fetch();
+    }
 }

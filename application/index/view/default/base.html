@@ -19,5 +19,17 @@
 {include file="default/js" /}
 {block name="extendjs"}
 {/block}
+<script>
+    function checkSearch(){
+        if($('#search-box').val() == ''){
+            $('#search-box').tooltip('toggle');
+            setTimeout( function () {
+                $('#search-box').tooltip('hide');
+            }, 1500);
+            return false;
+        }
+        return true;
+    }
+</script>
 </body>
 </html>

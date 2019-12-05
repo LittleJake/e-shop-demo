@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class Balance extends BaseModel
 {
-
+    public function Account(){
+        return $this->belongsTo('Account', 'id', 'user_id');
+    }
 }
