@@ -17,7 +17,7 @@ Route::get('good/info/[:id]', 'index/good/good');
 Route::get('shop/info/[:id]', 'index/shop/shopInfo');
 Route::get('logout', 'index/login/logout');
 Route::get('user/order', 'index/user/order');
-Route::get('shop/list', 'index/shop/shopList');
+Route::get('category/list', 'index/category/index');
 
 
 //index.any
