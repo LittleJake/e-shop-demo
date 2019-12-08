@@ -33,8 +33,17 @@ footer
 .detail
 {
 	top: 0;
-	padding: 10px 20px;
+	padding: 10px 0;
 	display: inline-block;
+}
+
+.detail > a
+{
+	font-size: larger;
+}
+.detail > p
+{
+    padding: 10px 0;
 }
 
 

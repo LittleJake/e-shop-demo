@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class Good extends BaseModel
 {
-
+    function GoodCat(){
+        return $this->hasMany('GoodCat', 'good_id', 'id');
+    }
 }
