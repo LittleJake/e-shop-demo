@@ -51,7 +51,7 @@ footer
 .describe tbody th,
 .cat-list
 {
-	font-size: 10px !important;
+	font-size: 12px !important;
 }
 
 .red
@@ -61,7 +61,7 @@ footer
 
 #num
 {
-	width: 70%;
+	width: 40%;
 }
 
 .address-info

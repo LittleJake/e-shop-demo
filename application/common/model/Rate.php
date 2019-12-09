@@ -11,5 +11,11 @@ namespace app\common\model;
 
 class Rate extends BaseModel
 {
+    public function Good(){
+        return $this->belongsTo('Good', 'id', 'good_id');
+    }
 
+    public function Account(){
+        return $this->belongsTo('Account', 'id', 'user_id');
+    }
 }

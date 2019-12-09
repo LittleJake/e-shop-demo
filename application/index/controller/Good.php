@@ -110,9 +110,11 @@ class Good extends Common
     }
     //商品详情
     public function goodAction($id = ''){
-        $comment = Db::table('comment')
-            -> where('good_id', $id)
-            -> paginate(10);
+        $modelRate = model('Rate');
+        $comment = $modelRate->where([
+            'good_id' => $id
+        ])->paginate(10);
+
         $page = $comment ->render();
         $total = $comment->total();
 
@@ -122,22 +124,23 @@ class Good extends Common
         if($this->request->isAjax())
             return $this->fetch('index/ajaxComment');
 
-        $good = Db::table('good')
-            ->where('good_id', $id)
+        $modelGood = model('Good');
+        $good = $modelGood
+            ->where([
+                'id' => $id
+            ])
+            ->with([
+                'GoodCat' => function($query){
+                    $query -> order('price aesc')-> select();
+                },
+            ])
             ->find();
 
-        $price = Db::query("select p from `good` as G left join (SELECT good_id, min(price) as p from `category` group by good_id) as C on G.good_id = C.good_id where G.good_id = $id")[0]['p'];
-
-        $cat = Db::table('category')
-            ->where('good_id', $id)
-            ->select();
-
-        if(!isset($cat) ||!isset($price)||!isset($good))
+        if(!isset($good))
             return $this->error('参数错误');
 
         $this->assign('comment_total', $total);
-        $this->assign('cat', $cat);
-        $this->assign('price', $price);
+        $this->assign('cat', $good->good_cat);
         $this->assign('good', $good);
         $this->assign('page_title', $good['title']);
         return $this->fetch();

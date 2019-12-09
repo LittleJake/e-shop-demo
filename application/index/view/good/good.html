@@ -7,13 +7,13 @@
             <img class="img-responsive" src="/static/img/null.png" alt="{$good.title}">
         </div>
         <div class="col-sm-8">
-            <h5>{$good.title}</h5>
+            <h3>{$good.title}</h3>
             <p class="subtitle red">{$good.subtitle}</p>
             <form action="{:url('index/good/checkout')}" method="post" id="shop" class="form-inline">
                 <table class="table table-striped describe">
                     <tr>
                         <td width="80">价格</td>
-                        <td id="price"><span class="red">¥ {$price}</span> 起</td>
+                        <td id="price"><span class="red">¥ {$cat[0]['price']}</span> 起</td>
                     </tr>
                     <tr>
                         <td width="80">数量</td>
@@ -30,7 +30,7 @@
                             <div class="btn-group" data-toggle="buttons">
                                 {foreach $cat as $k}
                                 <label class="cat-list btn btn-default">
-                                    <input type="radio" name="cat" autocomplete="off" value="{$k.cat_id}" onclick="setPrice({$k.price},{$k.sku});">{$k.cat_name}
+                                    <input type="radio" name="cat" autocomplete="off" value="{$k.id}" onclick="setPrice({$k.price},{$k.sku});">{$k.name}
                                 </label>
                                 {/foreach}
                             </div>
@@ -60,7 +60,8 @@
 
 <div class="sub-info">
     <div class="container">
-        <h4>详细描述</h4>
+        <h4><i class="
+glyphicon glyphicon-signal"></i> 详细描述</h4>
         <hr>
         <p>{$good.description}</p>
         <br>
@@ -69,7 +70,7 @@
 
 <div class="comment">
     <div class="container">
-        <h4>评价</h4>
+        <h4><i class="glyphicon glyphicon-pencil"></i> 评价</h4>
         <hr>
         <div id="comment">
             {if isset($comments)}
