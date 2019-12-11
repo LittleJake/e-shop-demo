@@ -14,5 +14,6 @@ return [
     'app\common\command\admin\del',
     'app\common\command\user\add',
     'app\common\command\user\del',
+    'app\common\command\user\charge',
     'app\common\command\user\reset'
 ];

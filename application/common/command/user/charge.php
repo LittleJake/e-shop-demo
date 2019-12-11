@@ -3,7 +3,7 @@
  * Created by IntelliJ IDEA.
  * User: LittleJake
  * Date: 2019/12/11
- * Time: 22:28
+ * Time: 22:32
  */
 
 namespace app\common\command\user;
@@ -14,7 +14,7 @@ use think\console\Command;
 use think\console\input\Argument;
 use think\console\input\Option;
 
-class reset extends Command
+class charge extends Command
 {
     protected function configure()
     {
@@ -27,11 +27,11 @@ class reset extends Command
 //        $this->addOption('status', 's', Option::VALUE_OPTIONAL, 'test'); //选项值选填
 
 
-        $this->setName('user:reset')
+        $this->setName('user:charge')
             -> addOption('email', 'e', Option::VALUE_REQUIRED, 'User Email')
             -> addOption('username', 'u', Option::VALUE_REQUIRED, 'Username')
             -> addOption('password', 'p', Option::VALUE_REQUIRED, 'Password')
-            ->setDescription('Reset e-shop user password.');
+            ->setDescription('Charge balance for e-shop user.');
 
 
     }
