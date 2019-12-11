@@ -12,6 +12,6 @@
 // 应用公共文件
 
 function secret($s){
-    return md5($s . 'salt');
+    return password_hash($s . 'salt',PASSWORD_BCRYPT);
 }
 

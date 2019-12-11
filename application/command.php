@@ -10,6 +10,9 @@
 // +----------------------------------------------------------------------
 
 return [
-    'app\common\command\admin',
-    'app\common\command\shop'
+    'app\common\command\admin\add',
+    'app\common\command\admin\del',
+    'app\common\command\user\add',
+    'app\common\command\user\del',
+    'app\common\command\user\reset'
 ];
