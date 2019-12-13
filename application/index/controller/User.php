@@ -8,6 +8,8 @@
 
 namespace app\index\controller;
 
+use app\common\model\Address;
+use app\common\model\Order;
 use think\Db;
 
 class User extends Base
@@ -104,9 +106,22 @@ class User extends Base
 	}
     //个人订单
     public function orderAction(){
-		$orders = Db::table('order')->where([
-		    'user_id' => session('user_id')
-        ])->order('time', 'desc')->paginate(PAGE);
+        $modelOrder = new Order();
+        $orders = $modelOrder
+            -> where([
+                'user_id' => session('user_id')
+            ])
+            ->with([
+                'OrderGoods' => function($query){
+                    $query -> select();
+                }
+            ])
+            ->order('update_time', 'desc')
+            ->paginate(PAGE);
+
+//		$orders = Db::table('order')->where([
+//		    'user_id' => session('user_id')
+//        ])->order('time', 'desc')->paginate(PAGE);
 
 
 		if(empty($orders)) {
@@ -132,6 +147,8 @@ class User extends Base
 	}
     //地址
     public function addressAction(){
+        $modelAddress = new Address();
+
         if($this->request->isAjax()) {
             if(!$this->isLogin())
                 return null;
@@ -139,7 +156,10 @@ class User extends Base
 
             $id = (int)input('id');
 
-            $query = Db::query("select * from `address` where user_id = $user and address_id = $id");
+            $query = $modelAddress -> where([
+                'user_id' => $user,
+                'id' => $id
+            ]) -> find();
 
             $this->assign('address', $query);
             return $this->fetch('index/user/ajaxAddress');
@@ -151,16 +171,18 @@ class User extends Base
         {
             $del = input('del');
 
-            Db::startTrans();
+            $modelAddress ->startTrans();
 
             try{
-                Db::table('address')
+                $modelAddress
                     ->where([
                         'user_id' =>$user,
-                        'address_id' => $del
+                        'id' => $del
                     ])
-                    ->delete();
-                Db::commit();
+                    ->update([
+                        'status' => 0
+                    ]);
+                $modelAddress->commit();
             }
             catch (\Exception $e) {
                 Db::rollback();
@@ -171,7 +193,9 @@ class User extends Base
             return $this->success("成功",'index/user/address');
         }
 
-		$query = Db::query("select * from `address` where user_id = $user");
+		$query = $modelAddress -> where([
+		    'user_id' => $user
+        ]) -> select();
 		
 		$this->assign('address', $query);
 		$this->assign('page_title', '地址列表');
@@ -180,6 +204,8 @@ class User extends Base
     //增加地址
     public function addAddressAction(){
 		if($this->request->isPost()){
+            $modelAddress = new Address();
+
 		    $data = input('post.a');
 
             $validator = validate('address');
@@ -189,14 +215,7 @@ class User extends Base
 			
 			$data['user_id'] = session('user_id');
 
-			Db::startTrans();
-			try{
-				Db::table('address')->insert($data);
-				Db::commit();
-			} catch(\Exception $e) {
-				Db::rollback();
-				return $this->error($e->getMessage().'参数错误');
-			}
+            $modelAddress -> insert($data);
 			
 			return $this->success('添加成功', url('index/user/address'));
 			

@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class Order extends BaseModel
 {
-
+    public function OrderGoods(){
+        return $this->hasMany('OrderGoods', 'order_id', 'id');
+    }
 }

@@ -47,7 +47,7 @@ class add extends Command
         //获取选项值
         $email = $input->hasOption('email')?trim($input->getOption('email')):'';
         $username = $input->hasOption('username')?trim($input->getOption('username')):'';
-        $password = $input->hasOption('username')?trim($input->getOption('password')):'';
+        $password = $input->hasOption('password')?trim($input->getOption('password')):'';
 
         $modelAdminAccount = new AdminAccount();
         $modelAdminRole = new AdminRole();

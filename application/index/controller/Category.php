@@ -15,6 +15,7 @@ namespace app\index\controller;
 class Category extends Common
 {
     public function indexAction(){
+        $this->assign('page_title', "分类");
         return $this->fetch();
     }
 }
