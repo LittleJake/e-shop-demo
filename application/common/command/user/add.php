@@ -13,6 +13,7 @@ use think\console\Input;
 use think\console\Command;
 use think\console\input\Argument;
 use think\console\input\Option;
+use app\common\model\Account;
 
 class add extends Command
 {
@@ -31,6 +32,7 @@ class add extends Command
             -> addOption('email', 'e', Option::VALUE_REQUIRED, 'User Email')
             -> addOption('username', 'u', Option::VALUE_REQUIRED, 'Username')
             -> addOption('password', 'p', Option::VALUE_REQUIRED, 'Password')
+            -> addOption('mobile', 'm', Option::VALUE_REQUIRED, 'Mobile')
             ->setDescription('Add e-shop user.');
 
 
@@ -41,33 +43,27 @@ class add extends Command
         //获取选项值
         $email = $input->hasOption('email')?trim($input->getOption('email')):'';
         $username = $input->hasOption('username')?trim($input->getOption('username')):'';
-        $password = $input->hasOption('username')?trim($input->getOption('password')):'';
+        $password = $input->hasOption('password')?trim($input->getOption('password')):'';
+        $mobile = $input->hasOption('mobile')?trim($input->getOption('mobile')):'';
 
-        $modelAdminAccount = new AdminAccount();
-        $modelAdminRole = new AdminRole();
+        $modelAccount = new Account();
 
 
         try{
-            if(empty($modelAdminRole->get(1)))
-                $modelAdminRole ->save([
-                    'menu_id' => '*',
-                    'status' => 1
-                ]);
+            $modelAccount ->startTrans();
 
-            $modelAdminAccount ->startTrans();
-
-            $result = $modelAdminAccount
+            $result = $modelAccount
                 ->save([
                     'email' => $email,
-                    'username' => $username,
+                    'user_name' => $username,
                     'password' => secret($password),
-                    'status' => 1,
-                    'role_id' => 1,
+                    'mobile' => $mobile
                 ]);
 
-            $modelAdminAccount ->commit();
+            $modelAccount ->commit();
             $output->writeln("$result account added.");
         }catch (\Exception $e){
+            $modelAccount->rollback();
             $output->writeln($e->getMessage());
         }
 

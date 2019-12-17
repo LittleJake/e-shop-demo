@@ -15,3 +15,7 @@ function secret($s){
     return password_hash($s . 'salt',PASSWORD_BCRYPT);
 }
 
+
+function check_secret($s, $password){
+    return password_verify($s . 'salt', $password);
+}

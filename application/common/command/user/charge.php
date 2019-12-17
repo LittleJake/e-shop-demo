@@ -12,6 +12,7 @@ use think\console\Output;
 use think\console\Input;
 use think\console\Command;
 use think\console\input\Argument;
+use app\admin\model\AdminAccount;
 use think\console\input\Option;
 
 class charge extends Command
@@ -68,6 +69,7 @@ class charge extends Command
             $modelAdminAccount ->commit();
             $output->writeln("$result account added.");
         }catch (\Exception $e){
+            $modelAdminAccount->rollback();
             $output->writeln($e->getMessage());
         }
 

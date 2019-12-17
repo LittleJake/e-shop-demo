@@ -59,6 +59,7 @@ class del extends Command
             $modelAdminAccount ->commit();
             $output->writeln("$result account deleted.");
         }catch (\Exception $e){
+            $modelAdminAccount->rollback();
             $output->writeln($e->getMessage());
         }
 

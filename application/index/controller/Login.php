@@ -9,6 +9,9 @@
 namespace app\index\controller;
 
 
+use app\common\model\Account;
+use think\facade\Log;
+
 class Login extends Common
 {
     //登录
@@ -27,19 +30,25 @@ class Login extends Common
             if(!$validator -> scene('login') -> check($data))
                 return $this->error($validator->getError());
 
-            $data['password'] = secret($data['password']);
-
-            $query = db('user') -> where($data)-> find();
+            $modelAccount = new Account();
+            $query = $modelAccount -> where([
+                'email' => $data['email']
+            ])-> find();
 
             if(!isset($query))
-                return $this->error('用户名或密码错误');
+                return $this->error('邮箱不存在');
 
+            if(!check_secret($data['password'], $query['password']))
+                return $this->error('密码错误');
+
+            cookie('email', $query['email']);
             session('user', $query['user_name']);
-            session('user_id', $query['user_id']);
+            session('user_id', $query['id']);
             $url = urldecode($this->request->param('r'));
             return $this->success($query['user_name'] . '，欢迎回来', empty($url)?"/":$url);
         }
 
+        $this->assign('email', cookie('email'));
         $this->assign('page_title', '登录');
         return $this->fetch();
     }
@@ -68,16 +77,18 @@ class Login extends Common
 
             $data['password'] = secret($data['password']);
 
-            Db::startTrans();
+            $modelAccount = new Account();
+            $modelAccount -> startTrans();
             try{
-                Db::table('user') -> insert($data);
-                Db::commit();
+                $modelAccount -> insert($data);
+                $modelAccount -> commit();
             } catch (\Exception $e) {
-                Db::rollback();
+                Log::error($e->getMessage());
+                $modelAccount -> rollback();
                 return $this->error('注册失败');
             }
 
-            return $this->success('注册成功', url('index/user/login'));
+            return $this->success('注册成功', url('index/user/login'), 1, 3);
 
         }
 

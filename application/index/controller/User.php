@@ -158,7 +158,8 @@ class User extends Base
 
             $query = $modelAddress -> where([
                 'user_id' => $user,
-                'id' => $id
+                'id' => $id,
+                'status' => 1
             ]) -> find();
 
             $this->assign('address', $query);
@@ -185,7 +186,7 @@ class User extends Base
                 $modelAddress->commit();
             }
             catch (\Exception $e) {
-                Db::rollback();
+                $modelAddress->rollback();
                 return $this->error($e->getMessage()."错误",url('index/user/address'));
             }
 
@@ -194,7 +195,8 @@ class User extends Base
         }
 
 		$query = $modelAddress -> where([
-		    'user_id' => $user
+		    'user_id' => $user,
+            'status' => 1
         ]) -> select();
 		
 		$this->assign('address', $query);
