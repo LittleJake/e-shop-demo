@@ -287,4 +287,6 @@ class User extends Base
         $this->assign('page_title', '评价商品');
         return $this->fetch();
     }
+
+
 }

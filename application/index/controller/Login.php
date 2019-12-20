@@ -10,6 +10,7 @@ namespace app\index\controller;
 
 
 use app\common\model\Account;
+use app\common\model\Balance;
 use think\facade\Log;
 
 class Login extends Common
@@ -33,7 +34,7 @@ class Login extends Common
             $modelAccount = new Account();
             $query = $modelAccount -> where([
                 'email' => $data['email']
-            ])-> find();
+            ])->with('Balance')-> find();
 
             if(!isset($query))
                 return $this->error('邮箱不存在');
@@ -44,7 +45,9 @@ class Login extends Common
             cookie('email', $query['email']);
             session('user', $query['user_name']);
             session('user_id', $query['id']);
+            cache('balance:'.$query['id'], $query->balance->money*100);
             $url = urldecode($this->request->param('r'));
+
             return $this->success($query['user_name'] . '，欢迎回来', empty($url)?"/":$url);
         }
 
@@ -74,21 +77,27 @@ class Login extends Common
 
             if(!$validator->scene('reg')-> check($data))
                 return $this->error($validator->getError());
-
+            unset($data['repassword']);
             $data['password'] = secret($data['password']);
 
             $modelAccount = new Account();
             $modelAccount -> startTrans();
+            $modelBalance = new Balance();
             try{
-                $modelAccount -> insert($data);
+                $id = $modelAccount -> insert($data);
                 $modelAccount -> commit();
+                $modelBalance->save([
+                    'user_id' => $id,
+                    'update_time' => time(),
+                    'money' => 0
+                ]);
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 $modelAccount -> rollback();
-                return $this->error('注册失败');
+                return $this->error('注册失败，事务处理失败');
             }
 
-            return $this->success('注册成功', url('index/user/login'), 1, 3);
+            return $this->success('注册成功', url('index/login/login'), 1, 3);
 
         }
 

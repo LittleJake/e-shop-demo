@@ -23,17 +23,18 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> 我的 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{:url('index/login/reg')}">注册</a></li>
-                        <li><a href="{:url('index/login/login',['r'=>urlencode(request()->url(true))])}">登录</a></li>
+                        <li><a href="{:url('index/login/reg')}"><i class="glyphicon glyphicon-send"></i> 注册</a></li>
+                        <li><a href="{:url('index/login/login',['r'=>urlencode(request()->url(true))])}"><i class="glyphicon glyphicon-log-in"></i> 登录</a></li>
                     </ul>
                 </li>
                 {else}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> {:session('user')}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{:url('index/user/order')}">订单</a></li>
-                        <li><a href="{:url('index/user/address')}">地址管理</a></li>
-                        <li><a href="{:url('index/login/logout',['r'=>urlencode(request()->url(true))])}">退出</a></li>
+                        <li><a href="{:url('index/user/order')}"><i class="glyphicon glyphicon-list-alt"></i> 订单</a></li>
+                        <li><a href="{:url('index/user/address')}"><i class="glyphicon glyphicon-flag"></i> 地址管理</a></li>
+                        <li><a href="{:url('index/balance/index')}"><i class="glyphicon glyphicon-yen"></i> 余额 ￥{:cache('balance:'.session('user_id'))/100}</a></li>
+                        <li><a href="{:url('index/login/logout',['r'=>urlencode(request()->url(true))])}"><i class="glyphicon glyphicon-log-out"></i> 退出</a></li>
                     </ul>
                 </li>
                 {/if}

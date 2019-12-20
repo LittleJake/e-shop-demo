@@ -17,6 +17,8 @@ Route::get('good/info/[:id]', 'index/good/good');
 Route::get('shop/info/[:id]', 'index/shop/shopInfo');
 Route::get('logout', 'index/login/logout');
 Route::get('user/order', 'index/user/order');
+Route::get('user/balance', 'index/balance/index');
+Route::get('user/charge', 'index/balance/charge');
 Route::get('category/list', 'index/category/index');
 
 

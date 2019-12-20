@@ -17,6 +17,7 @@ class User extends Common
         'user_name' => 'require',
         'password' => 'require',
         'mobile' => 'require|number',
+        'repassword' => 'require|confirm:password',
     ];
 
     protected $message = [

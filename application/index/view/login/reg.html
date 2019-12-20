@@ -1,13 +1,18 @@
 {extend name="default/base" /}
 {block name="content"}
-<div class="container">
+<div class="container content">
 	<div class="col-sm-6">
-		<h3>注册</h3>
+		<h3>用户注册</h3>
 		<hr>
 		<form method="post">
 			<div class="input-group">
 				<span class="input-group-addon" id="addon1">电子邮箱</span>
 				<input class="form-control" placeholder="电子邮箱" name="a[email]" type="email" aria-describedby="addon1" required>
+			</div>
+			<br>
+			<div class="input-group">
+				<span class="input-group-addon" id="addon4">手机</span>
+				<input class="form-control" placeholder="手机" name="a[mobile]" type="number" aria-describedby="addon4" required>
 			</div>
 			<br>
 			<div class="input-group">
@@ -21,8 +26,8 @@
 			</div>
 			<br>
 			<div class="input-group">
-				<span class="input-group-addon" id="addon4">手机</span>
-				<input class="form-control" placeholder="手机" name="a[mobile]" type="number" aria-describedby="addon4" required>
+				<span class="input-group-addon" id="addon5">确认密码</span>
+				<input class="form-control" placeholder="确认密码" name="a[repassword]" type="password" aria-describedby="addon5" required>
 			</div>
 			<hr>
 			<button class="btn btn-default" type="submit">注册</button>

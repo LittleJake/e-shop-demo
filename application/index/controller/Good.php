@@ -15,7 +15,7 @@ class Good extends Common
     //下单
     public function orderAction(){
         if(!$this->isLogin())
-            return $this->redirect('user/login', ['r' => urlencode($this->request->url())]);
+            return $this->redirect('index/login/login', ['r' => urlencode($this->request->url())]);
 
         $data = input('post.a');
         $orderValidate = validate('order');
@@ -149,7 +149,7 @@ class Good extends Common
     public function checkoutAction()
     {
         if(!$this->isLogin())
-            return $this->redirect('user/login', ['r' =>  urlencode($this->request->url(true))]);
+            return $this->redirect('index/login/login', ['r' =>  urlencode($this->request->url(true))]);
 
         if(!input('?cat') || !input('?num'))
             return $this->redirect('/');

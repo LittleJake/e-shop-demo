@@ -11,6 +11,11 @@ footer
 	background: lightgrey;
 }
 
+.content
+{
+	min-height: calc(100vh - 160px);
+}
+
 .good-list,
 .shop-list,
 .order-good
