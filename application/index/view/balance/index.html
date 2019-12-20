@@ -6,17 +6,33 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>123</th>
+                <th>#</th>
+                <th>时间</th>
+                <th>变动金额</th>
             </tr>
 
             </thead>
             <tbody>
+            {if sizeof($change) > 0}
+            {foreach $change as $k}
             <tr>
-                <th>123</th>
+                <td>{$k.id}</td>
+                <td>{$k.update_time|date='Y年m月d日 H:i:s'}</td>
+                <td class="{if $k.change>0}text-success{else}text-danger{/if}">
+                    {$k.change}
+                </td>
             </tr>
+            {/foreach}
+            {/if}
             </tbody>
         </table>
-        <p>暂无流水</p>
+        {$change->render()|raw}
+        {if sizeof($change) == 0}
+        <p class="text-center text-danger">
+            <i class="glyphicon glyphicon-time"></i>
+            暂无流水
+        </p>
+        {/if}
     </div>
 </div>
 {/block}

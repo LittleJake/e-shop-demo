@@ -14,4 +14,7 @@ class Account extends BaseModel
     public function Balance(){
         return $this->hasOne('Balance','user_id','id');
     }
+    public function BalanceChange(){
+        return $this->hasMany('BalanceChange','user_id','id');
+    }
 }

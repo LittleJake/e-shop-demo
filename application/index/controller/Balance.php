@@ -9,12 +9,21 @@
 namespace app\index\controller;
 
 
+use app\common\model\Account;
+
 class Balance extends Base
 {
 
     public function indexAction(){
 
+        $modelAccount = new Account();
+        $modelAccount -> where([
+            'id' => session('user_id')
+        ])->with('BalanceChange')->find();
 
+        $change = $modelAccount->BalanceChange()-> order('update_time','desc')->paginate(10);
+
+        $this->assign('change', $change);
 
         $this->assign('page_title', '余额明细');
         return $this->fetch();

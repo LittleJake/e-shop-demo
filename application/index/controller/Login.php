@@ -84,7 +84,8 @@ class Login extends Common
             $modelAccount -> startTrans();
             $modelBalance = new Balance();
             try{
-                $id = $modelAccount -> insert($data);
+                $modelAccount -> insert($data);
+                $id = $modelAccount ->getLastInsID();
                 $modelAccount -> commit();
                 $modelBalance->save([
                     'user_id' => $id,
