@@ -37,6 +37,7 @@ Route::post('good/checkout','index/good/checkout');
 //admin
 //admin.get
 Route::get('admin/login','admin/login/login');
+Route::get('admin/logout','admin/login/logout');
 Route::get('admin/forget','admin/login/forget');
 Route::get('admin/ajaxlogin','admin/login/ajaxLogin');
 

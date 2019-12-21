@@ -22,7 +22,7 @@ class Base extends Common
 
 
     function isLogin() {
-        if(session('?user') && session('?token'))
+        if(session('?admin_user_name') && session('?admin_user_id'))
             return true;
 
         return false;

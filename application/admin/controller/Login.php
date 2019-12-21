@@ -12,28 +12,37 @@
 namespace app\admin\controller;
 
 
+use app\admin\model\AdminAccount;
+
 class Login extends Common
 {
     public function loginAction(){
         if($this->request->isAjax()) {
-            $data = [
-                'username' => input('get.username'),
-                'password' => input('get.password'),
-                'vercode' => input('get.vercode')
-            ];
+            $data = input('a');
 
             $validate = validate('AdminAccount');
 
             if(!$validate->check($data))
                 return json([
-                    'code' => 0,
+                    'code' => 3,
                     'msg' => $validate->getError()
                 ]);
 
+            $modelAdminAccount = new AdminAccount();
+            $query = $modelAdminAccount->where([
+                'username' => $data['username']
+            ]) -> find();
 
+            if(empty($query))
+                return json(['code' => 1, 'msg'=>'用户不存在']);
 
+            if(check_secret($query['password'], $data['password']))
+                return json(['code' => 2, 'msg'=>'密码错误']);
 
-            return json(['code'=> 1, 'msg'=>'登陆成功']);
+            session('admin_user_id', $query['id']);
+            session('admin_user_name', $query['username']);
+
+            return json(['code'=> 0, 'msg'=>'登陆成功']);
         }
 
         return $this -> fetch();
@@ -47,5 +56,12 @@ class Login extends Common
     public function vercodeAction(){
 
         return $this -> fetch();
+    }
+
+    public function logoutAction(){
+
+        session(null);
+
+        return json(['code' => 0, 'msg'=>'登出成功']);
     }
 }
