@@ -12,5 +12,7 @@ namespace app\admin\controller;
 class User extends Base
 {
 
-
+    public function listAction(){
+        return $this->fetch();
+    }
 }

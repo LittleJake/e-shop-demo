@@ -11,7 +11,5 @@ namespace app\admin\controller;
 
 class Home extends Base
 {
-    public function consoleAction(){
-        return $this->fetch();
-    }
+
 }

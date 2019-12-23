@@ -25,4 +25,8 @@ class Index extends Base
     {
         return $this->fetch();
     }
+
+    public function consoleAction(){
+        return $this->fetch();
+    }
 }

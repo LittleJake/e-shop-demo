@@ -17,6 +17,9 @@ use app\admin\model\AdminAccount;
 class Login extends Common
 {
     public function loginAction(){
+        if($this->isLogin())
+            return $this->redirect('admin/index/index');
+
         if($this->request->isAjax()) {
             $data = input('a');
 

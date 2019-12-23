@@ -49,6 +49,12 @@ class add extends Command
         $username = $input->hasOption('username')?trim($input->getOption('username')):'';
         $password = $input->hasOption('password')?trim($input->getOption('password')):'';
 
+        if(empty($email) || empty($password) || empty($username)){
+
+            return $output->writeln("End..");
+        }
+
+
         $modelAdminAccount = new AdminAccount();
         $modelAdminRole = new AdminRole();
 

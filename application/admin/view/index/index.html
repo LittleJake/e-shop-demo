@@ -297,7 +297,7 @@
               <dl class="layui-nav-child">
                 <dd><a lay-href="template/personalpage.html">个人主页</a></dd>
                 <dd><a lay-href="template/addresslist.html">通讯录</a></dd>
-                <dd><a lay-href="template/goodslist.html">商品列表</a></dd>
+                <dd><a lay-href="{:url('admin/good/list')}">商品列表</a></dd>
                 <dd><a lay-href="template/msgboard.html">留言板</a></dd>
                 <dd><a lay-href="template/search.html">搜索结果</a></dd>
                 <dd><a href="user/reg.html" target="_blank">注册</a></dd>
@@ -435,7 +435,7 @@
       <!-- 主体内容 -->
       <div class="layui-body" id="LAY_app_body">
         <div class="layadmin-tabsbody-item layui-show">
-          <iframe src="admin/home/console.html" frameborder="0" class="layadmin-iframe"></iframe>
+          <iframe src="{:url('admin/index/console')}" frameborder="0" class="layadmin-iframe"></iframe>
         </div>
       </div>
       

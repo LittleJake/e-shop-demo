@@ -17,14 +17,7 @@ class Base extends Common
         parent::__construct($app);
 
         if(!$this->isLogin())
-            return $this->redirect('admin/login/login');
+            return $this->redirect(('admin/login/login'));
     }
 
-
-    function isLogin() {
-        if(session('?admin_user_name') && session('?admin_user_id'))
-            return true;
-
-        return false;
-    }
 }
