@@ -63,7 +63,8 @@ class Login extends Common
 
     public function logoutAction(){
 
-        session(null);
+        session('admin_user_name',null);
+        session('admin_user_id',null);
 
         return json(['code' => 0, 'msg'=>'登出成功']);
     }

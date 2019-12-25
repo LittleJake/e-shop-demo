@@ -25,7 +25,7 @@
             </a>
           </li>
           <li class="layui-nav-item layui-hide-xs" lay-unselect>
-            <a href="http://www.layui.com/admin/" target="_blank" title="前台">
+            <a href="{:url('/')}" target="_blank" title="前台">
               <i class="layui-icon layui-icon-website"></i>
             </a>
           </li>
@@ -34,20 +34,8 @@
               <i class="layui-icon layui-icon-refresh-3"></i>
             </a>
           </li>
-          <li class="layui-nav-item layui-hide-xs" lay-unselect>
-            <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search.html?keywords="> 
-          </li>
         </ul>
         <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
-          
-          <li class="layui-nav-item" lay-unselect>
-            <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
-              <i class="layui-icon layui-icon-notice"></i>  
-              
-              <!-- 如果有新消息，则显示小圆点 -->
-              <span class="layui-badge-dot"></span>
-            </a>
-          </li>
           <li class="layui-nav-item layui-hide-xs" lay-unselect>
             <a href="javascript:;" layadmin-event="theme">
               <i class="layui-icon layui-icon-theme"></i>
@@ -65,7 +53,7 @@
           </li>
           <li class="layui-nav-item" lay-unselect>
             <a href="javascript:;">
-              <cite>贤心</cite>
+              <cite>{:session('admin_user_name')}</cite>
             </a>
             <dl class="layui-nav-child">
               <dd><a lay-href="set/user/info.html">基本资料</a></dd>
@@ -100,12 +88,6 @@
               <dl class="layui-nav-child">
                 <dd data-name="console" class="layui-this">
                   <a lay-href="admin/home/console.html">控制台</a>
-                </dd>
-                <dd data-name="console">
-                  <a lay-href="admin/home/homepage1.html">主页一</a>
-                </dd>
-                <dd data-name="console">
-                  <a lay-href="admin/home/homepage2.html">主页二</a>
                 </dd>
               </dl>
             </li>
@@ -300,14 +282,8 @@
                 <dd><a lay-href="{:url('admin/good/list')}">商品列表</a></dd>
                 <dd><a lay-href="template/msgboard.html">留言板</a></dd>
                 <dd><a lay-href="template/search.html">搜索结果</a></dd>
-                <dd><a href="user/reg.html" target="_blank">注册</a></dd>
-                <dd><a href="user/login.html" target="_blank">登入</a></dd>
-                <dd><a href="user/forget.html" target="_blank">忘记密码</a></dd>
                 <dd><a lay-href="template/tips/404.html">404页面不存在</a></dd>
                 <dd><a lay-href="template/tips/error.html">错误提示</a></dd>
-                <dd><a lay-href="http://www.baidu.com/">百度一下</a></dd>
-                <dd><a lay-href="http://www.layui.com/">layui官网</a></dd>
-                <dd><a lay-href="http://www.layui.com/admin/">layuiAdmin官网</a></dd>
               </dl>
             </li>
             <li data-name="app" class="layui-nav-item">
@@ -340,25 +316,25 @@
                 </dd>
               </dl>
             </li>
-            <li data-name="senior" class="layui-nav-item">
-              <a href="javascript:;" lay-tips="高级" lay-direction="2">
-                <i class="layui-icon layui-icon-senior"></i>
-                <cite>高级</cite>
-              </a>
-              <dl class="layui-nav-child">
-                <dd>
-                  <a layadmin-event="im">LayIM 通讯系统</a>  
-                </dd>
-                <dd data-name="echarts">
-                  <a href="javascript:;">Echarts集成</a>
-                  <dl class="layui-nav-child">
-                    <dd><a lay-href="senior/echarts/line.html">折线图</a></dd>
-                    <dd><a lay-href="senior/echarts/bar.html">柱状图</a></dd>
-                    <dd><a lay-href="senior/echarts/map.html">地图</a></dd>
-                  </dl>
-                </dd>
-              </dl>
-            </li>
+            <!--<li data-name="senior" class="layui-nav-item">-->
+              <!--<a href="javascript:;" lay-tips="高级" lay-direction="2">-->
+                <!--<i class="layui-icon layui-icon-senior"></i>-->
+                <!--<cite>高级</cite>-->
+              <!--</a>-->
+              <!--<dl class="layui-nav-child">-->
+                <!--<dd>-->
+                  <!--<a layadmin-event="im">LayIM 通讯系统</a>  -->
+                <!--</dd>-->
+                <!--<dd data-name="echarts">-->
+                  <!--<a href="javascript:;">Echarts集成</a>-->
+                  <!--<dl class="layui-nav-child">-->
+                    <!--<dd><a lay-href="senior/echarts/line.html">折线图</a></dd>-->
+                    <!--<dd><a lay-href="senior/echarts/bar.html">柱状图</a></dd>-->
+                    <!--<dd><a lay-href="senior/echarts/map.html">地图</a></dd>-->
+                  <!--</dl>-->
+                <!--</dd>-->
+              <!--</dl>-->
+            <!--</li>-->
             <li data-name="user" class="layui-nav-item">
               <a href="javascript:;" lay-tips="用户" lay-direction="2">
                 <i class="layui-icon layui-icon-user"></i>
@@ -366,14 +342,14 @@
               </a>
               <dl class="layui-nav-child">
                 <dd>
-                  <a lay-href="user/user/list.html">网站用户</a>
+                  <a lay-href="{:url('admin/user/index')}">网站用户</a>
                 </dd>
                 <dd>
-                  <a lay-href="user/administrators/list.html">后台管理员</a>
+                  <a lay-href="{:url('admin/user/admin')}">后台管理员</a>
                 </dd>
-                <dd>
-                  <a lay-href="user/administrators/role.html">角色管理</a>
-                </dd>
+                <!--<dd>-->
+                  <!--<a lay-href="{:url('admin/user/role')}">角色管理</a>-->
+                <!--</dd>-->
               </dl>
             </li>
             <li data-name="set" class="layui-nav-item">
@@ -397,12 +373,6 @@
                   </dl>
                 </dd>
               </dl>
-            </li>
-            <li data-name="get" class="layui-nav-item">
-              <a href="javascript:;" lay-href="http://www.layui.com/admin/#get" lay-tips="授权" lay-direction="2">
-                <i class="layui-icon layui-icon-auz"></i>
-                <cite>授权</cite>
-              </a>
             </li>
           </ul>
         </div>
