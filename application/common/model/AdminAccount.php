@@ -6,10 +6,8 @@
  * Time: 22:54
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
-
-use app\common\model\BaseModel;
 
 class AdminAccount extends BaseModel
 {

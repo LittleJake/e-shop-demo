@@ -12,7 +12,7 @@
 namespace app\common\command\admin;
 
 
-use app\admin\model\AdminAccount;
+use app\common\model\AdminAccount;
 use app\admin\model\AdminRole;
 use think\console\Output;
 use think\console\Input;

@@ -15,7 +15,25 @@ namespace app\index\controller;
 class Article extends Common
 {
     public function indexAction(){
+        $modelArticle = new \app\common\model\Article();
+
+
+        $article = $modelArticle
+            -> with([
+                'AdminAccount' => function($query){
+                    $query->field('id,username')->find();
+                }
+            ])
+            -> where(['status' => 1])
+            ->paginate(10);
+
+        $this->assign('articles', $article);
         $this->assign('page_title', '文章列表');
+        return $this->fetch();
+    }
+
+    public function infoAction(){
+        $this->assign('page_title', '文章');
         return $this->fetch();
     }
 }

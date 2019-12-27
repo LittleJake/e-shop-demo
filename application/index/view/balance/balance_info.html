@@ -1,7 +1,8 @@
 <div class="col-md-3 col-sm-3">
     <div class="container">
-        <h4>用户 {:session('user')}</h4>
-        <h4>余额 ￥{:cache('balance:'.session('user_id'))/100}</h4>
+        <h4><i class="
+glyphicon glyphicon-user"></i>用户 {:session('user')}</h4>
+        <h4><i class="glyphicon glyphicon-yen"></i>余额 ￥{:cache('balance:'.session('user_id'))/100}</h4>
         <br>
         <a class="btn btn-success" href="{:url('index/balance/charge')}">充值</a>
     </div>

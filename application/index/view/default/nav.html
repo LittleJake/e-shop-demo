@@ -8,15 +8,13 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{:url('/')}">e-shop-demo</a>
-            {if mb_strlen($page_title) <= 4}
-            <sub>{$page_title}</sub>
-            {/if}
         </div>
         <ul class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav">
-                <a href="{:url('index/category/index')}"><li><i class="glyphicon glyphicon-th-list"></i> 分类</a></li>
-                <a href="{:url('index/article/index')}"><li><i class="glyphicon glyphicon-book"></i> 文章</a></li>
-                <a href="{:url('index/category/index')}"><li><i class="glyphicon glyphicon-file"></i> 资质</a></li>
+                <li><a href="{:url('index/category/index')}"><i class="glyphicon glyphicon-th-list"></i> 分类</a></li>
+                <li><a href="{:url('index/article/index')}"><i class="glyphicon glyphicon-book"></i> 文章</a></li>
+                <li><a href="{:url('index/about/cert')}"><i class="glyphicon glyphicon-file"></i> 资质</a></li>
+                <li><a href="{:url('index/about/index')}"><i class="glyphicon glyphicon-info-sign"></i> 关于我们</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

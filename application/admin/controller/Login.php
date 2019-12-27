@@ -12,7 +12,7 @@
 namespace app\admin\controller;
 
 
-use app\admin\model\AdminAccount;
+use app\common\model\AdminAccount;
 
 class Login extends Common
 {
