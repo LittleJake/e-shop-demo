@@ -5,19 +5,19 @@
 	{foreach $goods as $v}
 	<div class="good-list container">
 		<a href="{:url('index/good/good', ['id' => $v.id])}">
-			<div class="col-md-2 col-xs-6">
+			<div class="col-md-2 col-xs-5">
 				<img src="/static/img/null.png" alt="{$v.title}" width="120px">
 			</div>
 		</a>
 
-		<div class="detail col-md-8 col-xs-6">
+		<div class="detail col-md-8 col-xs-7">
 			<a href="{:url('index/good/good', ['id' => $v.id])}">
 				{$v.title}
 			</a>
 			<p>{$v.subtitle}</p>
 		</div>
 
-		<div class="col-md-2 col-xs-6">
+		<div class="col-md-2 col-xs-7">
 
 			<h4>￥{$v.good_cat_min} 起</h4>
 			<p>+ 邮费</p>

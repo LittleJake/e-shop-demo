@@ -19,3 +19,7 @@ function secret($s){
 function check_secret($s, $password){
     return password_verify($s . 'salt', $password);
 }
+
+function current_route(){
+    return strtolower(request()->module().'/'.request()->controller().'/'.request()->action());
+}
