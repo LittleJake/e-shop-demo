@@ -20,6 +20,10 @@ Route::get('user/order', 'index/user/order');
 Route::get('user/balance', 'index/balance/index');
 Route::get('user/charge', 'index/balance/charge');
 Route::get('category/list', 'index/category/index');
+Route::get('about/index', 'index/about/index');
+Route::get('about/cert', 'index/about/cert');
+Route::get('article/index', 'index/article/index');
+Route::get('article/[:id]', 'index/article/info');
 
 
 //index.any
