@@ -92,7 +92,56 @@ footer
 .login-extend {
 	margin: 10% auto;
 }
+.footer-icon{
+	margin: 1rem auto;
+}
 
+.footer-icon-1,
+.footer-icon-2,
+.footer-icon-3,
+.footer-icon-4{
+	float: left;
+	background: url('/static/img/foot-icon.png') no-repeat;
+	width: 240px;
+	padding-left: 15px;
+	padding-top: 20px;
+}
+
+.footer-icon-4{
+	background-position: 0px -216px;
+}
+
+.footer-icon-2{
+	background-position: 0px -69px;
+}
+
+.footer-icon-3{
+	background-position: 0px -140px;
+}
+
+.iconbg1 {
+	background: url('/static/img/blxx.jpg') no-repeat left top;
+}
+.iconbg2 {
+	background: url('/static/img/wl110.jpg') no-repeat left top;
+}
+.iconbg3 {
+	background: url('/static/img/wzba.png') no-repeat left top;
+}
+.iconbg4 {
+	background: url('/static/img/yjj.jpg') no-repeat left top;
+}
+
+.iconbg5 {
+	background: url('/static/img/hy_83x30.png') no-repeat left top;
+}
+
+.nofollow {
+	margin: 0 10px;
+	width: 83px;
+	height: 30px;
+	display: inline-block;
+}
 /* 百度地图api */
 #map {
 	height: 300px;

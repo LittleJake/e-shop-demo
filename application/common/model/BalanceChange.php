@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class BalanceChange extends BaseModel
 {
+    public $autoWriteTimestamp = 'time';
+    protected $createTime = false;
 
 }

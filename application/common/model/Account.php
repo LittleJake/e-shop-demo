@@ -11,6 +11,7 @@ namespace app\common\model;
 
 class Account extends BaseModel
 {
+
     public function Balance(){
         return $this->hasOne('Balance','user_id','id');
     }
