@@ -24,7 +24,10 @@
         {/if}
         </tbody>
     </table>
-    {$articles->render()|raw}
+    <hr>
+    <div class="text-center">
+        {$articles->render()|raw}
+    </div>
     {if sizeof($articles) == 0}
     <p class="text-center text-danger">
         <i class="glyphicon glyphicon-time"></i>

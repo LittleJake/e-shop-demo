@@ -25,7 +25,7 @@ class Article extends Common
                 }
             ])
             -> where(['status' => 1])
-            ->paginate(10);
+            ->paginate(15);
 
         $this->assign('articles', $article);
         $this->assign('page_title', '文章列表');
