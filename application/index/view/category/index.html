@@ -1,3 +1,50 @@
 {extend name="default/base" /}
 {block name="content"}
+<div class="container content">
+    {if sizeof($category) != 0}
+    <div class="col-md-3 col-xs-12">
+        <div class="list-group" role="tablist">
+            {foreach $category as $k => $v}
+            <a href="{:url('index/category/index', ['id' => $v.id])}" class="list-group-item{if $v.id == $id} active{/if}{if 0 == $id && $k == 0} active{/if}">{$v.name}</a>
+            {/foreach}
+        </div>
+    </div>
+    <div class="col-md-9 col-xs-12">
+        <div class="tab-content panel panel-default">
+            <div class="tab-pane panel-body active">
+                {if sizeof($goods) != 0}
+                {foreach $goods as $v}
+                <div class="good-list container">
+                    <a href="{:url('index/good/good', ['id' => $v.id])}">
+                        <div class="col-md-2 col-xs-4">
+                            <img src="/static/img/null.png" alt="{$v.title}" width="120px">
+                        </div>
+                    </a>
+
+                    <div class="detail col-md-5 col-xs-7">
+                        <a href="{:url('index/good/good', ['id' => $v.id])}">
+                            {$v.title}
+                        </a>
+                        <p>{$v.subtitle}</p>
+                    </div>
+
+                    <div class="col-md-2 col-xs-7">
+
+                        <h4>￥{$v.good_cat_min} 起</h4>
+                        <p>+ 邮费</p>
+                    </div>
+                </div>
+                {/foreach}
+                <br>
+                {$goods->render()|raw}
+                {else}
+                <h3>暂时没有商品</h3>
+                {/if}
+            </div>
+        </div>
+    </div>
+    {else}
+    <h3>暂时没有分类</h3>
+    {/if}
+</div>
 {/block}

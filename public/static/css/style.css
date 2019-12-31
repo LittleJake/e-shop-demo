@@ -142,6 +142,10 @@ footer
 	height: 30px;
 	display: inline-block;
 }
+
+.tab-pane {
+	overflow: hidden;
+}
 /* 百度地图api */
 #map {
 	height: 300px;
