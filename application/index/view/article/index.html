@@ -24,15 +24,16 @@
         {/if}
         </tbody>
     </table>
-    <hr>
-    <div class="text-center">
-        {$articles->render()|raw}
-    </div>
     {if sizeof($articles) == 0}
     <p class="text-center text-danger">
         <i class="glyphicon glyphicon-time"></i>
         暂无文章
     </p>
+    {else}
+    <hr>
+    <div class="text-center">
+        {$articles->render()|raw}
+    </div>
     {/if}
 </div>
 {/block}

@@ -2,11 +2,10 @@
 {block name="content"}
 <div class="main-info">
     <div class="container">
-        <div class="col-sm-4">
-            <br>
+        <div class="thumbnail col-md-4 col-sm-4" id="good-img">
             <img class="img-responsive" src="/static/img/null.png" alt="{$good.title}">
         </div>
-        <div class="col-sm-8">
+        <div class="col-md-8 col-sm-8">
             <h3>{$good.title}</h3>
             <p class="subtitle red">{$good.subtitle}</p>
             <form action="{:url('index/good/checkout')}" method="post" id="shop" class="form-inline">
@@ -102,6 +101,8 @@ glyphicon glyphicon-signal"></i> 详细描述</h4>
 {/block}
 {block name="extendjs"}
 <script>
+    var height = $(".main-info .container").children().eq(1).height();
+    $(".main-info .container .thumbnail").css('height',height);
 
     $("#comment").on('click', ".pagination li a",function(){
         var pageObj = this;

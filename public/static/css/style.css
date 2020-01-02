@@ -146,6 +146,12 @@ footer
 .tab-pane {
 	overflow: hidden;
 }
+
+#good-img > img{
+    height: 100%;
+}
+
+
 /* 百度地图api */
 #map {
 	height: 300px;

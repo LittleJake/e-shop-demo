@@ -29,6 +29,7 @@ Route::get('article/[:id]', 'index/article/info');
 //index.any
 Route::any('user/address/add','index/user/addAddress');
 Route::any('login', 'index/login/login');
+Route::any('oauth/callback', 'index/login/OAuthCallback');
 Route::any('user/address','index/user/address');
 Route::any('register','index/login/reg');
 

@@ -9,9 +9,12 @@
 namespace app\index\controller;
 
 
+use app\common\library\GithubOAuth;
 use app\common\model\Account;
 use app\common\model\Balance;
 use think\facade\Log;
+use think\facade\Config;
+
 
 class Login extends Common
 {
@@ -111,7 +114,19 @@ class Login extends Common
         return $this -> fetch();
     }
 
-    public function OAuthCallbackAction(){
-        return $this -> fetch();
+    public function GithubAction(){
+        var_dump(config('github.client_id'));
+
+        $query = [
+            'client_id'=>config('github.client_id'),
+            'scope' => config('github.scope'),
+        ];
+
+        return $this->redirect(config('github.github_auth_url').'?'.http_build_query($query));
+    }
+
+    public function OAuthCallbackAction($code = ''){
+        var_dump(GithubOAuth::getInfo($code));
+        //return $this -> fetch();
     }
 }
