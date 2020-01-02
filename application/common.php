@@ -23,3 +23,19 @@ function check_secret($s, $password){
 function current_route(){
     return strtolower(request()->module().'/'.request()->controller().'/'.request()->action());
 }
+
+function random_str($num = 8, $type = 'str'){
+    $rnt = '';
+
+    if($type == 'str')
+        $str = 'abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLNMOPQRSTUVWXYZ1234567890';
+    else
+        $str = '123456790';
+
+    $len = strlen($str);
+
+    for($i =0;$i< $num;$i++)
+        $rnt .= $str[rand(0,$len-1)];
+
+    return $rnt;
+}

@@ -57,24 +57,29 @@ class GithubOAuth
     }
 
     public static function getInfo($code = ''){
-        $config = [
-            'client_id' => config('github.client_id'),
-            'client_secret' => config('github.client_secret'),
-            'code' => $code
-        ];
+        try{
+            $config = [
+                'client_id' => config('github.client_id'),
+                'client_secret' => config('github.client_secret'),
+                'code' => $code
+            ];
 
-        $token_url = config('github.github_token_url');
-        $info_url = config('github.github_info_url');
+            $token_url = config('github.github_token_url');
+            $info_url = config('github.github_info_url');
 
-        $github = json_decode(self::curlData($token_url, json_encode($config), 'POST'), true);
+            $github = json_decode(self::curlData($token_url, json_encode($config), 'POST'), true);
 
-        $header = [
-            'Authorization: token '.$github['access_token']
-        ];
+            $header = [
+                'Authorization: token '.$github['access_token']
+            ];
 
-        $result = json_decode(self::curlData($info_url, '', 'GET','json', $header),true);
+            $result = json_decode(self::curlData($info_url, '', 'GET','json', $header),true);
 
-        return $result;
+            return $result;
+        }catch (\Exception $e){
+            return [];
+        }
+
     }
 //var_dump($_GET['code']);
 //

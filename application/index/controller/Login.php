@@ -12,8 +12,8 @@ namespace app\index\controller;
 use app\common\library\GithubOAuth;
 use app\common\model\Account;
 use app\common\model\Balance;
+use think\Config;
 use think\facade\Log;
-use think\facade\Config;
 
 
 class Login extends Common
@@ -125,8 +125,69 @@ class Login extends Common
         return $this->redirect(config('github.github_auth_url').'?'.http_build_query($query));
     }
 
-    public function OAuthCallbackAction($code = ''){
-        var_dump(GithubOAuth::getInfo($code));
-        //return $this -> fetch();
+    public function OAuthCallbackAction(){
+
+        if(!input('?code')){
+            $this->error('非法操作');
+        }
+        $code = input('code');
+        $result = GithubOAuth::getInfo($code);
+
+        if(empty($result)){
+            $this->error('非法操作');
+        }
+
+        $data = [
+            'email' => $result['id'].'@github',
+        ];
+
+        $modelAccount = new Account();
+
+        $query = $modelAccount -> where($data)->with('Balance')-> find();
+        if(!empty($query)){
+            cookie('email', $query['email']);
+            session('user', $query['user_name']);
+            session('user_id', $query['id']);
+            cache('balance:'.$query['id'], $query->balance->money*100);
+            return $this->success($query['user_name'] . '，欢迎回来', "/");
+        }
+
+        $data = [
+            'email' => $result['id'].'@github',
+            'password' => secret($result['node_id'].random_int(0,65535)),
+            'user_name' => $result['login'],
+            'mobile' => random_str(20,'int')
+        ];
+
+        $modelAccount = new Account();
+        $modelAccount -> startTrans();
+        $modelBalance = new Balance();
+        try{
+            $modelAccount -> insert($data);
+            $id = $modelAccount ->getLastInsID();
+            $modelAccount -> commit();
+            $modelBalance->save([
+                'user_id' => $id,
+                'update_time' => time(),
+                'money' => 0
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $modelAccount -> rollback();
+            return $this->error('注册失败，事务处理失败');
+        }
+
+        $modelAccount = new Account();
+
+        $query = $modelAccount -> where($data)->with('Balance')-> find();
+        if(!empty($query)){
+            cookie('email', $query['email']);
+            session('user', $query['user_name']);
+            session('user_id', $query['id']);
+            cache('balance:'.$query['id'], $query->balance->money*100);
+            return $this->success($query['user_name'] . '，欢迎注册', "/");
+        }
+
+        return $this->error('非法操作');
     }
 }
