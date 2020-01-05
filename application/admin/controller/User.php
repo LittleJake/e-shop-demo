@@ -9,10 +9,19 @@
 namespace app\admin\controller;
 
 
+use app\common\model\Account;
+
 class User extends Base
 {
-    public function listAction(){
-        return $this->fetch();
+    public function userlistAction(){
+        $modelAccount = new Account();
+        $query = $modelAccount ->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $modelAccount->getAccountCount(),
+            'data' => $query
+        ]);
     }
 
     public function indexAction(){

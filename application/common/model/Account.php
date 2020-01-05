@@ -9,6 +9,7 @@
 namespace app\common\model;
 
 
+
 class Account extends BaseModel
 {
 
@@ -17,5 +18,10 @@ class Account extends BaseModel
     }
     public function BalanceChange(){
         return $this->hasMany('BalanceChange','user_id','id');
+    }
+
+    public function getAccountCount($where = [],$field ='*')
+    {
+        return parent::getCount($where,$field);
     }
 }
