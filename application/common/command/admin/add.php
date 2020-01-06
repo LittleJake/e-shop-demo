@@ -51,7 +51,11 @@ class add extends Command
 
         if(empty($email) || empty($password) || empty($username)){
 
-            return $output->writeln("End..");
+            $output->writeln("-e Email");
+            $output->writeln("-u Admin Username");
+            $output->writeln("-p Admin Password");
+            $output->writeln("End..");
+            return;
         }
 
 

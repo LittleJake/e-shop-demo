@@ -39,7 +39,7 @@ class Login extends Common
             if(empty($query))
                 return json(['code' => 1, 'msg'=>'用户不存在']);
 
-            if(check_secret($query['password'], $data['password']))
+            if(!check_secret($data['password'], $query['password']))
                 return json(['code' => 2, 'msg'=>'密码错误']);
 
             session('admin_user_id', $query['id']);
