@@ -9,10 +9,8 @@
  *
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
-
-use app\common\model\BaseModel;
 
 class AdminRole extends BaseModel
 {

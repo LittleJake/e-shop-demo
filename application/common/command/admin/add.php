@@ -67,7 +67,8 @@ class add extends Command
             if(empty($modelAdminRole->get(1)))
                 $modelAdminRole ->save([
                     'menu_id' => '*',
-                    'status' => 1
+                    'status' => 1,
+                    'name'=>'超级管理员'
                 ]);
 
             $modelAdminAccount ->startTrans();

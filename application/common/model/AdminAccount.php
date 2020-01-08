@@ -20,5 +20,10 @@ class AdminAccount extends BaseModel
         return $this->hasOne('AdminRole','id','role_id');
     }
 
+    public function getAdminAccountCount($where = [],$field ='*')
+    {
+        return parent::getCount($where,$field);
+    }
+
 
 }
