@@ -36,7 +36,23 @@ class User extends Base
         ]);
     }
 
-    public function indexAction(){
+    public function userAction(){
+        return $this->fetch();
+    }
+
+    public function userEditAction(){
+        return $this->fetch();
+    }
+
+    public function userAddAction(){
+        return $this->fetch();
+    }
+
+    public function adminEditAction(){
+        return $this->fetch();
+    }
+
+    public function adminAddAction(){
         return $this->fetch();
     }
 

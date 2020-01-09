@@ -52,7 +52,7 @@ layui.define(['table', 'form'], function(exports){
       layer.open({
         type: 2
         ,title: '编辑用户'
-        ,content: '../../../views/user/user/userform.html'
+        ,content: '/admin/user/userEdit'
         ,maxmin: true
         ,area: ['500px', '450px']
         ,btn: ['确定', '取消']
@@ -117,7 +117,7 @@ layui.define(['table', 'form'], function(exports){
       layer.open({
         type: 2
         ,title: '编辑管理员'
-        ,content: '../../../views/user/administrators/adminform.html'
+        ,content: '/admin/user/adminEdit'
         ,area: ['420px', '420px']
         ,btn: ['确定', '取消']
         ,yes: function(index, layero){

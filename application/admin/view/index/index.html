@@ -273,10 +273,17 @@
                             <cite>页面</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a lay-href="template/personalpage.html">个人主页</a></dd>
-                            <dd><a lay-href="template/addresslist.html">通讯录</a></dd>
+                            <dd data-name="content">
+                                <a href="javascript:;">文章系统</a>
+                                <dl class="layui-nav-child">
+                                    <dd><a lay-href="{:url('admin/article/index')}">文章列表</a></dd>
+                                    <dd data-name="comment"><a lay-href="app/content/comment.html">评论管理</a></dd>
+                                </dl>
+                            </dd>
                             <dd><a lay-href="{:url('admin/good/list')}">商品列表</a></dd>
-                            <dd><a lay-href="{:url('admin/article/index')}">文章列表</a></dd>
+                            <dd data-name="tags"><a lay-href="{:url('admin/category/index')}">分类管理</a></dd>
+
+
                             <dd><a lay-href="template/msgboard.html">留言板</a></dd>
                             <dd><a lay-href="template/search.html">搜索结果</a></dd>
                             <dd><a lay-href="template/tips/404.html">404页面不存在</a></dd>
@@ -290,14 +297,6 @@
                         </a>
                         <dl class="layui-nav-child">
 
-                            <dd data-name="content">
-                                <a href="javascript:;">内容系统</a>
-                                <dl class="layui-nav-child">
-                                    <dd data-name="list"><a lay-href="app/content/list.html">文章列表</a></dd>
-                                    <dd data-name="tags"><a lay-href="app/content/tags.html">分类管理</a></dd>
-                                    <dd data-name="comment"><a lay-href="app/content/comment.html">评论管理</a></dd>
-                                </dl>
-                            </dd>
                             <dd data-name="forum">
                                 <a href="javascript:;">社区系统</a>
                                 <dl class="layui-nav-child">
@@ -339,7 +338,7 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd>
-                                <a lay-href="{:url('admin/user/index')}">网站用户</a>
+                                <a lay-href="{:url('admin/user/user')}">网站用户</a>
                             </dd>
                             <dd>
                                 <a lay-href="{:url('admin/user/admin')}">后台管理员</a>
