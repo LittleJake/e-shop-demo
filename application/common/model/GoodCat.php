@@ -12,6 +12,6 @@ namespace app\common\model;
 class GoodCat extends BaseModel
 {
     public function Good(){
-        return $this->belongsTo('Good', 'id', 'good_id');
+        return $this->hasOne('Good', 'id', 'good_id');
     }
 }

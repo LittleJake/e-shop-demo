@@ -8,6 +8,9 @@
 
 namespace app\index\controller;
 
+use app\common\model\Address;
+use app\common\model\GoodCat;
+use app\common\model\Shipping;
 use think\Db;
 
 class Good extends Common
@@ -161,15 +164,27 @@ class Good extends Common
 
         $user = session('user_id');
 
-        $query = Db::query("select * from `address` where user_id = $user");
+        $modelAddress = new Address();
+        $query = $modelAddress -> where([
+            'status' => 1,
+            'user_id' => $user
+        ])->select();
 
         $this->assign('address', $query);
 
-        $query = Db::query("select * from `shipping_fee`");
+        $modelShipping = new Shipping();
+        $query = $modelShipping->select();
 
         $this->assign('ships', $query);
 
-        $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in ($cat)");
+        $modelGoodCat = new GoodCat();
+
+        $goods = $modelGoodCat
+            ->with('Good')
+            ->where([
+                'id' => ['in', $cat]
+            ])
+            ->select();
 
         $cat = explode(',', $cat);
         $num = explode(',', $num);
@@ -178,7 +193,7 @@ class Good extends Common
         $total = 0;
         foreach ($goods as $c => $d) {
             foreach ($order as $a => $b) {
-                if($d['cat_id'] == $a){
+                if($d['id'] == $a){
                     $goods[$c]['num'] = $b;
                     $total += $goods[$c]['price'] * $b;
                     break;
@@ -188,10 +203,6 @@ class Good extends Common
 
         $this->assign('goods', $goods);
         $this->assign('total', $total);
-
-        $query = Db::query("select * from `payment`");
-
-        $this->assign('payments', $query);
 
 
         $this->assign('page_title', '结算');

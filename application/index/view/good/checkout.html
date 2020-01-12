@@ -7,13 +7,13 @@
                 <span class="glyphicon glyphicon-user checkout-icon"></span>
             </div>
             <div class="address-list col-sm-10" id="address-list">
-                {if isset($address)}
+                {if sizeof($address) > 0}
                 <p class="name-info">{$address[0]['name']} <span class="contact-info">{$address[0]['contact']}</span></p>
                 <p class="address-info">{$address[0]['province']} {$address[0]['city']} {$address[0]['district']} {$address[0]['street']}</p>
+                <input class="btn btn-sm btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
                 {else}
                 <p class="address-info">暂无地址</p>
                 {/if}
-                <input class="btn btn-sm btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
             </div>
             <div class="modal fade" id="changeAddress" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -45,7 +45,7 @@
                 <div class="radio">
                     <label>
                         <input name="a[pay]" type="radio" value="1" checked>
-                        余额支付：10000.00
+                        余额支付：{:sprintf('%.2f', cache('balance:'.session('user_id')/100))}
                     </label>
                 </div>
                 <p>
@@ -60,8 +60,9 @@
             </div>
             <div class="col-sm-9">
                 <select class="form-control" name="a[ship]">
+                    <option>请选择配送</option>
                     {foreach $ships as $v}
-                    <option value="{$v.shipping_id}">{$v.shipping_name} ￥{$v.fee}</option>
+                    <option value="{$v.shipping_id}">{$v.name} ￥{$v.price}</option>
                     {/foreach}
                 </select>
             </div>
@@ -70,11 +71,11 @@
         <div class="container">
             {foreach $goods as $v}
             <div class="cart-list">
-                <img src="/static/img/null.png" alt="{$v.title}" width="70px">
+                <img src="/static/img/null.png" alt="{$v.good.title}" width="70px">
 
                 <div class="detail">
-                    <p>{$v.title}</p>
-                    <p>{$v.cat_name}</p>
+                    <p>{$v.good.title}</p>
+                    <p>{$v.name}</p>
                 </div>
 
                 <div class="pull-right">
