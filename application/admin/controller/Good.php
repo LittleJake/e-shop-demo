@@ -13,6 +13,7 @@ namespace app\admin\controller;
 
 
 use app\common\model\Category;
+use think\App;
 
 class Good extends Base
 {
@@ -30,6 +31,11 @@ class Good extends Base
 
         $this -> assign('category', $category);
 
+        return $this->fetch();
+    }
+
+    public function addAction()
+    {
         return $this->fetch();
     }
 }
