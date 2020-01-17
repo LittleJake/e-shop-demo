@@ -4,34 +4,73 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>layuiAdmin 评论管理 iframe 框</title>
+    <title>商品管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/layuiadmin/style/admin.css" media="all">
 </head>
 <body>
 
-<div class="layui-form" lay-filter="layuiadmin-form-comment" id="layuiadmin-form-comment" style="padding: 20px 30px 0 0;">
+<div class="layui-form" lay-filter="layuiadmin-form-good" id="layuiadmin-form-good" style="padding: 20px 30px 0 0;">
+    <input name="id" value="{$good.id}" hidden>
     <div class="layui-form-item">
-        <label class="layui-form-label">评论内容</label>
+        <label class="layui-form-label">商品标题</label>
         <div class="layui-input-block">
-            <textarea name="content" lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+            <input name="title" lay-verify="required" placeholder="请输入商品标题" class="layui-input" value="{$good.title}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品副标题</label>
+        <div class="layui-input-block">
+            <input name="subtitle" lay-verify="required" placeholder="请输入商品副标题" class="layui-input" value="{$good.subtitle}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品分类</label>
+        <div class="layui-input-inline">
+            <select name="cate_id" lay-verify="required">
+                <option>请选择分类</option>
+                {foreach $cate as $k}
+                <option value="{$k.id}" {if $good.cate_id == $k.id}selected{/if}>{$k.name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品描述</label>
+        <div class="layui-input-block">
+            <textarea name="description" id="description">
+                {$good.description}
+            </textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布状态</label>
+        <div class="layui-input-inline">
+            <input type="radio" lay-verify="required"  name="status" title="上架" value="1" {if $good.status == 1}checked{/if}>
+            <input type="radio" lay-verify="required" name="status" title="下架" value="0" {if $good.status == 0}checked{/if}>
         </div>
     </div>
     <div class="layui-form-item layui-hide">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="button" lay-submit lay-filter="layuiadmin-app-comm-submit" id="layuiadmin-app-comm-submit" value="确认" class="layui-btn">
+            <input type="button" onclick="getData();" lay-submit lay-filter="layuiadmin-app-good-submit" id="layuiadmin-app-good-submit" value="确认" class="layui-btn">
         </div>
     </div>
 </div>
 
-<script src="../../../layuiadmin/layui/layui.js"></script>
+<script src="/static/layuiadmin/layui/layui.js"></script>
+<script src="//cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+<script src="/static/ckeditor/ckeditor.js"></script>
 <script>
+    CKEDITOR.config.uploadUrl = '{:url("admin/index/upload")}';
+    CKEDITOR.config.filebrowserUploadUrl= '{:url("admin/index/upload")}';
+    CKEDITOR.replace( 'description' );
+
     layui.config({
-        base: '../../../layuiadmin/' //静态资源所在路径
+        base: '/static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'form'], function(){
@@ -39,6 +78,10 @@
             ,form = layui.form;
 
     });
+
+    function getData(){
+        document.getElementById('description').value = CKEDITOR.instances.description.getData();
+    }
 </script>
 </body>
 </html>

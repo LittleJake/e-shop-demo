@@ -18,4 +18,13 @@ class Good extends BaseModel
     public function Rate(){
         return $this->hasMany('Rate', 'good_id', 'id');
     }
+
+    public function Category(){
+        return $this->belongsTo('Category', 'cate_id', 'id');
+    }
+
+    public function getGoodCount($where = [],$field ='*')
+    {
+        return parent::getCount($where,$field);
+    }
 }

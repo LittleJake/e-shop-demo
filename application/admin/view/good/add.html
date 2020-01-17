@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<div class="layui-form" lay-filter="layuiadmin-form-comment" id="layuiadmin-form-comment" style="padding: 20px 30px 0 0;">
+<div class="layui-form" lay-filter="layuiadmin-form-good" id="layuiadmin-form-good" style="padding: 20px 30px 0 0;">
     <div class="layui-form-item">
         <label class="layui-form-label">商品标题</label>
         <div class="layui-input-block">
@@ -31,20 +31,18 @@
         <div class="layui-input-inline">
             <select name="cate_id" lay-verify="required">
                 <option>请选择分类</option>
-                <option value="0">美食</option>
-                <option value="1">新闻</option>
-                <option value="2">八卦</option>
-                <option value="3">体育</option>
-                <option value="4">音乐</option>
+                {foreach $cate as $k}
+                <option value="{$k.id}">{$k.name}</option>
+                {/foreach}
             </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">商品描述</label>
         <div class="layui-input-block">
-            <div id="editor">
-                <p>This is the editor content.</p>
-            </div>
+            <textarea name="description" id="description">
+                <p>输入内容</p>
+            </textarea>
         </div>
     </div>
     <div class="layui-form-item">
@@ -57,17 +55,18 @@
     <div class="layui-form-item layui-hide">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="button" lay-submit lay-filter="layuiadmin-app-comm-submit" id="layuiadmin-app-comm-submit" value="确认" class="layui-btn">
+            <input type="button" lay-submit lay-filter="layuiadmin-app-good-submit" id="layuiadmin-app-good-submit" value="确认" class="layui-btn">
         </div>
     </div>
 </div>
 
 <script src="/static/layuiadmin/layui/layui.js"></script>
+<script src="//cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
 <script src="/static/ckeditor/ckeditor.js"></script>
 <script>
     CKEDITOR.config.uploadUrl = '{:url("admin/index/upload")}';
     CKEDITOR.config.filebrowserUploadUrl= '{:url("admin/index/upload")}';
-    CKEDITOR.replace( 'editor' );
+    CKEDITOR.replace( 'description' );
 
     layui.config({
         base: '/static/layuiadmin/' //静态资源所在路径
@@ -78,6 +77,10 @@
             ,form = layui.form;
 
     });
+
+    function getData(){
+        document.getElementById('description').value = CKEDITOR.instances.description.getData();
+    }
 </script>
 </body>
 </html>
