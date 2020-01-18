@@ -12,6 +12,7 @@ namespace app\admin\controller;
 class Category extends Base
 {
     public function indexAction(){
+
         return $this->fetch();
     }
 
@@ -21,5 +22,16 @@ class Category extends Base
 
     public function categoryEditAction(){
         return $this->fetch();
+    }
+
+    public function categoryListAction(){
+        $modelCategory = new \app\common\model\Category();
+        $query = $modelCategory ->withCount('Good')->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $modelCategory->getCategoryCount(),
+            'data' => $query
+        ]);
     }
 }

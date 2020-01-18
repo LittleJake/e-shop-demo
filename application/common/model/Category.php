@@ -14,4 +14,9 @@ class Category extends BaseModel
     public function Good(){
         return $this->hasMany('Good','cate_id', 'id');
     }
+
+    public function getCategoryCount($where = [],$field ='*')
+    {
+        return parent::getCount($where,$field);
+    }
 }
