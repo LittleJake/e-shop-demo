@@ -42,7 +42,7 @@
         <button class="layui-btn layuiadmin-btn-list" data-type="batchdel">删除</button>
         <button class="layui-btn layuiadmin-btn-list" data-type="add">添加</button>
       </div>
-      <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>
+      <table id="LAY-app-article-list" lay-filter="LAY-app-article-list"></table>
       <script type="text/html" id="buttonTpl">
         {{#  if(d.status){ }}
         <button class="layui-btn layui-btn-xs">已发布</button>
@@ -50,7 +50,7 @@
         <button class="layui-btn layui-btn-primary layui-btn-xs">待修改</button>
         {{#  } }}
       </script>
-      <script type="text/html" id="table-content-list">
+      <script type="text/html" id="table-article-list">
         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
       </script>
@@ -73,14 +73,14 @@
             var field = data.field;
 
             //执行重载
-            table.reload('LAY-app-content-list', {
+            table.reload('LAY-app-article-list', {
                 where: field
             });
         });
 
         var $ = layui.$, active = {
             batchdel: function(){
-                var checkStatus = table.checkStatus('LAY-app-content-list')
+                var checkStatus = table.checkStatus('LAY-app-article-list')
                     ,checkData = checkStatus.data; //得到选中的数据
 
                 if(checkData.length === 0){
@@ -96,7 +96,7 @@
                       //,……
                     });
                     */
-                    table.reload('LAY-app-content-list');
+                    table.reload('LAY-app-article-list');
                     layer.msg('已删除');
                 });
             },
@@ -104,13 +104,13 @@
                 layer.open({
                     type: 2
                     ,title: '添加文章'
-                    ,content: 'listform.html'
+                    ,content: '{:url("admin/article/add")}'
                     ,maxmin: true
-                    ,area: ['550px', '550px']
+                    ,area: ['800px', '500px']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
                         //点击确认触发 iframe 内容中的按钮提交
-                        var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
+                        var submit = layero.find('iframe').contents().find("#layuiadmin-article-form-submit");
                         submit.click();
                     }
                 });

@@ -7,7 +7,7 @@ layui.define(['table', 'form'], function(exports){
 
 //文章管理
     table.render({
-        elem: '#LAY-app-content-list'
+        elem: '#LAY-app-article-list'
         ,url: '/admin/article/articlelist' //模拟接口
         ,cols: [[
             {type: 'checkbox', fixed: 'left'}
@@ -16,7 +16,7 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'username', title: '作者', templet: function (d) {return d.admin_account.username;}}
             ,{field: 'update_time', title: '上传时间', sort: true, templet:function(d) {return util.toDateString(d.update_time*1000); }}
             ,{field: 'status', title: '发布状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
-            ,{title: '操作', minWidth: 150, align: 'center', fixed: 'right', toolbar: '#table-content-list'}
+            ,{title: '操作', minWidth: 150, align: 'center', fixed: 'right', toolbar: '#table-article-list'}
         ]]
         ,page: true
         ,limit: 10
@@ -25,7 +25,7 @@ layui.define(['table', 'form'], function(exports){
     });
 
 //监听工具条
-    table.on('tool(LAY-app-content-list)', function(obj){
+    table.on('tool(LAY-app-article-list)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
             layer.confirm('确定删除此文章？', function(index){
@@ -36,16 +36,16 @@ layui.define(['table', 'form'], function(exports){
             layer.open({
                 type: 2
                 ,title: '编辑文章'
-                ,content: '../../../views/app/content/listform.html?id='+ data.id
+                ,content: '/admin/article/edit?id='+ data.id
                 ,maxmin: true
-                ,area: ['550px', '550px']
+                ,area: ['800px', '500px']
                 ,btn: ['确定', '取消']
                 ,yes: function(index, layero){
                     var iframeWindow = window['layui-layer-iframe'+ index]
-                        ,submit = layero.find('iframe').contents().find("#layuiadmin-app-form-edit");
+                        ,submit = layero.find('iframe').contents().find("#layuiadmin-article-form-submit");
 
                     //监听提交
-                    iframeWindow.layui.form.on('submit(layuiadmin-app-form-edit)', function(data){
+                    iframeWindow.layui.form.on('submit(layuiadmin-article-form-submit)', function(data){
                         var field = data.field; //获取提交的字段
 
                         //提交 Ajax 成功后，静态更新表格中的数据

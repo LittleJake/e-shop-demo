@@ -15,6 +15,18 @@ class Article extends Base
         return $this->fetch();
     }
 
+    public function addAction(){
+        return $this->fetch();
+    }
+
+    public function editAction(){
+        return $this->fetch();
+    }
+
+    public function delAction(){
+        return $this->fetch();
+    }
+
     public function articlelistAction(){
         $modelArticle = new \app\common\model\Article();
         $query = $modelArticle->with('AdminAccount') ->select();
