@@ -129,9 +129,19 @@
                             var field = data.field; //获取提交的字段
 
                             //提交 Ajax 成功后，静态更新表格中的数据
-                            //$.ajax({});
-                            table.reload('LAY-app-good-list'); //数据刷新
-                            layer.close(index); //关闭弹层
+                            $.ajax({
+                                type:'post',
+                                url:'{:url("admin/good/add")}',
+                                data: field,
+                                success:function (res) {
+                                    if (res.code == 1) {
+                                        //更新数据表
+                                        table.reload('LAY-app-good-list'); //数据刷新
+                                        layer.close(index); //关闭弹层
+                                    }
+                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                }
+                            });
                         });
 
                         submit.trigger('click');

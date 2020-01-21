@@ -36,8 +36,19 @@ layui.define(['table', 'form'], function(exports){
         var data = obj.data;
         if(obj.event === 'del'){
             layer.confirm('确定删除此商品？', function(index){
-                obj.del();
-                layer.close(index);
+                $.ajax({
+                    type:'get',
+                    url:'/admin/good/del?id='+data.id,
+                    success:function (res) {
+                        if (res.code == 1) {
+                            //更新数据表
+                            obj.del();
+                            layer.close(index);
+ //关闭弹层
+                        }
+                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                    }
+                });
             });
         } else if(obj.event === 'edit'){
             layer.open({
