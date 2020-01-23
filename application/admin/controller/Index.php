@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use think\facade\Log;
+
 class Index extends Base
 {
     public function indexAction()
@@ -31,13 +33,38 @@ class Index extends Base
     }
 
     public function uploadAction(){
-        return json([
-            "uploaded"=> 1,
-            "fileName"=> "null.png",
-            "url"=> "/static/img/null.png",
-            "error"=>[
-                "message"=> "A file with the same name already exists. The uploaded file was renamed to \"foo(2).jpg\"."
+        // 获取表单上传文件 例如上传了001.jpg
+        try{
+            $path = './uploads/';
+            $file = $this->request->file('upload');
+            // 移动到框架应用根目录/public/uploads/ 目录下
+            if($file && $file->checkImg()){
+                $info = $file->move($path);
+                if($info){
+                    return json([
+                        "uploaded"=> 1,
+                        "fileName"=> $info->getFilename(),
+                        "url"=> DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.$info->getSaveName()
 
+                    ]);
+                }else{
+                    // 上传失败获取错误信息
+                    return json([
+                        "uploaded"=> 0,
+                        "error"=>[
+                            "message"=> $file->getError()
+                        ]
+                    ]);
+                }
+            }
+        } catch(\Exception $e){
+            Log::error($e->getMessage());
+        }
+
+        return json([
+            "uploaded"=> 0,
+            "error"=>[
+                "message"=> 'No input file specific.'
             ]
         ]);
     }

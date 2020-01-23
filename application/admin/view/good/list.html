@@ -107,6 +107,13 @@
                       //,……
                     });
                     */
+                    var ids = [];
+                    for (var i = 0; i < checkData.length;i++) {
+                        console.log(checkData[i]);
+                        ids.push(checkData[i].id);
+                    }
+
+                    console.log(ids.join());
                     table.reload('LAY-app-good-list');
                     layer.msg('已删除');
                 });
