@@ -37,9 +37,12 @@ class Index extends Base
         try{
             $path = './uploads/';
             $file = $this->request->file('upload');
+
+
             // 移动到框架应用根目录/public/uploads/ 目录下
             if($file && $file->checkImg()){
                 $info = $file->move($path);
+                $md5 = md5_file($file->getRealPath());
                 if($info){
                     return json([
                         "uploaded"=> 1,

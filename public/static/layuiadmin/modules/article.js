@@ -11,12 +11,12 @@ layui.define(['table', 'form'], function(exports){
         ,url: '/admin/article/articlelist' //模拟接口
         ,cols: [[
             {type: 'checkbox', fixed: 'left'}
-            ,{field: 'id', width: 100, title: '文章ID', sort: true}
+            ,{field: 'id', width: 70, title: 'ID', sort: true}
             ,{field: 'title', title: '文章标题'}
-            ,{field: 'username', title: '作者', templet: function (d) {return d.admin_account.username;}}
-            ,{field: 'update_time', title: '上传时间', sort: true, templet:function(d) {return util.toDateString(d.update_time*1000); }}
-            ,{field: 'status', title: '发布状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
-            ,{title: '操作', minWidth: 150, align: 'center', fixed: 'right', toolbar: '#table-article-list'}
+            ,{field: 'username', width: 130, title: '作者', templet: function (d) {return d.admin_account.username;}}
+            ,{field: 'update_time', title: '上传时间', width: 180, sort: true, templet:function(d) {return util.toDateString(d.update_time*1000); }}
+            ,{field: 'status', title: '状态', templet: '#buttonTpl', width: 80, align: 'center'}
+            ,{title: '操作', minWidth: 200, align: 'center', fixed: 'right', toolbar: '#table-article-list'}
         ]]
         ,page: true
         ,limit: 10

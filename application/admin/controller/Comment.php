@@ -11,5 +11,7 @@ namespace app\admin\controller;
 
 class Comment extends Base
 {
-
+    public function indexAction(){
+        return $this->fetch();
+    }
 }

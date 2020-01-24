@@ -3,7 +3,53 @@
 <div class="container content">
     {include file="balance/balance_info"}
     <div class="col-md-9 col-sm-9">
-
+        <h2>余额充值</h2>
+        <hr>
+        <form method="post" id="charge">
+            <div class="form-group">
+                <label for="amount">金额</label>
+                <input type="number" class="form-control" id="amount" name="amount" placeholder="金额" value="10" autocomplete="off" autofocus="1">
+            </div>
+            <input type="button" class="btn btn-success" onclick="checkAndSubmit(this);" value="提交">
+        </form>
+        <div class="alert alert-warning fade" role="alert" id="alert">
+            <strong id="notice"></strong>
+        </div>
     </div>
 </div>
+{/block}
+{block name="extendjs"}
+
+<script>
+    function isRealNum(val){
+        if(val === "" || val ==null)
+            return false;
+        return !isNaN(val);
+    }
+
+    function checkAndSubmit(e){
+        var amount = $("input[name='amount']").val();
+
+        $(e).attr('disabled','disabled');
+        if(isRealNum(amount) && amount > 0)
+            $.ajax({
+                url: "",
+                data: {'amount': amount},
+                type: "POST",
+                success: function (r) {
+                    window.open('','_blank');
+                    $(e).attr('disabled',null);
+                }
+            });
+        else{
+            $('#notice').html('金额有误');
+            $('#alert').addClass('in');
+            setInterval(function(){
+                $('#alert').removeClass('in');
+                $(e).attr('disabled',null);
+            }, 3000);
+        }
+
+    }
+</script>
 {/block}
