@@ -14,7 +14,7 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'id', width: 70, title: 'ID', sort: true}
             ,{field: 'title', title: '文章标题'}
             ,{field: 'username', width: 130, title: '作者', templet: function (d) {return d.admin_account.username;}}
-            ,{field: 'update_time', title: '上传时间', width: 180, sort: true, templet:function(d) {return util.toDateString(d.update_time*1000); }}
+            ,{field: 'update_time', title: '时间', width: 180, sort: true, templet:function(d) {return util.toDateString(d.update_time*1000); }}
             ,{field: 'status', title: '状态', templet: '#buttonTpl', width: 80, align: 'center'}
             ,{title: '操作', minWidth: 200, align: 'center', fixed: 'right', toolbar: '#table-article-list'}
         ]]
@@ -29,7 +29,20 @@ layui.define(['table', 'form'], function(exports){
         var data = obj.data;
         if(obj.event === 'del'){
             layer.confirm('确定删除此文章？', function(index){
-                obj.del();
+                $.ajax({
+                    url: '/admin/article/del?id='+data.id,
+                    method: 'get',
+                    success: function (e) {
+                        if(e.code == 1){
+                            obj.del();
+                        }
+                        layer.msg(e.msg,{
+                            icon: e.code
+                        });
+                        layer.close(index); //关闭弹层
+                    }
+                });
+
                 layer.close(index);
             });
         } else if(obj.event === 'edit'){
@@ -49,16 +62,26 @@ layui.define(['table', 'form'], function(exports){
                         var field = data.field; //获取提交的字段
 
                         //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        obj.update({
-                            label: field.label
-                            ,title: field.title
-                            ,author: field.author
-                            ,status: field.status
-                        }); //数据更新
+                        $.ajax({
+                            url: '/admin/article/edit',
+                            data: field,
+                            method: 'post',
+                            success: function (e) {
+                                if(e.code == 1){
+                                    obj.update({
+                                        title: field.title
+                                        ,status: field.status
+                                        ,update_time: util.toDateString(field.update_time*1000)
+                                    }); //数据更新
 
-                        form.render();
-                        layer.close(index); //关闭弹层
+                                    form.render();
+                                }
+                                layer.msg(e.msg,{
+                                    icon: e.code
+                                });
+                                layer.close(index); //关闭弹层
+                            }
+                        });
                     });
 
                     submit.trigger('click');

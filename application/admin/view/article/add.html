@@ -16,44 +16,26 @@
     <div class="layui-form-item">
         <label class="layui-form-label">文章标题</label>
         <div class="layui-input-inline">
-            <input type="text" name="title" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">发布人</label>
-        <div class="layui-input-inline">
-            <input type="text" name="author" lay-verify="required" placeholder="请输入号码" autocomplete="off" class="layui-input">
+            <input type="text" name="title" lay-verify="required" placeholder="请输入文章标题" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">文章内容</label>
         <div class="layui-input-block">
             <textarea name="content" id="content" autocomplete="off" hidden>
-                <p>输入内容</p>
+                <p>请输入内容</p>
             </textarea>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">标签</label>
-        <div class="layui-input-inline">
-            <select name="label" lay-verify="required">
-                <option value="">请选择标签</option>
-                <option value="美食">美食</option>
-                <option value="新闻">新闻</option>
-                <option value="八卦">八卦</option>
-                <option value="体育">体育</option>
-                <option value="音乐">音乐</option>
-            </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">发布状态</label>
         <div class="layui-input-inline">
-            <input type="checkbox" lay-verify="required" lay-filter="status" name="status" lay-skin="switch" lay-text="已发布|待修改">
+            <input type="radio" lay-verify="required" lay-filter="status" name="status" value="1" title="已发布" checked>
+            <input type="radio" lay-verify="required" lay-filter="status" name="status" value="0" title="未发布">
         </div>
     </div>
     <div class="layui-form-item layui-hide">
-        <input type="button" lay-submit lay-filter="layuiadmin-article-form-submit" id="layuiadmin-article-form-submit" value="确认">
+        <input type="button" lay-submit lay-filter="layuiadmin-article-form-submit" id="layuiadmin-article-form-submit" value="确认" onclick="getData()">
     </div>
 </div>
 
@@ -86,7 +68,7 @@
 
 
     function getData(){
-        document.getElementById('content').value = CKEDITOR.instances.description.getData();
+        document.getElementById('content').innerHTML = CKEDITOR.instances.content.getData();
     }
 </script>
 </body>

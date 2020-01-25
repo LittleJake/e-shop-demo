@@ -16,15 +16,71 @@ class Article extends Base
     }
 
     public function addAction(){
+        if($this->request->isPost()){
+            $modelArticle = new \app\common\model\Article();
+            $data = $this->request->post();
+            $data['update_time'] = time();
+            $data['admin_id'] = $this->adminid();
+
+            $modelArticle->insert($data);
+
+            return json([
+                'code' => 1,
+                'msg' => '新建成功'
+            ]);
+        }
+
         return $this->fetch();
     }
 
     public function editAction(){
+        $modelArticle = new \app\common\model\Article();
+
+        if($this->request->isPost()){
+            $data = $this->request->post();
+            $data['update_time'] = time();
+
+            $modelArticle->where([
+                'id' => $data['id']
+            ])->update($data);
+
+            return json([
+                'code' => 1,
+                'msg' => '修改成功'
+            ]);
+        }
+
+        $query = $modelArticle->where([
+            'id' => input('get.id', '0', 'int')
+        ])->find();
+
+        $this->assign('article', $query);
         return $this->fetch();
     }
 
     public function delAction(){
-        return $this->fetch();
+        $modelArticle = new \app\common\model\Article();
+
+        if($this->request->isPost()){
+
+            $n = $modelArticle->where([
+                'id' => explode(',',input('post.id'))
+            ])->delete();
+
+            return json([
+                'code' => 1,
+                'msg' => "共删除 $n 条记录"
+            ]);
+        }
+
+        $modelArticle->where([
+            'id' => input('get.id', '0', 'int')
+        ])->delete();
+
+        return json([
+            'code' => '1',
+            'msg' => '删除成功'
+        ]);
     }
 
     public function articlelistAction(){

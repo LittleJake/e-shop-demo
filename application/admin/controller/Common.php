@@ -16,10 +16,14 @@ use think\Controller;
 
 class Common extends Controller
 {
-    function isLogin() {
+    protected function isLogin() {
         if(session('?admin_user_name') && session('?admin_user_id'))
             return true;
 
         return false;
+    }
+
+    protected function adminid(){
+        return session('admin_user_id');
     }
 }
