@@ -13,17 +13,8 @@ use think\facade\Log;
 
 class Index extends Base
 {
+    /** 首页 */
     public function indexAction()
-    {
-        return $this->fetch();
-    }
-
-    public function adminAction()
-    {
-        return $this->fetch();
-    }
-
-    public function homeAction()
     {
         return $this->fetch();
     }

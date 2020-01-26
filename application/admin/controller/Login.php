@@ -16,6 +16,7 @@ use app\common\model\AdminAccount;
 
 class Login extends Common
 {
+    /** 管理员登录 */
     public function loginAction(){
         if($this->isLogin())
             return $this->redirect('admin/index/index');
@@ -52,12 +53,10 @@ class Login extends Common
     }
 
     public function forgetAction(){
-
         return $this -> fetch();
     }
 
     public function vercodeAction(){
-
         return $this -> fetch();
     }
 

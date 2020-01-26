@@ -11,5 +11,16 @@ namespace app\admin\controller;
 
 class Rate extends Base
 {
+    /** 评价管理（嵌套在商品列表） */
+    public function indexAction(){
+        return $this->fetch();
+    }
 
+    public function ratelistAction(){
+        return json();
+    }
+
+    public function delAction(){
+        return $this->fetch();
+    }
 }

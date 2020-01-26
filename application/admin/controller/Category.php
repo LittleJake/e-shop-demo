@@ -11,6 +11,7 @@ namespace app\admin\controller;
 
 class Category extends Base
 {
+    /** 商品分类操作 */
     public function indexAction(){
 
         return $this->fetch();

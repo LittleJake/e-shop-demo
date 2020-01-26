@@ -11,6 +11,7 @@ namespace app\admin\controller;
 
 class Article extends Base
 {
+    /** 文章操作 */
     public function indexAction(){
         return $this->fetch();
     }

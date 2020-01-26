@@ -16,6 +16,7 @@ use app\common\model\Category;
 
 class Good extends Base
 {
+    /** 商品操作 */
     public function indexAction(){
         return $this->fetch();
     }

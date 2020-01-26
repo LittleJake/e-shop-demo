@@ -14,6 +14,7 @@ use app\common\model\AdminAccount;
 
 class User extends Base
 {
+    /** 用户操作 */
     public function userlistAction(){
         $modelAccount = new Account();
         $query = $modelAccount ->select();
@@ -21,17 +22,6 @@ class User extends Base
             'code' => 0,
             'msg' => '',
             'count' => $modelAccount->getAccountCount(),
-            'data' => $query
-        ]);
-    }
-
-    public function adminlistAction(){
-        $modelAdminAccount = new AdminAccount();
-        $query = $modelAdminAccount -> with('AdminRole')->select();
-        return json([
-            'code' => 0,
-            'msg' => '',
-            'count' => $modelAdminAccount->getAdminAccountCount(),
             'data' => $query
         ]);
     }
@@ -48,6 +38,22 @@ class User extends Base
         return $this->fetch();
     }
 
+    /** 管理员操作 */
+    public function adminAction(){
+        return $this->fetch();
+    }
+
+    public function adminlistAction(){
+        $modelAdminAccount = new AdminAccount();
+        $query = $modelAdminAccount -> with('AdminRole')->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $modelAdminAccount->getAdminAccountCount(),
+            'data' => $query
+        ]);
+    }
+
     public function adminEditAction(){
         return $this->fetch();
     }
@@ -56,7 +62,4 @@ class User extends Base
         return $this->fetch();
     }
 
-    public function adminAction(){
-        return $this->fetch();
-    }
 }
