@@ -12,6 +12,11 @@ namespace app\common\model;
 class Balance extends BaseModel
 {
     public function Account(){
-        return $this->belongsTo('Account', 'id', 'user_id');
+        return $this->belongsTo('Account', 'user_id', 'id');
+    }
+
+    public function getBalanceCount($where = [],$field ='*')
+    {
+        return parent::getCount($where,$field);
     }
 }

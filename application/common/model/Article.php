@@ -11,6 +11,9 @@ namespace app\common\model;
 
 class Article extends BaseModel
 {
+    public $autoWriteTimestamp = 'update_time';
+    protected $createTime = false;
+
     public function AdminAccount(){
         return $this->hasOne('AdminAccount', 'id', 'admin_id');
     }

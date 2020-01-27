@@ -12,7 +12,7 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'good_count', title: '商品数'}
             ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#layuiadmin-app-cont-tagsbar'}
         ]]
-        ,text: '对不起，加载出现异常！'
+        ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
 //监听工具条

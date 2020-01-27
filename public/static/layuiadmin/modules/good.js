@@ -28,7 +28,7 @@ layui.define(['table', 'form'], function(exports){
         ,page: true
         ,limit: 10
         ,limits: [10, 15, 20, 25, 30]
-        ,text: '对不起，加载出现异常！'
+        ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
     //监听工具条
@@ -100,7 +100,7 @@ layui.define(['table', 'form'], function(exports){
         ,page: true
         ,limit: 10
         ,limits: [10, 15, 20, 25, 30]
-        ,text: '对不起，加载出现异常！'
+        ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
     //监听工具条

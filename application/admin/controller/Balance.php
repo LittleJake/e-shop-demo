@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use app\common\model\BalanceChange;
+
 class Balance extends Base
 {
     /** 用户余额 */
@@ -17,10 +19,14 @@ class Balance extends Base
     }
 
     public function balancelistAction(){
+        $modelBalance = new \app\common\model\Balance();
+        $query = $modelBalance->with('Account') -> select();
+
+
         return json([
             'code' => 0,
             'msg' => '',
-            'count' => $modelGood->getGoodCount(),
+            'count' => $modelBalance->getBalanceCount(),
             'data' => $query
         ]);
     }
@@ -29,14 +35,21 @@ class Balance extends Base
     public function changeAction(){
         $uid = input('get.uid');
 
+        $this->assign('uid', $uid);
         return $this->fetch();
     }
 
-    public function changelistAction(){
+    public function changelistAction($uid = 0){
+        $modelBalanceChange = new BalanceChange();
+        $query = $modelBalanceChange -> with('Account') -> where([
+            'user_id' => $uid
+        ]) -> select();
+
+
         return json([
             'code' => 0,
             'msg' => '',
-            'count' => $modelGood->getGoodCount(),
+            'count' => $modelBalanceChange->getBalanceChangeCount(['user_id' => $uid]),
             'data' => $query
         ]);
     }
