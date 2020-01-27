@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 
+use app\common\model\Image;
 use think\facade\Log;
 
 class Index extends Base
@@ -33,12 +34,37 @@ class Index extends Base
             // 移动到框架应用根目录/public/uploads/ 目录下
             if($file && $file->checkImg()){
                 $md5 = md5_file($file->getRealPath());
-                $info = $file->move($path);
-                if($info){
+                $size = $file->getSize();
+
+                $modelImage= new Image();
+                $query = $modelImage ->where([
+                    'md5' => $md5,
+                    'size' => $size
+                ])-> find();
+
+                if(!empty($query))
                     return json([
                         "uploaded"=> 1,
-                        "fileName"=> $info->getFilename(),
-                        "url"=> DIRECTORY_SEPARATOR.'uploads'.DIRECTORY_SEPARATOR.$info->getSaveName()
+                        "fileName"=> $query['name'],
+                        "url"=> $query['url']
+                    ]);
+
+                $info = $file->move($path);
+                if($info){
+                    $url = '/uploads/'.$info->getSaveName();
+                    $filename = $info->getFilename();
+
+                    $modelImage ->insert([
+                        'md5' => $md5,
+                        'size' => $size,
+                        'name' => $filename,
+                        'url'=> $url
+                    ], false);
+
+                    return json([
+                        "uploaded"=> 1,
+                        "fileName"=> $filename,
+                        "url"=> $url
 
                     ]);
                 }else{
@@ -63,15 +89,4 @@ class Index extends Base
         ]);
     }
 
-    public function browseAction(){
-        return json([
-            "uploaded"=> 1,
-            "fileName"=> "null.png",
-            "url"=> "/static/img/null.png",
-            "error"=>[
-                "message"=> "A file with the same name already exists. The uploaded file was renamed to \"foo(2).jpg\"."
-
-            ]
-        ]);
-    }
 }

@@ -23,7 +23,7 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'subtitle', title: '商品副标题'}
             ,{field: 'name', title: '分类', templet: function(d){return d.category.name}}
             ,{field: 'status', title: '状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
-            ,{title: '操作', minWidth: 150, align: 'center', fixed: 'right', toolbar: '#table-good-list'}
+            ,{title: '操作', width: 210, align: 'center', fixed: 'right', toolbar: '#table-good-list'}
         ]]
         ,page: true
         ,limit: 10

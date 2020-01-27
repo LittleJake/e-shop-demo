@@ -28,6 +28,15 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label">商品主图片</label>
+        <div class="layui-input-block">
+            <input id="img-url" name="g[img_url]" lay-verify="required" placeholder="商品图片URL" class="layui-input" readonly>
+            <img id="img" class="layui-hide" width="50%" src="#">
+            <br>
+            <a id="upload-image" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-picture"></i>上传图片</a>
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label class="layui-form-label">商品分类</label>
         <div class="layui-input-inline">
             <select name="g[cate_id]" lay-verify="required">
@@ -84,9 +93,27 @@
         base: '/static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form'], function(){
+    }).use(['index', 'form', 'upload'], function(){
         var $ = layui.$
-            ,form = layui.form;
+            ,form = layui.form
+            ,upload = layui.upload;
+
+        upload.render({
+            elem: '#upload-image'
+            ,url: "{:url('admin/index/upload')}"
+            ,accept: 'images'
+            ,field: 'upload'
+            ,done: function(res){
+                if(res.uploaded == 1){
+                    $('#img-url').val(res.url);
+                    document.getElementById('img').src = res.url;
+                    $('#img').removeClass('layui-hide');
+                    layer.msg('上传成功',{icon: 1});
+                } else {
+                    layer.msg('上传失败，'+res.error.msg,{icon: 2});
+                }
+            }
+        });
 
     });
 
