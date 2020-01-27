@@ -102,5 +102,5 @@ layui.define(['table', 'form'], function(exports){
         }
     });
 
-    exports('article', {})
+    exports('comment', {})
 });
