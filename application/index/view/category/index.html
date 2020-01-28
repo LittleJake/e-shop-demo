@@ -22,7 +22,7 @@
                 <div class="row good-list">
                     <div class="col-md-3 col-sm-3 col-xs-4">
                         <a href="{:url('index/good/good', ['id' => $v.id])}" class="thumbnail">
-                            <img src="/static/img/null.png" alt="{$v.title}" width="120px">
+                            <img src="{$v.img_url|default='/static/img/null.png'}" alt="{$v.title}" width="120px">
                         </a>
                     </div>
                     <div class="detail col-md-6 col-sm-6 col-xs-7">

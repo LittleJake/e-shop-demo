@@ -19,4 +19,8 @@ class Base extends Common
             return $this->redirect('index/login/login', ['r' =>  urlencode($this->request->url(true))]);
     }
 
+    protected function userid(){
+        return session('user_id');
+    }
+
 }

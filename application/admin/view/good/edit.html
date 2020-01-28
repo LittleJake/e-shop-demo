@@ -30,7 +30,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">商品主图片</label>
         <div class="layui-input-block">
-            <input id="img-url" name="g[img_url]" lay-verify="required" placeholder="商品图片URL" class="layui-input" readonly>
+            <input id="img-url" name="g[img_url]" lay-verify="required" placeholder="商品图片URL" class="layui-input" value="{$good.img_url}" readonly>
             <img id="img" class="layui-hide" width="50%" src="#">
             <br>
             <a id="upload-image" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-picture"></i>上传图片</a>
@@ -50,13 +50,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">默认价格</label>
         <div class="layui-input-block">
-            <input name="c[price]" lay-verify="required" placeholder="请输入商品默认价格" class="layui-input" value="0" type="number" min="0" step="0.01">
+            <input name="c[price]" lay-verify="required" placeholder="请输入商品默认价格" class="layui-input" value="{$good.good_cat[0]['price']}" type="number" min="0" step="0.01">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">默认库存</label>
         <div class="layui-input-block">
-            <input name="c[sku]" lay-verify="required" placeholder="请输入商品默认库存" class="layui-input" value="0" type="number" min="0">
+            <input name="c[sku]" lay-verify="required" placeholder="请输入商品默认库存" class="layui-input" value="{$good.good_cat[0]['sku']}" type="number" min="0">
         </div>
     </div>
     <div class="layui-form-item">
@@ -97,6 +97,12 @@
         var $ = layui.$
             ,form = layui.form
             ,upload = layui.upload;
+
+        if(document.getElementById('img-url').value != ''){
+            document.getElementById('img').src = document.getElementById('img-url').value;
+            $('#img').removeClass('layui-hide');
+        }
+
 
         upload.render({
             elem: '#upload-image'

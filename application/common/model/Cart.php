@@ -6,12 +6,12 @@
  * Time: 1:01
  */
 
-namespace app\index\model;
+namespace app\common\model;
 
-
-use app\common\model\BaseModel;
 
 class Cart extends BaseModel
 {
-
+    public function GoodCat(){
+        return $this->hasOne('GoodCat', 'id', 'cat_id');
+    }
 }

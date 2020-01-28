@@ -44,7 +44,7 @@ layui.define(['table', 'form'], function(exports){
                             //更新数据表
                             obj.del();
                             layer.close(index);
- //关闭弹层
+                            //关闭弹层
                         }
                         layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
                     }
@@ -67,25 +67,31 @@ layui.define(['table', 'form'], function(exports){
                         var field = data.field; //获取提交的字段
 
                         //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        obj.update({
-                            label: field.label
-                            ,title: field.title
-                            ,author: field.author
-                            ,status: field.status
-                        }); //数据更新
+                        $.ajax({
+                            type:'post',
+                            url:'/admin/good/edit.html',
+                            data: field,
+                            success:function (res) {
+                                if (res.code == 1) {
+                                    //更新数据表
+                                    //$.ajax({});
 
-                        form.render();
-                        layer.close(index); //关闭弹层
+                                    table.reload('LAY-app-good-list'); //数据刷新
+
+                                    form.render();
+                                    layer.close(index); //关闭弹层
+                                }
+                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                            }
+                        });
                     });
-
                     submit.trigger('click');
                 }
             });
         }
     });
 
-    //评论管理
+//评论管理
     table.render({
         elem: '#LAY-app-content-comm'
         ,url: layui.setter.base + 'json/content/comment.js' //模拟接口
@@ -103,7 +109,7 @@ layui.define(['table', 'form'], function(exports){
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
-    //监听工具条
+//监听工具条
     table.on('tool(LAY-app-content-comm)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){

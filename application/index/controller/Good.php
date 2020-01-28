@@ -179,15 +179,15 @@ class Good extends Common
 
         $modelGoodCat = new GoodCat();
 
+        $cat = explode(',', $cat);
+        $num = explode(',', $num);
+
         $goods = $modelGoodCat
             ->with('Good')
             ->where([
-                'id' => ['in', $cat]
+                'id' => $cat
             ])
             ->select();
-
-        $cat = explode(',', $cat);
-        $num = explode(',', $num);
 
         $order = array_combine($cat, $num);
         $total = 0;

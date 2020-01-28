@@ -9,71 +9,61 @@
 namespace app\index\controller;
 
 use app\common\model\Address;
+use app\common\model\GoodCat;
 use app\common\model\Order;
+use app\common\model\Cart;
 use think\Db;
 
 class User extends Base
 {
     public function addCartAction()
     {
-        if(!$this->isLogin()){
-            return json(['status' => -1, 'msg' => 'need login']);
-        }
-
-
         if($this->request->isAjax()) {
-            $cat = input('cat');
-            $num = input('num');
-            $user = session('user_id');
+            $data = $this->request->post();
+            $validate = validate('Cart');
 
-            if( !isset($num)||!isset($user))
-                return json(['status' => -2, 'msg' => 'failed']);
+            if(!$validate->check($data))
+                return json(['status' => -3, 'msg' => $validate->getError()]);
 
-            if(!isset($cat))
-                return json(['status' => -3, 'msg' => 'failed']);
+            $user = $this->userid();
 
-            Db::startTrans();
+            $modelGoodCat = new GoodCat();
+            $modelCart = new Cart();
+
             try{
-                $query = Db::table('category')
-                    ->where('cat_id', $cat)
-                    ->where('sku', '>=', $num)
+                $query = $modelGoodCat
+                    ->where('id' , $data['cat_id'])
+                    ->where('sku' ,'>=', $data['num'])
                     ->find();
 
-                if(isset($query)) {
-                    $query = Db::table('cart')->where([
+                if(!empty($query)) {
+                    $query = $modelCart->where([
                         'user_id' => $user,
-                        'cat_id' => $cat
+                        'cat_id' => $data['cat_id']
                     ])->find();
 
-                    if(isset($query))
-                        Db::table('cart')-> query("update `cart` set num = num + $num where cat_id = $cat and user_id = $user");
+                    if(!isset($query))
+                        $modelCart-> insert(array_merge(
+                            ['user_id' => $user], $data
+                        ),false);
                     else
-                        Db::table('cart')->insert([
-                            'cat_id' => $cat,
-                            'num' => $num,
-                            'user_id' => $user
-                        ]);
+                        $modelCart->where([
+                            'user_id' => $user,
+                            'cat_id' => $data['cat_id']
+                        ])-> setInc('num', $data['num']);
                 }
-                else
-                    throw new \Exception;
-
-                Db::commit();
-
-            } catch (\Exception $e) {
-                Db::rollback();
-                return json(['status' => -2, 'msg' => 'failed']);
+            } catch (\Exception $e){
+                return json(['status' => -2, 'msg' => $e->getMessage()]);
             }
-
-
-            return json(['status' => 0, 'msg' => "success, cat: $cat, num: $num"]);
+            return json(['status' => 0, 'msg' => "success, cat: $data[cat_id], num: $data[num]"]);
         }
-        else
-            return $this->error('参数有误');
+
+        return json(['status' => -1, 'msg' => "error"]);
     }
+
     //购物车
     public function cartAction(){
-
-        $user = session('user_id');
+        $user = $this->userid();
 
         if($this->request->isAjax()){
             $del = input('del');
@@ -92,9 +82,20 @@ class User extends Base
             }
         }
 
-        $goods = Db::query("select * from `cart` left join `category` on cart.cat_id = category.cat_id left join `good` on category.good_id = good.good_id where cart.user_id = $user");
+        $modelCart = new Cart();
+        $goods = $modelCart->where([
+            'user_id' => $user
+        ])->with([
+            'GoodCat' => function($q){
+                return $q -> with([
+                    'Good'=>function($q){
+                        return $q->withField('id,title,img_url');
+                    }
+                ]);
+            }
+        ])->select();
 
-
+        //var_dump($goods);exit;
         $this->assign('goods', $goods);
 		$this->assign('page_title', '购物车');
 

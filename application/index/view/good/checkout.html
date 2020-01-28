@@ -12,7 +12,7 @@
                 <p class="address-info">{$address[0]['province']} {$address[0]['city']} {$address[0]['district']} {$address[0]['street']}</p>
                 <input class="btn btn-sm btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
                 {else}
-                <p class="address-info">暂无地址</p>
+                <p class="address-info">暂无地址（请在个人中心添加地址）</p>
                 {/if}
             </div>
             <div class="modal fade" id="changeAddress" tabindex="-1" role="dialog">
@@ -25,7 +25,7 @@
                         <div class="modal-body">
                             {foreach $address as $k => $v}
                             <div class="radio">
-                                <label><input type="radio" name="a[add_id]" value="{$v.address_id}" {if ($k == 0)}checked{/if}>{$v.name} ，{$v.province} {$v.city} {$v.district} {$v.street}</label>
+                                <label><input type="radio" name="a[add_id]" value="{$v.id}" {if ($k == 0)}checked{/if}>{$v.name} ，{$v.province} {$v.city} {$v.district} {$v.street}</label>
                             </div>
                             {/foreach}
                         </div>
@@ -70,21 +70,22 @@
         <hr>
         <div class="container">
             {foreach $goods as $v}
-            <div class="cart-list">
-                <img src="/static/img/null.png" alt="{$v.good.title}" width="70px">
+            <div class="row cart-list">
+                <div class="col-md-2 col-sm-2 col-xs-5">
+                        <img class="thumbnail" src="{$v.good.img_url|default='/static/img/null.png'}" alt="{$v.good.title}" width="120px">
 
-                <div class="detail">
-                    <p>{$v.good.title}</p>
-                    <p>{$v.name}</p>
                 </div>
-
-                <div class="pull-right">
-                    <p>${$v.price}</p>
+                <div class="col-md-8 col-sm-8 col-xs-6">
+                    <h4>{$v.good.title}</h4>
+                    <h5>分类：{$v.name}</h5>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-6">
+                    <h4>￥{$v.price}</h4>
                     <p>x {$v.num}</p>
                 </div>
-
             </div>
             {/foreach}
+
         </div>
         <hr>
         <input name="a[cat]" value="{$cat}" hidden>
@@ -97,10 +98,10 @@
 {/block}
 {block name="extendjs"}
 <script>
-    $('input[name=add_id]')[0].click();
+    if($('input[name="a[add_id]"]')[0])$('input[name="a[add_id]"]')[0].click();
 
     function change_add() {
-        var id = $('input[name=add_id]:checked').val();
+        var id = $('input[name="a[add_id]"]:checked').val();
 
         $.ajax({
             url: "{:url('index/user/address')}",

@@ -40,7 +40,7 @@ class Good extends Base
             $modelGood = new \app\common\model\Good();
             $g = $this->request->post('g');
             $c = $this->request->post('c');
-            $c['name'] = 'default';
+            $c['name'] = '默认';
             try{
                 $id = $modelGood->insertGetId($g);
                 $modelGood ->GoodCat()->insert(array_merge(['good_id'=> $id], $c));
@@ -66,16 +66,31 @@ class Good extends Base
     public function editAction()
     {
         if($this->request->isPost()){
+            $modelGood = new \app\common\model\Good();
 
+            $g = $this->request->post('g');
+            $c = $this->request->post('c');
+            try{
+                $modelGood->where([
+                    'id' => $g['id']
+                ])->data($g)->update();
+
+                $modelGood->GoodCat()
+                    ->update($c,['good_id' => $g['id']]);
+
+            } catch (\Exception $e){
+                return json(['code' => 0, 'msg' => $e->getMessage()]);
+            }
+
+
+            return json(['code' => 1, 'msg' => '成功']);
         }
-
-
 
         $data = input();
         $modelGood = new \app\common\model\Good();
         $good = $modelGood -> where([
             'id' =>$data['id']
-        ]) -> find();
+        ]) -> with('GoodCat')->find();
 
         $modelCategory = new Category();
         $cate = $modelCategory -> select();

@@ -4,31 +4,38 @@
     <h4>购物车</h4>
     <hr>
     {foreach $goods as $v}
-    <div class="cart-list">
-        <input type="checkbox" name="cat-id" value="{$v.cat_id}">
-        <a href="{:url('index/good/good', ['id' => $v.good_id])}">
-            <img src="/static/img/null.png" alt="{$v.title}" width="70px">
-        </a>
-
-        <div class="detail">
-            <a href="{:url('index/good/good', ['id' => $v.good_id])}">{$v.title}</a>
-            <p>{$v.cat_name}</p>
+    <div class="row cart-list">
+        <div class="col-md-3 col-sm-3 col-xs-7">
+            <div class="input-group">
+                  <span class="input-group-addon">
+                    <input type="checkbox" name="cat-id" value="{$v.cat_id}" class="checkbox-inline">
+                  </span>
+                <img src="{$v.good_cat.good.img_url|default='/static/img/null.png'}" alt="{$v.good_cat.good.title}" width="120px" class="thumbnail" style="margin-bottom: 0">
+            </div>
+        </div>
+        <div class="detail col-md-6 col-sm-6 col-xs-5">
+            <a href="{:url('index/good/good', ['id' => $v.good_cat.good_id])}">
+                {$v.good_cat.good.title}
+            </a>
+            <p>{$v.good_cat.name}</p>
         </div>
 
-
-        <div class="input-group pull-right">
-            <p>${$v.price}</p>
-            <input type="number" class="input-sm form-control" name="cat-num" value="{$v.num}" min="1" style="width: 70px">
+        <div class="input-group col-md-3 col-sm-3 col-xs-5">
+            <h4>￥{$v.good_cat.price}</h4>
+            <input type="number" class="input-sm form-control" name="cat-num" data-id="{$v.cat_id}" value="{$v.num}" min="1" style="width: 70px">
             <input type="button" class="btn btn-sm btn-default" onclick="del({$v.cat_id});" value="删除">
+
         </div>
 
 
     </div>
+    <hr>
     {/foreach}
-    <form action="{:url('index/good/checkout')}" method="post" id="shop">
+
+    <form action="{:url('index/good/checkout')}" method="post" id="shop" class="text-right">
         <input name="cat" hidden>
         <input name="num" hidden>
-        <input value="提交订单" class="btn btn-info" style="position: fixed; bottom: 10px; right: 10px;" onclick="check();" type="button">
+        <input value="提交订单" class="btn btn-info"  onclick="check();" type="button">
     </form>
 </div>
 {/block}
@@ -56,7 +63,7 @@
         var num = new Array();
         $('input[name=cat-id]:checked').each(function() {
             cat.push($(this).val());
-            num.push($(this).siblings('.pull-right').children('input[name=cat-num]').val());
+            num.push($('input[data-id="'+$(this).val()+'"]').val());
 
         });
 

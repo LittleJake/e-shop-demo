@@ -3,7 +3,7 @@
 <div class="main-info">
     <div class="container">
         <div class="thumbnail col-md-4 col-sm-4" id="good-img">
-            <img class="img-responsive" src="/static/img/null.png" alt="{$good.title}">
+            <img class="img-responsive" src="{$good.img_url|default='/static/img/null.png'}" alt="{$good.title}">
         </div>
         <div class="col-md-8 col-sm-8">
             <h3>{$good.title}</h3>
@@ -151,7 +151,7 @@ glyphicon glyphicon-signal"></i> 详细描述</h4>
         $.ajax({
             type: 'post',
             url: "{:url('index/user/addCart')}",
-            data: {'cat': cat, 'num': num},
+            data: {'cat_id': cat, 'num': num},
             success: function (xhr) {
                 if(xhr.status == 0) {
                     $('#add').tooltip('toggle');

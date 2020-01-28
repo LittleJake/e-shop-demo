@@ -33,6 +33,7 @@ class Index extends Base
 
             // 移动到框架应用根目录/public/uploads/ 目录下
             if($file && $file->checkImg()){
+                //判断重复文件
                 $md5 = md5_file($file->getRealPath());
                 $size = $file->getSize();
 
