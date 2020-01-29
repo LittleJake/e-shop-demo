@@ -15,4 +15,10 @@ class Set extends Base
     public function indexAction(){
         return $this->fetch();
     }
+    public function userAction(){
+        return $this->fetch();
+    }
+    public function passwdAction(){
+        return $this->fetch();
+    }
 }

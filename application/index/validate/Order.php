@@ -17,16 +17,17 @@ class Order extends Common
         'num' => 'require',
         'pay' => 'require|isPositiveInteger',
         'add_id' => 'require|isPositiveInteger',
-        'total' => 'require|isPositiveInteger',
         'ship' => 'require|isPositiveInteger',
     ];
 
     protected $message  =   [
         'cat.require' => '物品不存在',
         'add_id.require' => '地址不存在',
-        'num.require' => '请填写物品数量',
+        'add_id.isPositiveInteger' => '地址不存在',
+        'num.require' => '物品数量错误',
         'pay.require' => '付款方式不存在',
-        'total.require' => '价格不存在',
+        'pay.isPositiveInteger' => '付款方式不存在',
         'ship.require' => '邮寄方式不存在',
+        'ship.isPositiveInteger' => '邮寄方式不存在',
     ];
 }

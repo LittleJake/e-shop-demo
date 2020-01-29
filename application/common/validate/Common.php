@@ -17,6 +17,13 @@ class Common extends Validate
         if(is_numeric($value) && is_int($value+0) && ($value+0)>0)
             return true;
         else
-            return $field."必须为正整数";
+            return false;
+    }
+
+    protected function isPositiveDouble($value,$rule='',$data='', $field=''){
+        if(is_numeric($value) && is_float($value+0.01) && ($value+0)>0)
+            return true;
+        else
+            return false;
     }
 }

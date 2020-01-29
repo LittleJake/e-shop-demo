@@ -9,7 +9,7 @@
             <div class="address-list col-sm-10" id="address-list">
                 {if sizeof($address) > 0}
                 <p class="name-info">{$address[0]['name']} <span class="contact-info">{$address[0]['contact']}</span></p>
-                <p class="address-info">{$address[0]['province']} {$address[0]['city']} {$address[0]['district']} {$address[0]['street']}</p>
+                <p class="address-info">{$address[0]['province']} {$address[0]['city']} {$address[0]['district']} {$address[0]['street']} {$address[0]['code']}</p>
                 <input class="btn btn-sm btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
                 {else}
                 <p class="address-info">暂无地址（请在个人中心添加地址）</p>
@@ -25,7 +25,7 @@
                         <div class="modal-body">
                             {foreach $address as $k => $v}
                             <div class="radio">
-                                <label><input type="radio" name="a[add_id]" value="{$v.id}" {if ($k == 0)}checked{/if}>{$v.name} ，{$v.province} {$v.city} {$v.district} {$v.street}</label>
+                                <label><input type="radio" name="a[add_id]" value="{$v.id}" {if ($k == 0)}checked{/if}>{$v.name} ，{$v.province} {$v.city} {$v.district} {$v.street} {$v.code}</label>
                             </div>
                             {/foreach}
                         </div>
@@ -49,7 +49,7 @@
                     </label>
                 </div>
                 <p>
-                    <a class="btn btn-sm btn-primary" target="_blank" href="#">充值</a>
+                    <a class="btn btn-sm btn-primary" target="_blank" href="{:url('index/balance/charge')}">充值</a>
                 </p>
             </div>
         </div>
@@ -90,7 +90,6 @@
         <hr>
         <input name="a[cat]" value="{$cat}" hidden>
         <input name="a[num]" value="{$num}" hidden>
-        <input name="a[total]" type="number" value="{$total}" hidden>
         <input value="提交订单" class="btn btn-info pull-right"  type="submit">
     </div>
 
