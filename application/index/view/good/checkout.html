@@ -60,9 +60,9 @@
             </div>
             <div class="col-sm-9">
                 <select class="form-control" name="a[ship]">
-                    <option>请选择配送</option>
+                    <option value="">请选择配送</option>
                     {foreach $ships as $v}
-                    <option value="{$v.shipping_id}">{$v.name} ￥{$v.price}</option>
+                    <option value="{$v.id}">{$v.name} ￥{$v.price}</option>
                     {/foreach}
                 </select>
             </div>
@@ -88,9 +88,10 @@
 
         </div>
         <hr>
-        <input name="a[cat]" value="{$cat}" hidden>
-        <input name="a[num]" value="{$num}" hidden>
-        <input value="提交订单" class="btn btn-info pull-right"  type="submit">
+        <input name="a[cat]" value="{$data.cat}" hidden readonly>
+        <input name="a[num]" value="{$data.num}" hidden readonly>
+        <h4 class="text-right text-danger">小计 ￥{:sprintf('%.2f',$total)}</h4>
+        <input value="提交订单" class="btn btn-info pull-right" type="submit">
     </div>
 
 </form>

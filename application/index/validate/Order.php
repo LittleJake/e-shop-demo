@@ -30,4 +30,8 @@ class Order extends Common
         'ship.require' => '邮寄方式不存在',
         'ship.isPositiveInteger' => '邮寄方式不存在',
     ];
+
+    protected $scene = [
+        'checkout' => ['cat', 'num']
+    ];
 }

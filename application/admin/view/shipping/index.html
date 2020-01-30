@@ -21,9 +21,9 @@
             <table id="LAY-app-shipping" lay-filter="LAY-app-shipping"></table>
             <script type="text/html" id="buttonTpl">
                 {{#  if(d.status){ }}
-                <button class="layui-btn layui-btn-xs">上架</button>
+                <button class="layui-btn layui-btn-primary layui-btn-xs">可用</button>
                 {{#  } else { }}
-                <button class="layui-btn layui-btn-primary layui-btn-xs">下架</button>
+                <button class="layui-btn layui-btn-danger layui-btn-xs">禁用</button>
                 {{#  } }}
             </script>
             <script type="text/html" id="layuiadmin-app-shipping-tool">
@@ -40,25 +40,45 @@
         base: '/static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'shipping', 'table'], function(){
+    }).use(['index', 'shipping', 'table', 'form'], function(){
 
-        var table = layui.table;
+        var table = layui.table
+            ,form = layui.form;
         var $ = layui.$, active = {
             add: function(){
                 layer.open({
                     type: 2
-                    ,title: '添加物流'
-                    ,content: '/admin/category/categoryAdd'
-                    ,area: ['400px', '200px']
+                    ,title: '添加运输方式'
+                    ,content: '{:url("admin/shipping/add")}'
+                    ,area: ['400px', '320px']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
-                        var othis = layero.find('iframe').contents().find("#layuiadmin-app-form-tags")
-                            ,tags = othis.find('input[name="tags"]').val();
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submitID = 'layuiadmin-app-shipping-submit'
+                            ,submit = layero.find('iframe').contents().find("#"+submitID);
 
-                        if(!tags.replace(/\s/g, '')) return;
+                        //监听提交
+                        iframeWindow.layui.form.on('submit('+submitID+')', function(data){
+                            var field = data.field; //获取提交的字段
 
-                        table.reload('LAY-app-content-tags');
-                        layer.close(index);
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            $.ajax({
+                                type:'post',
+                                url:'{:url("admin/shipping/add")}',
+                                data: field,
+                                success:function (res) {
+                                    if (res.code == 1) {
+
+                                        table.reload('LAY-app-shipping'); //数据刷新
+
+                                        form.render();
+                                        layer.close(index); //关闭弹层
+                                    }
+                                    layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                                }
+                            });
+                        });
+                        submit.trigger('click');
                     }
                 });
             }

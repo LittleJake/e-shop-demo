@@ -8,46 +8,69 @@ layui.define(['table', 'form'], function(exports){
         ,url: '/admin/shipping/shippinglist' //模拟接口
         ,cols: [[
             {field: 'id', width: 100, title: 'ID', sort: true, fixed: 'left'}
-            ,{field: 'name', title: '分类名', minWidth: 100}
-            ,{field: 'price', title: '商品数'}
-            ,{field: 'status', title: '操作', templet: '#buttonTpl'}
+            ,{field: 'name', title: '物流名', minWidth: 100}
+            ,{field: 'price', title: '物流价格'}
+            ,{field: 'status', title: '状态', templet: '#buttonTpl'}
             ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#layuiadmin-app-shipping-tool'}
         ]]
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
 //监听工具条
-    table.on('tool(LAY-app-content-tags)', function(obj){
+    table.on('tool(LAY-app-shipping)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
-            layer.confirm('确定删除此分类？', function(index){
-                obj.del();
-                layer.close(index);
+            layer.confirm('确定删除此运输方式？', function(index){
+
+                //提交 Ajax 成功后，静态更新表格中的数据
+                $.ajax({
+                    type:'get',
+                    url:'/admin/shipping/del?id='+data.id,
+                    success:function (res) {
+                        if (res.code == 1) {
+                            obj.del();
+                            layer.close(index);
+                        }
+                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                    }
+                });
+
             });
         } else if(obj.event === 'edit'){
             var tr = $(obj.tr);
             layer.open({
                 type: 2
-                ,title: '编辑分类'
-                ,content: '/admin/category/categoryEdit?id='+ data.id
-                ,area: ['400px', '200px']
+                ,title: '编辑运输方式'
+                ,content: '/admin/shipping/edit?id='+ data.id
+                ,area: ['400px', '320px']
                 ,btn: ['确定', '取消']
                 ,yes: function(index, layero){
-                    //获取iframe元素的值
-                    var othis = layero.find('iframe').contents().find("#layuiadmin-app-form-tags")
-                        ,tags = othis.find('input[name="tags"]').val();
+                    var iframeWindow = window['layui-layer-iframe'+ index]
+                        ,submitID = 'layuiadmin-app-shipping-submit'
+                        ,submit = layero.find('iframe').contents().find("#"+submitID);
 
-                    if(!tags.replace(/\s/g, '')) return;
+                    //监听提交
+                    iframeWindow.layui.form.on('submit('+submitID+')', function(data){
+                        var field = data.field; //获取提交的字段
 
-                    obj.update({
-                        tags: tags
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        $.ajax({
+                            type:'post',
+                            url:'/admin/shipping/edit.html',
+                            data: field,
+                            success:function (res) {
+                                if (res.code == 1) {
+
+                                    table.reload('LAY-app-shipping'); //数据刷新
+
+                                    form.render();
+                                    layer.close(index); //关闭弹层
+                                }
+                                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+                            }
+                        });
                     });
-                    layer.close(index);
-                }
-                ,success: function(layero, index){
-                    //给iframe元素赋值
-                    var othis = layero.find('iframe').contents().find("#layuiadmin-app-form-tags").click();
-                    othis.find('input[name="tags"]').val(data.tags);
+                    submit.trigger('click');
                 }
             });
         }
