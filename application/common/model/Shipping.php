@@ -14,4 +14,9 @@ class Shipping extends BaseModel
     public function Order(){
         return $this->belongsToMany('Order','Order','shipping_type','id');
     }
+
+    public function getShippingCount($where = [],$field ='*')
+    {
+        return parent::getCount($where,$field);
+    }
 }

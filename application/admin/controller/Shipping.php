@@ -11,37 +11,33 @@ namespace app\admin\controller;
 
 class Shipping extends Base
 {
-    /** 发货页面 */
+
+
+    /** 物流模板 */
     public function indexAction(){
         return $this->fetch();
     }
 
     public function shippinglistAction(){
-        return json();
+        $modelShipping = new \app\common\model\Shipping();
+        $query = $modelShipping ->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $modelShipping->getShippingCount(),
+            'data' => $query
+        ]);
     }
 
-    public function shipAction(){
-
-    }
-
-    /** 物流模板 */
-    public function methodAction(){
+    public function addAction(){
         return $this->fetch();
     }
 
-    public function methodlistAction(){
-        return json();
-    }
-
-    public function addMethodAction(){
+    public function editAction(){
         return $this->fetch();
     }
 
-    public function editMethodAction(){
-        return $this->fetch();
-    }
-
-    public function delMethodAction(){
+    public function delAction(){
         return $this->fetch();
     }
 

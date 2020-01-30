@@ -16,4 +16,5 @@ class Order extends Base
     public function infoAction(){}
     public function changeAction(){}
     public function shipAction(){}
+
 }
