@@ -114,35 +114,22 @@ class User extends Base
             ])
             ->with([
                 'OrderGoods' => function($query){
-                    $query -> select();
+                    return $query -> with([
+                        'Good' => function($query){
+                            return $query->field('id,title,img_url');
+                        }
+                    ]);
                 }
             ])
             ->order('update_time', 'desc')
             ->paginate(PAGE);
-
-//		$orders = Db::table('order')->where([
-//		    'user_id' => session('user_id')
-//        ])->order('time', 'desc')->paginate(PAGE);
-
 
 		if(empty($orders)) {
 			$this->assign('page_title', '个人订单');
 			return $this->fetch();
 		}
 
-		$goods = array();
-		$total = 0;
-		foreach($orders as $k){
-
-			$goods[$k['order_id']] = Db::query("select * from `order_good` as A left join `category` as B on A.cat_id = B.cat_id left join `good` as C on B.good_id = C.good_id where A.order_id = ${k['order_id']}");
-
-			foreach($goods[$k['order_id']] as $v)
-			    $total += ($v['price'] * $v['num']);
-		}
-
 		$this ->assign('orders', $orders);
-		$this ->assign('goods', $goods);
-		$this->assign('total', $total);
 		$this->assign('page_title', '个人订单');
 		return $this->fetch();
 	}
@@ -289,5 +276,8 @@ class User extends Base
         return $this->fetch();
     }
 
+    public function payAction(){
+        return $this->fetch();
+    }
 
 }

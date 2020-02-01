@@ -7,14 +7,22 @@
 		<div class="col-sm-10">
 
 			<span>订单号：{$k.order_no}</span>
-
-			{foreach $goods[$k.order_id] as $v}
-			<div class="order-good">
-				<p>{$v.title} —— {$v.cat_name}</p>
-				<p>数量：{$v.num}</p>
-				<p>${$v.price * $v.num}</p>
-			</div>
+            {if sizeof($k.order_goods) > 0}
+			{foreach $k.order_goods as $v}
+            <div class="row order-good">
+                <div class="col-md-3 col-sm-3 col-xs-5">
+                    <img class="thumbnail" src="{$v.good.img_url|default='/static/img/null.png'}" alt="{$v.good.title}" width="120px">
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <h4>{$v.good.title}</h4>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-6">
+                    <h4>￥ {:sprintf('%.2f',$v.price * $v.num)}</h4>
+                    <p>数量：{$v.num}</p>
+                </div>
+            </div>
 			{/foreach}
+            {/if}
 		</div>
 		<div class="col-sm-2">
 			状态：
@@ -24,16 +32,19 @@
 			支付成功
 			{elseif $k.status == 2}
 			未支付
+            <a class="btn btn-success" href="{:url('index/user/pay', ['id' => $k.order_no])}">支付</a>
 			{elseif $k.status == 3}
 			运送中
+            <p>单号：{$k.track_no}</p>
 			{elseif $k.status == 4}
 			待评价
-			<a class="btn btn-info" href="{:url('index/user/comment', ['id' => $k.order_id])}">评价</a>
+			<a class="btn btn-info" href="{:url('index/user/comment', ['id' => $k.order_no])}">评价</a>
 			{elseif $k.status == 5}
 			订单完成
 			{else}
 			订单异常
 			{/if}
+            <h4 class="text-danger">小计 ￥{:sprintf('%.2f',$k.total_price)}</h4>
 		</div>
 		<br>
 	</div>

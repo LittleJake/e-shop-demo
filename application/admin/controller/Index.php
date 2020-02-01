@@ -9,6 +9,10 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\ArticleStatus;
+use app\common\library\Enumcode\GoodStatus;
+use app\common\library\Enumcode\OrderStatus;
+use app\common\model\Account;
 use app\common\model\Image;
 use think\facade\Log;
 
@@ -21,6 +25,21 @@ class Index extends Base
     }
 
     public function consoleAction(){
+        $account = model('Account');
+        $good = model('Good');
+        $order = model('Order');
+        $article = model('Article');
+
+        /** 右侧数量挂件 */
+        $this->assign('goodCount', $good ->getGoodCount());
+        $this->assign('userCount', $account ->getAccountCount());
+        $this->assign('inStockCount', $good ->getGoodCount(['status' => GoodStatus::GOOD_IN_STOCK]));
+        $this->assign('waitShippingCount', $order ->getOrderCount(['status' => OrderStatus::ORDER_PAID]));
+        $this->assign('articleCount', $article ->getArticleCount());
+
+
+
+
         return $this->fetch();
     }
 

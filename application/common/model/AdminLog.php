@@ -6,10 +6,8 @@
  * Time: 23:02
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
-
-use app\common\model\BaseModel;
 
 class AdminLog extends BaseModel
 {

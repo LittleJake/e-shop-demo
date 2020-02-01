@@ -8,12 +8,14 @@
 
 namespace app\index\controller;
 
+use app\common\library\Enumcode\OrderStatus;
 use app\common\model\Address;
 use app\common\model\GoodCat;
 use app\common\model\OrderGoods;
 use app\common\model\Shipping;
 use app\index\validate\Order;
 use think\Db;
+use think\facade\Cache;
 
 class Good extends Common
 {
@@ -76,84 +78,36 @@ class Good extends Common
                         $total += $order[$good['id']] * $good['price'];
                     }
                 }
-                var_dump($total);exit;
 
                 $modelOrder
                     -> insert([
                         'order_no' => $order_no,
                         'address_id' => $data["add_id"],
-                        'payment_id' => $data["pay"],
                         'total_price' => $total,
-                        'shipping_id' => $data["ship"],
-                        'time' => $time,
-                        'status' => 0,
+                        'shipping_type' => $data["ship"],
+                        'update_time' => $time,
+                        'status' => OrderStatus::ORDER_UNPAID,
                         'user_id' =>$user
                     ]);
                 $order_id=Db::getLastInsID();
 
-                for ($i = 0; $i< count($ins); $i++){
+                for ($i = 0; $i< count($ins); $i++)
                     $ins[$i]['order_id'] = $order_id;
-                }
 
                 $modelOrderGoods ->insertAll($ins);
+
+                $Balance = new Balance();
+                if($Balance -> BalanceChange($total)){
+                    $modelOrder
+                        -> update([
+                            'status' => OrderStatus::ORDER_PAID
+                        ],['id' => $order_id]);
+                }
                 Db::commit();
             }
             catch (\Exception $e) {
                 Db::rollback();
                 $this->error($e->getMessage(), url('/'));
-            }
-
-
-
-            $goods = Db::query("select * from `category` left join `good` on category.good_id = good.good_id where category.cat_id in (${data['cat']})");
-
-            $cat = explode(',', $data['cat']);
-            $num = explode(',', $data['num']);
-
-            $order = array_combine($cat, $num);
-            $no_goods = array();
-
-            foreach ($goods as $c => $d) {
-                foreach ($order as $a => $b) {
-                    if($d['cat_id'] == $a){
-                        if($goods[$c]['sku'] < $b) {
-                            //库存不足时
-                            $no_goods[] = array_pop($goods[$c]);
-                            break;
-                        }
-
-                        Db::startTrans();
-                        try {
-                            //订单物品添加
-                            Db::table('order_good')
-                                -> insert([
-                                    'order_id' => $order_id,
-                                    'cat_id' => $a,
-                                    'num' => $b
-                                ]);
-                            //减少库存
-                            Db::table('category')
-                                -> where('cat_id', $a)
-                                ->update([
-                                    'sku' => $goods[$c]['sku'] - (int)$b
-                                ]);
-                            //删除购物车
-                            Db::table('cart')
-                                -> where([
-                                    'user_id' => $user,
-                                    'cat_id' => $a
-                                ])
-                                ->delete();
-
-                            Db::commit();
-
-                        }
-                        catch (\Exception $e) {
-                            Db::rollback();
-                        }
-                        break;
-                    }
-                }
             }
 
             return $this->success('成功', url('index/user/order'));
@@ -235,7 +189,7 @@ class Good extends Common
 
             $goods = $modelGoodCat
                 ->with([
-                    'Good' => function($q){return $q->where('status', '=',0);}
+                    'Good' => function($q){return $q->where('status', '=',1);}
                 ])
                 ->where([
                     'id' => $cat

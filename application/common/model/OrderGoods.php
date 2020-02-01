@@ -14,4 +14,8 @@ class OrderGoods extends BaseModel
     public function Order(){
         return $this->belongsTo('Order', 'id', 'order_id');
     }
+
+    public function Good(){
+        return $this->hasOne('Good', 'id', 'good_id');
+    }
 }
