@@ -19,14 +19,12 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">成交额</div>
+                        <div class="layui-card-header">订单概况</div>
                         <div class="layui-card-body">
 
                             <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-dataview">
                                 <div carousel-item id="LAY-index-dataview">
                                     <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
-                                    <div></div>
-                                    <div></div>
                                 </div>
                             </div>
 
@@ -39,7 +37,24 @@
                             </ul>
                             <div class="layui-tab-content">
                                 <div class="layui-tab-item layui-show">
-                                    <table id="LAY-index-topSearch"></table>
+                                    <table id="LAY-app-order-list"></table>
+                                    <script type="text/html" id="buttonTpl">
+                                        {{#  if(d.status == 0){ }}
+                                        <button class="layui-btn layui-btn-danger layui-btn-xs">订单关闭</button>
+                                        {{#  } else if(d.status == 1) { }}
+                                        <button class="layui-btn layui-btn-xs">支付成功</button>
+                                        {{#  } else if(d.status == 2) { }}
+                                        <button class="layui-btn layui-btn-warm layui-btn-xs">未支付</button>
+                                        {{#  } else if(d.status == 3) { }}
+                                        <button class="layui-btn layui-btn-xs">运送中</button>
+                                        {{#  } else if(d.status == 4) { }}
+                                        <button class="layui-btn layui-btn-xs">待评价</button>
+                                        {{#  } else if(d.status == 5) { }}
+                                        <button class="layui-btn layui-btn-xs">订单完成</button>
+                                        {{#  } else { }}
+                                        <button class="layui-btn layui-btn-danger layui-btn-xs">订单异常</button>
+                                        {{#  } }}
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +84,7 @@
                                     </a>
                                 </li>
                                 <li class="layui-col-xs6">
-                                    <a lay-href="{:url('admin/order/index')}" class="layadmin-backlog-body">
+                                    <a lay-href="{:url('admin/good/list')}" class="layadmin-backlog-body">
                                         <h3>上架数</h3>
                                         <p><cite>{$inStockCount}</cite></p>
                                     </a>

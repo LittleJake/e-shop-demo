@@ -95,7 +95,6 @@ class User extends Base
             }
         ])->select();
 
-        //var_dump($goods);exit;
         $this->assign('goods', $goods);
 		$this->assign('page_title', '购物车');
 

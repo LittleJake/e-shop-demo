@@ -109,4 +109,25 @@ class Index extends Base
         ]);
     }
 
+    //月统计
+    public function getMonthStatusAction(){
+        $order = model('Order');
+
+        $month = date('m');
+        $date = [];
+        $amount = [];
+        $count = [];
+
+        for($i = 0; $i < 12; $i++){
+            $start = mktime(23,59,59,$month - $i, 0);
+            $stop = mktime(23,59,59,$month - $i+1, 0);
+
+            array_unshift($date, date('Ym',$stop));
+            $data = $order -> whereBetween('update_time',"$start,$stop")->field('ifnull(sum(total_price), 0) as s, count(*) as c')->find();
+            array_unshift($amount, $data['s']);
+            array_unshift($count, $data['c']);
+        }
+
+        return json(['code' => 1, 'data'=>['count' => $count, 'amount' => $amount, 'date' => $date]]);
+    }
 }
