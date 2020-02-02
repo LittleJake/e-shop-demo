@@ -96,14 +96,14 @@ class User extends Base
         ])->select();
 
         $this->assign('goods', $goods);
-		$this->assign('page_title', '购物车');
+        $this->assign('page_title', '购物车');
 
-		if($this->request->isAjax())
+        if($this->request->isAjax())
             return $this->fetch('user/ajaxCart');
 
-		return $this->fetch();
-		
-	}
+        return $this->fetch();
+
+    }
     //个人订单
     public function orderAction(){
         $modelOrder = new Order();
@@ -123,15 +123,15 @@ class User extends Base
             ->order('update_time', 'desc')
             ->paginate(PAGE);
 
-		if(empty($orders)) {
-			$this->assign('page_title', '个人订单');
-			return $this->fetch();
-		}
+        if(empty($orders)) {
+            $this->assign('page_title', '个人订单');
+            return $this->fetch();
+        }
 
-		$this ->assign('orders', $orders);
-		$this->assign('page_title', '个人订单');
-		return $this->fetch();
-	}
+        $this ->assign('orders', $orders);
+        $this->assign('page_title', '个人订单');
+        return $this->fetch();
+    }
     //地址
     public function addressAction(){
         $modelAddress = new Address();
@@ -181,49 +181,59 @@ class User extends Base
             return $this->success("成功",'index/user/address');
         }
 
-		$query = $modelAddress -> where([
-		    'user_id' => $user,
+        $query = $modelAddress -> where([
+            'user_id' => $user,
             'status' => 1
         ]) -> select();
-		
-		$this->assign('address', $query);
-		$this->assign('page_title', '地址列表');
-		return $this->fetch();
-	}
+
+        $this->assign('address', $query);
+        $this->assign('page_title', '地址列表');
+        return $this->fetch();
+    }
     //增加地址
     public function addAddressAction(){
-		if($this->request->isPost()){
+        if($this->request->isPost()){
             $modelAddress = new Address();
 
-		    $data = input('post.a');
+            $data = input('post.a');
 
             $validator = validate('address');
 
-			if(!$validator->check($data))
-				return $this->error($validator->getError());
-			
-			$data['user_id'] = session('user_id');
+            if(!$validator->check($data))
+                return $this->error($validator->getError());
+
+            $data['user_id'] = session('user_id');
 
             $modelAddress -> insert($data);
-			
-			return $this->success('添加成功', url('index/user/address'));
-			
-		}
-			
-		
-		
-		$this->assign('page_title', '添加地址');
-		return $this->fetch();
-	}
 
-	//商品评价
-    public function commentAction(){
+            return $this->success('添加成功', url('index/user/address'));
+
+        }
+
+
+
+        $this->assign('page_title', '添加地址');
+        return $this->fetch();
+    }
+
+    //商品评价
+    public function rateAction(){
 
         $user = session('user_id');
-        $id = (int)input('id');
-        $query = Db::query("select * from `order` left join `order_good` on `order`.order_id = order_good.order_id left join `category` on order_good.cat_id = category.cat_id left join `good` on category.good_id = good.good_id where order_good.order_id = $id and user_id = $user");
+        $id = input('order', 0);
+        $order = model('Order');
+        $query = $order -> where(['order_no' => $id]) ->with([
+            'OrderGoods' => function($e){
+                return $e-> with([
+                    'Good'=> function($e){
+                        return $e-> withField('id,img_url,title');
+                    }
+                ]);
+            }
+        ])-> find();
 
         if($this->request->isPost()){
+            var_dump($this->request->post());exit;
             $post = input();
             foreach ($query as $k) {
                 $star = array_shift($post);
@@ -268,7 +278,7 @@ class User extends Base
             return $this->success('成功', url('user/order'));
         }
 
-        $this->assign('good', $query);
+        $this->assign('order', $query);
 
 
         $this->assign('page_title', '评价商品');

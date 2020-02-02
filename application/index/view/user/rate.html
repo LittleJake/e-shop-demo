@@ -1,0 +1,50 @@
+{extend name="default/base" /}
+{block name="extendcss"}
+<link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
+{/block}
+{block name="content"}
+<div class="container">
+    <form method="post" class="form-group" id="form-rate">
+        {foreach $order.order_goods as $k}
+        <div class="row good-list">
+            <div class="col-xs-3 col-md-3">
+                <img src="{$k.good.img_url|default='/static/img/null.png'}" alt="{$k.name}" class="img-responsive thumbnail">
+            </div>
+            <div class="col-xs-9 col-md-9">
+                <h3>{$k.name}</h3>
+                <div id="star-{$k.good_id}"></div>
+                <input class="hidden" type="number" max="5" min="0" hidden name="rate[{$k.good_id}]" value="5">
+                <textarea class="form-control" name="content[{$k.good_id}]" style="resize:none;" rows="3">留下你的评价</textarea>
+            </div>
+        </div>
+        {/foreach}
+        <br>
+        <input type="submit" value="提交" class="btn btn-info">
+    </form>
+
+</div>
+{/block}
+{block name="extendjs"}
+<script src="/static/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/static/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use('rate', function(){
+        var rate = layui.rate;
+
+        {foreach $order.order_goods as $k}
+        //渲染
+        var r{$k.id} = rate.render({
+            elem: '#star-{$k.good_id}'  //绑定元素
+            ,value: 5,
+            choose: function(value){
+                $("input[name='rate[{$k.good_id}]']").val(value);
+            }
+        });
+        {/foreach}
+        });
+
+</script>
+{/block}
