@@ -85,12 +85,18 @@ class Article extends Base
     }
 
     public function articlelistAction(){
+        $where = [];
+
+        !empty(input('id')) && $where[] = ['id', '=', input('id')];
+        !empty(input('title')) && $where[] = ['title', 'like', '%'.input('title').'%'];
+        (input('status') != '') && $where[] = ['status', '=',input('status')];
+
         $modelArticle = new \app\common\model\Article();
-        $query = $modelArticle->with('AdminAccount') ->select();
+        $query = $modelArticle->p()->with('AdminAccount') ->where($where)->select();
         return json([
             'code' => 0,
             'msg' => '',
-            'count' => $modelArticle->getArticleCount(),
+            'count' => $modelArticle->getArticleCount($where),
             'data' => $query
         ]);
     }

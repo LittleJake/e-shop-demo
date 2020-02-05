@@ -19,6 +19,14 @@ class Common extends Controller
         //分页个数
         !defined('PAGE')&&define('PAGE', 4);
         $this->assign('is_login', $this ->isLogin());
+        $set = model('AdminSetting');
+        $query = $set ->cache(true, 600)-> select();
+        $option = [];
+        foreach ($query as $v)
+            $option[$v['keyword']] = $v['content'];
+
+        $this->assign('option', $option);
+
     }
 
     function isLogin() {

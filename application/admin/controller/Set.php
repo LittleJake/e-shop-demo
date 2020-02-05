@@ -13,6 +13,20 @@ class Set extends Base
 {
     /** 设置 */
     public function indexAction(){
+        $set = model('AdminSetting');
+        if($this->request->isPost()){
+
+
+
+        }
+
+
+        $query = $set -> select();
+        $option = [];
+        foreach ($query as $v)
+            $option[$v['keyword']] = $v['content'];
+
+        $this->assign('option', $option);
         return $this->fetch();
     }
     public function userAction(){
