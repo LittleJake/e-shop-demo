@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>支付网关</title>
+    <link href="/static/css/union_pay.css" rel="stylesheet">
+</head>
+<body>
+<div class="body">
+    <h1 class="mod-title">
+        <span class="ico_log ico-1"></span>
+    </h1>
+    <div class="mod-ct union">
+        <div class="order"></div>
+        {if isset($qr.qrcode)}
+        <img style="text-align: center;" src="{$qr.qrcode}" width="300px">
+        {/if}
+        <div class="tip">
+            <div class="ico-scan"></div>
+            <div class="tip-text">
+                <p>请使用银联云闪付扫一扫</p>
+                <p>扫描二维码完成支付</p>
+            </div>
+        </div>
+        <div class="tip-text">
+        </div>
+        <a style="text-align: center" href="/">返回商户</a>
+    </div>
+</div>
+
+</body>
+</html>

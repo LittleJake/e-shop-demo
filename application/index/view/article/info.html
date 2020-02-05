@@ -7,5 +7,29 @@
     <hr>
 
     {$data.content|raw}
+
+
+</div>
+<div class="comment">
+    <div class="container">
+        <h4><i class="glyphicon glyphicon-pencil"></i> 评论</h4>
+        <hr>
+        {if !$is_login}
+        <p><a href="{:url('index/login/login', ['r'=>urlencode(request()->url(true))])}">登录</a></p>
+        {else}
+        <p>{:session('user')}，<a href="{:url('index/login/logout',[ 'r'=>urlencode(request()->url(true))])}">这不是您？</a></p>
+        {/if}
+        <form action="" method="POST">
+            <div class="form-group">
+                <textarea style="resize: none" class="form-control" placeholder="留下你的评论" rows="3" name="comment"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="提交" class="btn btn-info">
+            </div>
+
+        </form>
+        <div id="comment">
+        </div>
+    </div>
 </div>
 {/block}

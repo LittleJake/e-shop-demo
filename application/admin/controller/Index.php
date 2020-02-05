@@ -123,7 +123,7 @@ class Index extends Base
             $stop = mktime(23,59,59,$month - $i+1, 0);
 
             array_unshift($date, date('Ym',$stop));
-            $data = $order -> whereBetween('update_time',"$start,$stop")->field('ifnull(sum(total_price), 0) as s, count(*) as c')->find();
+            $data = $order -> whereBetween('update_time',"$start,$stop")->field('ifnull(sum(total_price), 0) as s, count(*) as c')->cache(true,600)->find();
             array_unshift($amount, $data['s']);
             array_unshift($count, $data['c']);
         }

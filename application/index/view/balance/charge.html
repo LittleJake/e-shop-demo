@@ -31,16 +31,10 @@
         var amount = $("input[name='amount']").val();
 
         $(e).attr('disabled','disabled');
-        if(isRealNum(amount) && amount > 0)
-            $.ajax({
-                url: "",
-                data: {'amount': amount},
-                type: "POST",
-                success: function (r) {
-                    window.open('','_blank');
-                    $(e).attr('disabled',null);
-                }
-            });
+        if(isRealNum(amount) && amount > 0){
+            $('#charge').submit();
+            $(e).attr('disabled',null);
+        }
         else{
             $('#notice').html('金额有误');
             $('#alert').addClass('in');

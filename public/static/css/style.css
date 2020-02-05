@@ -102,7 +102,8 @@ footer
 .footer-icon-4{
 	float: left;
 	background: url('/static/img/foot-icon.png') no-repeat;
-	width: 240px;
+	width: 65px;
+    height: 65px;
 	padding-left: 15px;
 	padding-top: 20px;
 }

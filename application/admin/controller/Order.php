@@ -20,16 +20,23 @@ class Order extends Base
     }
 
     public function orderlistAction(){
+        $where = [];
+
+        !empty(input('id')) && $where[] = ['id', '=', input('id')];
+        !empty(input('order_no')) && $where[] = ['order_no', 'like','%'.input('order_no').'%'];
+        (input('status') != '') && $where[] = ['status', '=',input('status')];
+
+
         $modelOrder = new \app\common\model\Order();
-        $query = $modelOrder -> with([
+        $query = $modelOrder->p() -> with([
             'Account',
             'OrderGoods',
             'Shipping'
-        ]) ->select();
+        ])->where($where) ->select();
         return json([
             'code' => 0,
             'msg' => '',
-            'count' => $modelOrder->getOrderCount(),
+            'count' => $modelOrder->getOrderCount($where),
             'data' => $query
         ]);
     }
@@ -37,7 +44,7 @@ class Order extends Base
     public function ordergoodlistAction(){
         $id = input('get.id', 0);
         $order_good = model('OrderGoods');
-        $query = $order_good ->select();
+        $query = $order_good->p() ->select();
 
         return json([
             'code' => 0,

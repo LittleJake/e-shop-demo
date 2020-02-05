@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 use app\common\library\Enumcode\OrderStatus;
+use app\common\library\Enumcode\ShippingStatus;
 use app\common\model\Address;
 use app\common\model\GoodCat;
 use app\common\model\OrderGoods;
@@ -57,6 +58,7 @@ class Good extends Common
                     ->select();
                 $modelGoodCat->update();
 
+                //物品计算
                 $order = array_combine($cat, $num);
                 $total = 0;
                 $ins = [];
@@ -78,6 +80,14 @@ class Good extends Common
                         $total += $order[$good['id']] * $good['price'];
                     }
                 }
+                //运费计算
+                $ship = model('Shipping');
+                $query = $ship->where([
+                    'status' => 1,
+                    'id' => $data["ship"]
+                ])->find();
+
+                $total += $query['price'];
 
                 $modelOrder
                     -> insert([
@@ -120,6 +130,8 @@ class Good extends Common
         $modelRate = model('Rate');
         $comment = $modelRate->where([
             'good_id' => $id
+        ])->with([
+            'Account' => function($e){return $e->withField('id,user_name');}
         ])->paginate(10);
 
         $page = $comment ->render();

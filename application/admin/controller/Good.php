@@ -102,12 +102,20 @@ class Good extends Base
     }
 
     public function goodlistAction(){
+        $where = [];
+
+        !empty(input('id')) && $where[] = ['id', '=', input('id')];
+        !empty(input('cate_id')) && $where[] = ['cate_id', '=', input('cate_id')];
+        !empty(input('title')) && $where[] = ['title', 'like', '%'.input('title').'%'];
+        (input('status') != '') && $where[] = ['status', '=',input('status')];
+
+
         $modelGood = new \app\common\model\Good();
-        $query = $modelGood -> with('Category') ->select();
+        $query = $modelGood ->p()-> with('Category') -> where($where)->select();
         return json([
             'code' => 0,
             'msg' => '',
-            'count' => $modelGood->getGoodCount(),
+            'count' => $modelGood->getGoodCount($where),
             'data' => $query
         ]);
     }

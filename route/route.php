@@ -18,7 +18,6 @@ Route::get('shop/info/[:id]', 'index/shop/shopInfo');
 Route::get('logout', 'index/login/logout');
 Route::get('user/order', 'index/user/order');
 Route::get('user/balance', 'index/balance/index');
-Route::get('user/charge', 'index/balance/charge');
 Route::get('category/list', 'index/category/index');
 Route::get('about/index', 'index/about/index');
 Route::get('about/cert', 'index/about/cert');
@@ -28,6 +27,7 @@ Route::get('article/[:id]', 'index/article/info');
 
 //index.any
 Route::any('user/address/add','index/user/addAddress');
+Route::any('user/charge', 'index/balance/charge');
 Route::any('login', 'index/login/login');
 Route::any('oauth/callback', 'index/login/OAuthCallback');
 Route::any('user/address','index/user/address');

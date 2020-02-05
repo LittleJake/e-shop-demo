@@ -42,4 +42,15 @@ class Article extends Common
         $this->assign('data', $data);
         return $this->fetch();
     }
+
+    public function commentAction($id = 0){
+        $article = model('Article');
+
+        $data = $article->with(['AdminAccount' => function($e){return $e->withField('id,username');}])->get($id);
+
+
+        $this->assign('page_title', '文章 '. $data['title']);
+        $this->assign('data', $data);
+        return $this->fetch();
+    }
 }

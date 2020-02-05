@@ -8,6 +8,7 @@
 
 namespace app\index\controller;
 
+use app\common\library\Enumcode\OrderStatus;
 use app\common\model\Address;
 use app\common\model\GoodCat;
 use app\common\model\Order;
@@ -218,9 +219,47 @@ class User extends Base
 
     //商品评价
     public function rateAction(){
+        $id = input('order', '');
 
-        $user = session('user_id');
-        $id = input('order', 0);
+        if($this->request->isPost()){
+            $data = $this->request->post();
+
+            $ids = array_keys($data['rate']);
+
+            $rate = model('Rate');
+            $order = model('Order');
+            $time = time();
+
+            Db::startTrans();
+            try{
+                $user = session('user_id');
+                $ins = [];
+
+                foreach ($ids as $k){
+                    $ins[] = [
+                        'good_id' => $k,
+                        'star' => $data['rate'][$k],
+                        'comment' => htmlentities($data['content'][$k]),
+                        'user_id' => $user,
+                        'update_time' => $time
+                    ];
+                }
+
+                $rate->insertAll($ins);
+                $order ->update([
+                    'status' => OrderStatus::ORDER_FINISH,
+                ],[
+                    'status' => OrderStatus::ORDER_NEED_COMMENT,
+                    'order_no' => $id
+                ]);
+                Db::commit();
+            } catch (\Exception $e) {
+                Db::rollback();
+                return $this->error('错误', url('index/user/order'));
+            }
+            return $this->success('成功', url('index/user/order'));
+        }
+
         $order = model('Order');
         $query = $order -> where(['order_no' => $id]) ->with([
             'OrderGoods' => function($e){
@@ -232,54 +271,7 @@ class User extends Base
             }
         ])-> find();
 
-        if($this->request->isPost()){
-            var_dump($this->request->post());exit;
-            $post = input();
-            foreach ($query as $k) {
-                $star = array_shift($post);
-                $content = array_shift($post);
-
-                if(empty($content))
-                    $content = '暂无文字评论';
-
-                Db::startTrans();
-                try{
-                    Db::table('comment')
-                        -> insert([
-                            'good_id' => $k['good_id'],
-                            'rate' => $star,
-                            'comment_content' => htmlspecialchars($content)
-                        ]);
-
-                    Db::commit();
-
-                } catch (\Exception $e) {
-                    Db::rollback();
-                    return $this->error('错误', url('user/order'));
-                }
-
-            }
-
-            Db::startTrans();
-            try{
-                Db::table('order')
-                    -> where('order_id', $id)
-                    -> update([
-                        'status' => 50
-                    ]);
-
-                Db::commit();
-
-            } catch (\Exception $e) {
-                Db::rollback();
-                return $this->error('错误', url('user/order'));
-            }
-
-            return $this->success('成功', url('user/order'));
-        }
-
         $this->assign('order', $query);
-
 
         $this->assign('page_title', '评价商品');
         return $this->fetch();

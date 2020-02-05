@@ -8,6 +8,7 @@
 
 namespace app\index\controller;
 
+use app\common\library\Hkrt;
 use app\common\model\BalanceChange;
 use think\facade\Cache;
 use app\common\model\Account;
@@ -31,6 +32,19 @@ class Balance extends Base
     }
 
     public function chargeAction(){
+        if($this->request->isPost()){
+            $pay = new Hkrt();
+            $qr = $pay->createUnionQR(input('post.amount'));
+
+            if($qr['code'] != 1)
+                return false;
+
+
+            $qr['qrcode'] = "https://tool.oschina.net/action/qrcode/generate?output=image%2Fpng&error=L&type=0&margin=0&size=4&data=". urlencode($qr['payUrl']);
+
+            $this->assign('qr', $qr);
+            return $this->fetch('balance/checkout');
+        }
 
         $this->assign('page_title', '余额充值');
         return $this->fetch();
