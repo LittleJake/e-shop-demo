@@ -84,7 +84,7 @@ class Article extends Base
         ]);
     }
 
-    public function articlelistAction(){
+    public function articleListAction(){
         $where = [];
 
         !empty(input('id')) && $where[] = ['id', '=', input('id')];

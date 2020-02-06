@@ -28,7 +28,7 @@ layui.define(['table', 'form'], function(exports){
             layer.open({
                 type: 2
                 ,title: '编辑分类'
-                ,content: '/admin/category/categoryEdit?id='+ data.id
+                ,content: '/admin/category/edit?id='+ data.id
                 ,area: ['400px', '200px']
                 ,btn: ['确定', '取消']
                 ,yes: function(index, layero){

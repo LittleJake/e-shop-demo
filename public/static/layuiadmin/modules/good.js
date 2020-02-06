@@ -11,11 +11,12 @@
 layui.define(['table', 'form'], function(exports){
     var $ = layui.$
         ,table = layui.table
+        ,util = layui.util
         ,form = layui.form;
 
     table.render({
         elem: '#LAY-app-good-list'
-        ,url: '/admin/good/goodlist'
+        ,url: '/admin/good/goodList'
         ,cols: [[
             {type: 'checkbox', fixed: 'left'}
             ,{field: 'id', width: 100, title: '商品ID', sort: true}
@@ -93,15 +94,15 @@ layui.define(['table', 'form'], function(exports){
 
 //评论管理
     table.render({
-        elem: '#LAY-app-content-comm'
-        ,url: layui.setter.base + 'json/content/comment.js' //模拟接口
+        elem: '#LAY-app-rate'
+        ,url: '/admin/rate/rateList' //模拟接口
         ,cols: [[
             {type: 'checkbox', fixed: 'left'}
-            ,{field: 'id', width: 100, title: 'ID', sort: true}
-            ,{field: 'reviewers', title: '评论者', minWidth: 100}
-            ,{field: 'content', title: '评论内容', minWidth: 100}
-            ,{field: 'commtime', title: '评论时间', minWidth: 100, sort: true}
-            ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-content-com'}
+            ,{field: 'id', width: 80, title: 'ID', sort: true}
+            ,{field: 'star', title: '评价', width: 100}
+            ,{field: 'comment', title: '评论内容', minWidth: 100}
+            ,{field: 'update_time', title: '评论时间', width: 210, sort: true, templet: function(e){return util.toDateString(e.update_time*1000);}}
+            ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-app-rate'}
         ]]
         ,page: true
         ,limit: 10
@@ -109,8 +110,8 @@ layui.define(['table', 'form'], function(exports){
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
-//监听工具条
-    table.on('tool(LAY-app-content-comm)', function(obj){
+    //监听工具条
+    table.on('tool(LAY-app-rate)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
             layer.confirm('确定删除此条评论？', function(index){

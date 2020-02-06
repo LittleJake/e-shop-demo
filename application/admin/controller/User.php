@@ -15,7 +15,7 @@ use app\common\model\AdminAccount;
 class User extends Base
 {
     /** 用户操作 */
-    public function userlistAction(){
+    public function userListAction(){
         $modelAccount = new Account();
         $query = $modelAccount ->select();
         return json([
@@ -43,7 +43,7 @@ class User extends Base
         return $this->fetch();
     }
 
-    public function adminlistAction(){
+    public function adminListAction(){
         $modelAdminAccount = new AdminAccount();
         $query = $modelAdminAccount -> with('AdminRole')->select();
         return json([

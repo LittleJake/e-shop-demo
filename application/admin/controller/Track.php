@@ -20,7 +20,14 @@ class Track extends Base
         return $this->fetch();
     }
 
-    public function tracklistAction(){
-        return json();
+    public function trackListAction(){
+        $track = model('Track');
+        $query = $track->p()->order('update_time desc')->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $track->getTrackCount(),
+            'data' => $query
+        ]);
     }
 }

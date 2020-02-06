@@ -93,7 +93,7 @@
                             <cite>平台操作</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd data-name="content">
+                            <dd data-name="good" class="layui-nav-itemed">
                                 <a href="javascript:;">商品系统</a>
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="{:url('admin/good/list')}">商品管理</a></dd>
@@ -101,14 +101,14 @@
                                     <dd><a lay-href="{:url('admin/rate/index')}">评价管理</a></dd>
                                 </dl>
                             </dd>
-                            <dd data-name="content">
+                            <dd data-name="shipping" class="layui-nav-itemed">
                                 <a href="javascript:;">物流系统</a>
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="{:url('admin/shipping/index')}">物流管理</a></dd>
                                     <dd><a lay-href="{:url('admin/good/ship')}">发货管理</a></dd>
                                 </dl>
                             </dd>
-                            <dd data-name="content">
+                            <dd data-name="order" class="layui-nav-itemed">
                                 <a href="javascript:;">订单系统</a>
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="{:url('admin/order/index')}">订单管理</a></dd>
@@ -122,12 +122,27 @@
                             <cite>内容系统</cite>
                         </a>
                         <dl class="layui-nav-child">
-
-                            <dd data-name="content">
+                            <dd data-name="article" class="layui-nav-itemed">
                                 <a href="javascript:;">文章系统</a>
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="{:url('admin/article/index')}">文章列表</a></dd>
                                     <dd><a lay-href="{:url('admin/comment/index')}">评论管理</a></dd>
+                                </dl>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="page" class="layui-nav-itemed">
+                                <a href="javascript:;">页面系统</a>
+                                <dl class="layui-nav-child">
+                                    <dd><a lay-href="{:url('admin/page/index')}">页面列表</a></dd>
+                                </dl>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="page" class="layui-nav-itemed">
+                                <a href="javascript:;">溯源系统</a>
+                                <dl class="layui-nav-child">
+                                    <dd><a lay-href="{:url('admin/track/index')}">溯源记录</a></dd>
                                 </dl>
                             </dd>
                         </dl>
@@ -159,6 +174,7 @@
                         <dl class="layui-nav-child">
                             <dd><a lay-href="{:url('admin/user/user')}">网站用户</a></dd>
                             <dd><a lay-href="{:url('admin/user/admin')}">后台管理员</a></dd>
+                            <dd><a lay-href="{:url('admin/log/index')}">操作记录</a></dd>
                             <dd><a lay-href="{:url('admin/balance/index')}">用户资金</a></dd>
                             <dd><a lay-href="{:url('admin/balance/change')}">用户流水</a></dd>
                             <!--<dd>-->

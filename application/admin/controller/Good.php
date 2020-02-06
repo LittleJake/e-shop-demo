@@ -101,7 +101,7 @@ class Good extends Base
         return $this->fetch();
     }
 
-    public function goodlistAction(){
+    public function goodListAction(){
         $where = [];
 
         !empty(input('id')) && $where[] = ['id', '=', input('id')];

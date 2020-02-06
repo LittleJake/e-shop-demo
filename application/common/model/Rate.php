@@ -18,4 +18,8 @@ class Rate extends BaseModel
     public function Account(){
         return $this->belongsTo('Account', 'user_id', 'id');
     }
+
+    public function getRateCount($where = [],$field ='*'){
+        return parent::getCount($where, $field);
+    }
 }

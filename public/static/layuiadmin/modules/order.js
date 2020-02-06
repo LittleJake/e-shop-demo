@@ -16,14 +16,14 @@ layui.define(['table', 'form', 'util'], function(exports){
 
     table.render({
         elem: '#LAY-app-order-list'
-        ,url: '/admin/order/orderlist'
+        ,url: '/admin/order/orderList'
         ,cols: [[
             {field: 'id', width: 60, title: 'ID', sort: true}
             ,{field: 'order_no', title: '订单号', width: 200}
             ,{field: 'total_price', title: '订单总价', templet: function(d){return "￥"+d.total_price}, width: 120}
             ,{field: 'status', title: '状态', templet: '#buttonTpl', width: 90, align: 'center'}
             ,{field: 'update_time', title: '更新时间', templet: function(d){return util.toDateString(d.update_time*1000); }, width: 200, align: 'center'}
-            ,{title: '操作', minWidth: 210, align: 'center', fixed: 'right', toolbar: '#table-order-list'}
+            ,{title: '操作', width: 270, align: 'center', fixed: 'right', toolbar: '#table-order-list'}
         ]]
         ,page: true
         ,limit: 10
@@ -35,10 +35,10 @@ layui.define(['table', 'form', 'util'], function(exports){
     table.on('tool(LAY-app-order-list)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
-            layer.confirm('确定删除此商品？', function(index){
+            layer.confirm('确定删除此订单？', function(index){
                 $.ajax({
                     type:'get',
-                    url:'/admin/good/del?id='+data.id,
+                    url:'/admin/order/del?id='+data.id,
                     success:function (res) {
                         if (res.code == 1) {
                             //更新数据表
@@ -90,15 +90,14 @@ layui.define(['table', 'form', 'util'], function(exports){
 
     //评论管理
     table.render({
-        elem: '#LAY-app-content-comm'
+        elem: '#LAY-app-rate'
         ,url: layui.setter.base + 'json/content/comment.js' //模拟接口
         ,cols: [[
-            {type: 'checkbox', fixed: 'left'}
-            ,{field: 'id', width: 100, title: 'ID', sort: true}
+            {field: 'id', width: 100, title: 'ID', sort: true}
             ,{field: 'reviewers', title: '评论者', minWidth: 100}
             ,{field: 'content', title: '评论内容', minWidth: 100}
             ,{field: 'commtime', title: '评论时间', minWidth: 100, sort: true}
-            ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-content-com'}
+            ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-app-rate'}
         ]]
         ,page: true
         ,limit: 10
@@ -107,7 +106,7 @@ layui.define(['table', 'form', 'util'], function(exports){
     });
 
 //监听工具条
-    table.on('tool(LAY-app-content-comm)', function(obj){
+    table.on('tool(LAY-app-rate)', function(obj){
         var data = obj.data;
         if(obj.event === 'del'){
             layer.confirm('确定删除此条评论？', function(index){

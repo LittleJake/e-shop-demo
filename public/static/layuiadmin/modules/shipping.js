@@ -5,7 +5,7 @@ layui.define(['table', 'form'], function(exports){
 //分类管理
     table.render({
         elem: '#LAY-app-shipping'
-        ,url: '/admin/shipping/shippinglist' //模拟接口
+        ,url: '/admin/shipping/shippingList' //模拟接口
         ,cols: [[
             {field: 'id', width: 100, title: 'ID', sort: true, fixed: 'left'}
             ,{field: 'name', title: '物流名', minWidth: 100}

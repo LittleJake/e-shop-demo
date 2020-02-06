@@ -16,8 +16,21 @@ class Rate extends Base
         return $this->fetch();
     }
 
-    public function ratelistAction(){
-        return json();
+    public function rateListAction(){
+//        $where = [];
+//
+//        !empty(input('id')) && $where[] = ['id', '=', input('id')];
+//        !empty(input('title')) && $where[] = ['title', 'like', '%'.input('title').'%'];
+//        (input('status') != '') && $where[] = ['status', '=',input('status')];
+
+        $rate = model('Rate');
+        $query = $rate->p()->with('Account')->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $rate->getRateCount(),
+            'data' => $query
+        ]);
     }
 
     public function delAction(){

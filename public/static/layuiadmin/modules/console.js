@@ -161,7 +161,7 @@ layui.define(function(exports){
         //最近订单
         table.render({
             elem: '#LAY-app-order-list'
-            , url: '/admin/order/orderlist'
+            , url: '/admin/order/orderList'
             , cols: [[
                 {field: 'order_no', title: '订单号', minWidth: 120}
                 , {

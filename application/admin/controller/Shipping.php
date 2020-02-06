@@ -18,7 +18,7 @@ class Shipping extends Base
         return $this->fetch();
     }
 
-    public function shippinglistAction(){
+    public function shippingListAction(){
         $modelShipping = new \app\common\model\Shipping();
         $query = $modelShipping ->select();
         return json([

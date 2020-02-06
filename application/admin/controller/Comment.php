@@ -16,19 +16,20 @@ class Comment extends Base
         return $this->fetch();
     }
 
-    public function addAction(){
-        return $this->fetch();
-    }
-
     public function delAction(){
         return $this->fetch();
     }
 
-    public function editAction(){
-        return $this->fetch();
-    }
-
-    public function commetlistAction(){
-        return json();
+    public function commentListAction(){
+        $comm = model('ArticleComment');
+        $query = $comm->p()->with([
+            'Account' => function($q){return $q->withField('id,user_name');},
+        ])->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $comm->getCommentCount(),
+            'data' => $query
+        ]);
     }
 }

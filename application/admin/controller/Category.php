@@ -17,16 +17,16 @@ class Category extends Base
         return $this->fetch();
     }
 
-    public function categoryAddAction(){
+    public function addAction(){
         return $this->fetch();
     }
 
-    public function categoryEditAction(){
+    public function editAction(){
         return $this->fetch();
     }
 
     public function categoryListAction(){
-        $modelCategory = new \app\common\model\Category();
+        $modelCategory = model('Category');
         $query = $modelCategory ->withCount('Good')->select();
         return json([
             'code' => 0,

@@ -15,51 +15,9 @@
 
 <div class="layui-fluid">
     <div class="layui-card">
-        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">ID</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">订单号</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="title" placeholder="请输入" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
-                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
         <div class="layui-card-body">
-            <table id="LAY-app-order-list" lay-filter="LAY-app-order-list"></table>
-            <script type="text/html" id="buttonTpl">
-                {{#  if(d.status == 0){ }}
-                <button class="layui-btn layui-btn-danger layui-btn-xs">订单关闭</button>
-                {{#  } else if(d.status == 1) { }}
-                <button class="layui-btn layui-btn-xs">支付成功</button>
-                {{#  } else if(d.status == 2) { }}
-                <button class="layui-btn layui-btn-warm layui-btn-xs">未支付</button>
-                {{#  } else if(d.status == 3) { }}
-                <button class="layui-btn layui-btn-xs">运送中</button>
-                {{#  } else if(d.status == 4) { }}
-                <button class="layui-btn layui-btn-xs">待评价</button>
-                {{#  } else if(d.status == 5) { }}
-                <button class="layui-btn layui-btn-xs">订单完成</button>
-                {{#  } else { }}
-                <button class="layui-btn layui-btn-danger layui-btn-xs">订单异常</button>
-                {{#  } }}
-            </script>
-            <script type="text/html" id="table-order-list">
-                {{#  if(d.status == 1) { }}
-                <a class="layui-btn layui-btn-info layui-btn-xs" lay-event="rate"><i class="layui-icon layui-icon-flag"></i>发货</a>
-                {{#  } }}
+            <table id="LAY-app-rate" lay-filter="LAY-app-rate"></table>
+            <script type="text/html" id="table-app-rate">
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="info"><i class="layui-icon layui-icon-search"></i>查看</a>
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
             </script>
@@ -73,7 +31,7 @@
         base: '/static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'order', 'table'], function(){
+    }).use(['index', 'good', 'table'], function(){
         var table = layui.table
             ,form = layui.form;
 

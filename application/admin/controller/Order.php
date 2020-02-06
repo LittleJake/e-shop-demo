@@ -19,7 +19,7 @@ class Order extends Base
         return $this->fetch();
     }
 
-    public function orderlistAction(){
+    public function orderListAction(){
         $where = [];
 
         !empty(input('id')) && $where[] = ['id', '=', input('id')];
@@ -41,7 +41,7 @@ class Order extends Base
         ]);
     }
 
-    public function ordergoodlistAction(){
+    public function ordergoodListAction(){
         $id = input('get.id', 0);
         $order_good = model('OrderGoods');
         $query = $order_good->p() ->select();

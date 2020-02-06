@@ -13,7 +13,7 @@ layui.define(['table', 'form'], function(exports){
     //用户管理
     table.render({
         elem: '#LAY-balance-list'
-        ,url: '/admin/balance/balancelist' //模拟接口
+        ,url: '/admin/balance/balanceList' //模拟接口
         ,cols: [[
             {type: 'checkbox', fixed: 'left'}
             ,{field: 'id', width: 100, title: 'ID', sort: true}

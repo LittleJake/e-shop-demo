@@ -18,7 +18,7 @@ class Balance extends Base
         return $this->fetch();
     }
 
-    public function balancelistAction(){
+    public function balanceListAction(){
         $modelBalance = new \app\common\model\Balance();
         $query = $modelBalance->with('Account') -> select();
 
@@ -39,7 +39,7 @@ class Balance extends Base
         return $this->fetch();
     }
 
-    public function changelistAction($uid = 0){
+    public function changeListAction($uid = 0){
         $modelBalanceChange = new BalanceChange();
         $query = $modelBalanceChange -> with('Account') -> where([
             'user_id' => $uid

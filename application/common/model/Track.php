@@ -11,5 +11,7 @@ namespace app\common\model;
 
 class Track extends BaseModel
 {
-
+    public function getTrackCount($where = [],$field ='*'){
+        return parent::getCount($where, $field);
+    }
 }

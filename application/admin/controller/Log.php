@@ -2,21 +2,21 @@
 /**
  * Created by IntelliJ IDEA.
  * User: LittleJake
- * Date: 2020/2/2
- * Time: 16:23
+ * Date: 2020/2/6
+ * Time: 13:29
  */
 
 namespace app\admin\controller;
 
 
-class Page extends Base
+class Log extends Base
 {
-    /** 独立页面管理 */
+    /** 操作记录 */
     public function indexAction(){
         return $this->fetch();
     }
 
-    public function pageListAction(){
+    public function logListAction(){
         $modelOrder = new \app\common\model\Order();
         $query = $modelOrder -> with([
             'Account',
@@ -30,24 +30,8 @@ class Page extends Base
             'data' => $query
         ]);
     }
-    public function addAction(){
-        if($this->request->isPost()){
-
-        }
-
-        return $this->fetch();
-    }
-
-    public function editAction(){
-        if($this->request->isPost()){
-
-        }
-
-        return $this->fetch();
-    }
 
     public function delAction(){
 
     }
-
 }
