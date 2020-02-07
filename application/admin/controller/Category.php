@@ -18,10 +18,31 @@ class Category extends Base
     }
 
     public function addAction(){
+        if ($this->request->isPost()){
+            $modelCategory = model('Category');
+
+            $data = $this->request->post();
+
+            $modelCategory -> insert($data, false);
+            return json(['code' => 1, 'msg' => '添加成功']);
+        }
+
+
         return $this->fetch();
     }
 
     public function editAction(){
+        $modelCategory = model('Category');
+        if ($this->request->isPost()){
+
+            $data = $this->request->post();
+
+            $modelCategory -> update($data, ['id' => $data['id']]);
+            return json(['code' => 1, 'msg' => '修改成功']);
+        }
+
+
+        $this->assign('cate', $modelCategory->get(input('id')));
         return $this->fetch();
     }
 

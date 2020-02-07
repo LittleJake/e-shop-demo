@@ -103,5 +103,5 @@ layui.define(['table', 'form'], function(exports){
 
 
 
-    exports('good', {})
+    exports('page', {})
 });

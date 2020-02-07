@@ -13,22 +13,22 @@ class Rate extends Base
 {
     /** 评价管理（嵌套在商品列表） */
     public function indexAction(){
+
+        $this->assign('good_id', input('good_id'));
         return $this->fetch();
     }
 
     public function rateListAction(){
-//        $where = [];
-//
-//        !empty(input('id')) && $where[] = ['id', '=', input('id')];
-//        !empty(input('title')) && $where[] = ['title', 'like', '%'.input('title').'%'];
-//        (input('status') != '') && $where[] = ['status', '=',input('status')];
+        $where = [];
+
+        !empty(input('good_id')) && $where[] = ['good_id', '=', input('good_id')];
 
         $rate = model('Rate');
-        $query = $rate->p()->with('Account')->select();
+        $query = $rate->p()->with('Account')->where($where)->select();
         return json([
             'code' => 0,
             'msg' => '',
-            'count' => $rate->getRateCount(),
+            'count' => $rate->getRateCount($where),
             'data' => $query
         ]);
     }
@@ -36,4 +36,5 @@ class Rate extends Base
     public function delAction(){
         return $this->fetch();
     }
+
 }
