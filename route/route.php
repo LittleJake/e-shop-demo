@@ -23,6 +23,7 @@ Route::get('about/index', 'index/about/index');
 Route::get('about/cert', 'index/about/cert');
 Route::get('article/index', 'index/article/index');
 Route::get('article/[:id]', 'index/article/info');
+Route::get('page/[:route]', 'index/page/page');
 
 
 //index.any

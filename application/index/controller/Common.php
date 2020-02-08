@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 
+use app\common\library\Enumcode\PageStatus;
 use think\Controller;
 
 class Common extends Controller
@@ -17,16 +18,24 @@ class Common extends Controller
         parent::__construct();
 
         //分页个数
-        !defined('PAGE')&&define('PAGE', 4);
+        !defined('PAGE')&&define('PAGE', 5);
+
+
         $this->assign('is_login', $this ->isLogin());
+
+        //网站设置
         $set = model('AdminSetting');
         $query = $set ->cache(true, 600)-> select();
         $option = [];
         foreach ($query as $v)
             $option[$v['keyword']] = $v['content'];
-
         $this->assign('option', $option);
 
+        //网站独立页面
+        $page = model('Page');
+        $query = $page->cache(true, 600)
+            ->where('status', PageStatus::PAGE_SHOW)->select();
+        $this->assign('PAGE', $query);
     }
 
     function isLogin() {
