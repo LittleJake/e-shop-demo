@@ -33,6 +33,24 @@ class Article extends Common
     }
 
     public function infoAction($id = 0){
+        if($this->request->isPost()){}
+
+        $comment = model('ArticleComment');
+
+        $query = $comment->where([
+                'article_id' => $id
+            ])->with([
+                'Account'=>function($q){
+                    return $q-> withField('id,user_name');
+                }])->paginate(PAGE);
+
+        $page = $query -> render();
+        $this->assign('comment', $query);
+        $this->assign('page', $page);
+
+        if($this->request->isAjax())
+            return $this->fetch('article/ajaxComment');
+
         $article = model('Article');
 
         $data = $article->with([
@@ -42,26 +60,11 @@ class Article extends Common
         ])->get($id);
 
 
-        $comment=model('ArticleComment');
-
-        $query  = $comment->where('article_id' , $id)->with(['Account'=>function($q){return $q-> withField('id,user_name');}])->paginate(10);
-
-        $page = $query -> render();
-        $this->assign('page', $page);
         $this->assign('page_title', '文章 '. $data['title']);
         $this->assign('data', $data);
-        $this->assign('comment', $query);
+
         return $this->fetch();
     }
 
-    public function commentAction($id = 0){
-        $article = model('Article');
 
-        $data = $article->with(['AdminAccount' => function($e){return $e->withField('id,username');}])->get($id);
-
-
-        $this->assign('page_title', '文章 '. $data['title']);
-        $this->assign('data', $data);
-        return $this->fetch();
-    }
 }

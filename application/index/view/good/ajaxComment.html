@@ -1,15 +1,19 @@
 {if isset($comments)}
-<table class="table table-striped">
+<table class="table table-responsive">
     <tr>
         <th>用户</th>
-        <th width="150px">评分</th>
         <th>评价</th>
     </tr>
     {foreach $comments as $v}
     <tr>
         <th>{$v.account.user_name}</th>
-        <td class="star">{$v.star}</td>
-        <td>{$v.comment}</td>
+        <td>
+            <div class="star">
+                {$v.star}
+            </div>
+            <br>
+            {$v.comment}
+        </td>
     </tr>
     {/foreach}
 </table>
@@ -19,3 +23,4 @@
 {else}
 <p>暂无评价</p>
 {/if}
+

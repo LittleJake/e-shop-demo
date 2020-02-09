@@ -132,7 +132,7 @@ class Good extends Common
             'good_id' => $id
         ])->with([
             'Account' => function($e){return $e->withField('id,user_name');}
-        ])->paginate(10);
+        ])->paginate(PAGE);
 
         $page = $comment ->render();
         $total = $comment->total();
@@ -141,7 +141,7 @@ class Good extends Common
         $this->assign('page', $page);
 
         if($this->request->isAjax())
-            return $this->fetch('index/ajaxComment');
+            return $this->fetch('good/ajaxComment');
 
         $modelGood = model('Good');
         $good = $modelGood

@@ -1,0 +1,19 @@
+{if sizeof($comment) != 0}
+{foreach $comment as $k => $v}
+<div class="row comment">
+    <div class="col-xs-11 col-md-11">
+        <h4>{$v.account.user_name}</h4>
+        <p style="color:#888">{$v.update_time|date='Y年m月d日 H:i:s'}</p>
+        <strong>{$v.content}</strong>
+    </div>
+    <div class="col-xs-1 col-md-1">
+        <p>#{$k+1}</p>
+    </div>
+</div>
+{/foreach}
+{if isset($page)}
+{$page|raw}
+{/if}
+{else}
+<h4>暂无评论</h4>
+{/if}
