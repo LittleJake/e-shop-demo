@@ -16,6 +16,7 @@ footer
 	min-height: calc(100vh - 160px);
 }
 
+.comment,
 .good-list,
 .shop-list,
 .order-good

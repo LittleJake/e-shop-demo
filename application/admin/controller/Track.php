@@ -17,6 +17,19 @@ class Track extends Base
     }
 
     public function addAction(){
+        if($this->request->isPost()){
+            $data = $this->request->post('g');
+            $data['update_time'] = time();
+            $track = model('Track');
+
+            $track->insert($data, false);
+
+            return json([
+                'code' => 1,
+                'msg' => '成功'
+            ]);
+        }
+
         return $this->fetch();
     }
 

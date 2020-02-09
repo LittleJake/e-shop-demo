@@ -14,23 +14,23 @@
 </head>
 <body>
 
-<div class="layui-form" lay-filter="layuiadmin-form-tags" id="layuiadmin-app-form-tags" style="padding: 20px 30px 0 0;">
+<div class="layui-form" lay-filter="layuiadmin-form-track" id="layuiadmin-form-track" style="padding: 20px 30px 0 0;">
     <div class="layui-form-item">
         <label class="layui-form-label">溯源码</label>
         <div class="layui-input-inline">
-            <input type="text" name="track_no" lay-verify="required" placeholder="请输入溯源码" autocomplete="off" class="layui-input">
+            <input type="text" name="g[track_no]" lay-verify="required" placeholder="请输入溯源码" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">流程名</label>
         <div class="layui-input-inline">
-            <input type="text" name="name" lay-verify="required" placeholder="请输入流程名" autocomplete="off" class="layui-input">
+            <input type="text" name="g[name]" lay-verify="required" placeholder="请输入流程名" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-hide">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="button" lay-submit lay-filter="layuiadmin-app-good-submit" id="layuiadmin-app-good-submit" value="确认" class="layui-btn">
+            <input type="button" lay-submit lay-filter="layuiadmin-app-track-submit" id="layuiadmin-app-track-submit" value="确认" class="layui-btn">
         </div>
     </div>
 </div>

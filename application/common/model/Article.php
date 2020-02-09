@@ -18,6 +18,10 @@ class Article extends BaseModel
         return $this->hasOne('AdminAccount', 'id', 'admin_id');
     }
 
+    public function ArticleComment(){
+        return $this->hasMany('ArticleComment', 'article_id', 'id');
+    }
+
     public function getArticleCount($where = [],$field ='*'){
         return parent::getCount($where, $field);
     }
