@@ -34,9 +34,4 @@ class Index extends Common
         return $this->fetch();
     }
 
-
-    public function helloAction($a = '')
-    {
-        return secret('123');
-    }
 }

@@ -20,4 +20,18 @@ class About extends Common
         $this->assign('page_title', '资质');
         return $this->fetch();
     }
+
+    public function trackAction($track_no = ''){
+        if($this->request->isPost()){
+            $track = model('Track');
+
+            $query = $track -> where('track_no', $track_no)->cache(true, 600)->select();
+
+            $this->assign('tracks',$query);
+            return $this->fetch('about/ajaxTrack');
+        }
+
+        $this->assign('page_title', '药品溯源');
+        return $this->fetch();
+    }
 }

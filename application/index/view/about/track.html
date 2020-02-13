@@ -1,0 +1,39 @@
+{extend name="default/base" /}
+{block name="content"}
+<div class="container content">
+    <div class="col-md-6">
+        <h4>平台查询结果</h4>
+        <hr>
+            <div class="form-group">
+                <label class="control-label">溯源码</label>
+
+                    <input id="code" class="form-control" type="text" value="" placeholder="请输入溯源码">
+
+            </div>
+            <a class="btn btn-default" onclick="check()">查询</a>
+        <hr>
+        <h4>查询结果：</h4>
+        <div id="result"></div>
+    </div>
+    <div class="col-md-6">
+        <h4>马上溯源查询</h4>
+        <hr>
+        <iframe id="track" src="https://scancode.mashangfangxin.com/view/trace-code-drug-page/msfx/drugQueryByInput" width="400" height="600" frameborder="0"></iframe>
+    </div>
+</div>
+{/block}
+{block name="extendjs"}
+<script>
+    function check() {
+        $.ajax({
+            url: "{:url('index/about/track')}",
+            data: {track_no: $('#code').val()},
+            method: 'POST',
+            success: function(res){
+                $('#result').html(res);
+            }
+        });
+        return;
+    }
+</script>
+{/block}

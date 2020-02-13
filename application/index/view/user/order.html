@@ -1,14 +1,14 @@
 {extend name="default/base" /}
 {block name="content"}
 <div class="container content">
-	{if sizeof($orders) > 0}
-	{foreach $orders as $k}
-	<div class="row order-list">
-		<div class="col-sm-10">
+    {if sizeof($orders) > 0}
+    {foreach $orders as $k}
+    <div class="row order-list">
+        <div class="col-sm-10">
 
-			<span>订单号：{$k.order_no}</span>
+            <span>订单号：{$k.order_no}</span>
             {if sizeof($k.order_goods) > 0}
-			{foreach $k.order_goods as $v}
+            {foreach $k.order_goods as $v}
             <div class="row order-good">
                 <div class="col-md-3 col-sm-3 col-xs-5">
                     <img class="thumbnail" src="{$v.good.img_url|default='/static/img/null.png'}" alt="{$v.good.title}" width="120px">
@@ -21,39 +21,48 @@
                     <p>数量：{$v.num}</p>
                 </div>
             </div>
-			{/foreach}
+            {/foreach}
             {/if}
-		</div>
-		<div class="col-sm-2">
-			状态：
-			{if $k.status == 0}
-			订单关闭
-			{elseif $k.status == 1}
-			支付成功
-			{elseif $k.status == 2}
-			未支付
-            <a class="btn btn-success" href="{:url('index/user/pay', ['id' => $k.order_no])}">支付</a>
-			{elseif $k.status == 3}
-			运送中
-            <a class="btn btn-info" href="{:url('index/user/shipped', ['id' => $k.order_no])}">收货</a>
+        </div>
+        <div class="col-sm-2">
+            状态：
+            {if $k.status == 0}
+            订单关闭
+            {elseif $k.status == 1}
+            支付成功
+            {elseif $k.status == 2}
+            未支付
+            <p>
+                <a class="btn btn-success" href="{:url('index/user/pay', ['id' => $k.order_no])}">支付</a>
+                <a class="btn btn-info" href="{:url('index/user/afterPay', ['id' => $k.order_no])}">货到付款</a>
+            </p>
+            {elseif $k.status == 3 || ($k.status == 4 && !empty($k.track_no))}
+            运送中
+            <p>
+                <a class="btn btn-info" href="{:url('index/user/shipped', ['id' => $k.order_no])}">收货</a>
+            </p>
             <p>单号：<a target="_blank" href="https://www.kuaidi100.com/chaxun?nu={$k.track_no}">{$k.track_no}</a></p>
-			{elseif $k.status == 4}
-			待评价
-			<a class="btn btn-info" href="{:url('index/user/rate', ['order' => $k.order_no])}">评价</a>
-			{elseif $k.status == 5}
-			订单完成
-			{else}
-			订单异常
-			{/if}
+            {elseif ($k.status == 4 && empty($k.track_no))}
+            待发货（货到付款）
+            {elseif $k.status == 5}
+            待评价
+            <p>
+                <a class="btn btn-info" href="{:url('index/user/rate', ['order' => $k.order_no])}">评价</a>
+            </p>
+            {elseif $k.status == 6}
+            订单完成
+            {else}
+            订单异常
+            {/if}
             <h4 class="text-danger">小计 ￥{:sprintf('%.2f',$k.total_price)}</h4>
-		</div>
-		<br>
-	</div>
-	{/foreach}
-	<br>
-	{$orders->render()|raw}
-	{else}
-	<h3>暂无订单</h3>
-	{/if}
+        </div>
+        <br>
+    </div>
+    {/foreach}
+    <br>
+    {$orders->render()|raw}
+    {else}
+    <h3>暂无订单</h3>
+    {/if}
 </div>
 {/block}

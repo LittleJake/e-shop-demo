@@ -38,7 +38,9 @@
                             <option value="1">支付成功</option>
                             <option value="2">未支付</option>
                             <option value="3">运送中</option>
-                            <option value="4">待评价</option>
+                            <option value="4">货到付款</option>
+                            <option value="5">待评价</option>
+                            <option value="6">订单完成</option>
                         </select>
                     </div>
                 </div>
@@ -62,18 +64,20 @@
                 {{#  } else if(d.status == 3) { }}
                 <button class="layui-btn layui-btn-xs">运送中</button>
                 {{#  } else if(d.status == 4) { }}
-                <button class="layui-btn layui-btn-xs">待评价</button>
+                <button class="layui-btn layui-btn-xs">货到付款</button>
                 {{#  } else if(d.status == 5) { }}
+                <button class="layui-btn layui-btn-xs">待评价</button>
+                {{#  } else if(d.status == 6) { }}
                 <button class="layui-btn layui-btn-xs">订单完成</button>
                 {{#  } else { }}
                 <button class="layui-btn layui-btn-danger layui-btn-xs">订单异常</button>
                 {{#  } }}
             </script>
             <script type="text/html" id="table-order-list">
-                {{#  if(d.status == 1) { }}
+                {{#  if(d.status == 1||(d.status == 4 && !d.track_no)) { }}
                 <a class="layui-btn layui-btn-info layui-btn-xs" lay-event="ship"><i class="layui-icon layui-icon-flag"></i>发货</a>
                 {{#  } }}
-                {{#  if(d.status == 3) { }}
+                {{#  if(d.status == 3||(d.status == 4 && d.track_no)) { }}
                 <a class="layui-btn layui-btn-info layui-btn-xs" lay-event="shipinfo"><i class="layui-icon layui-icon-flag"></i>查看物流</a>
                 {{#  } }}
                 <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="info"><i class="layui-icon layui-icon-search"></i>查看</a>

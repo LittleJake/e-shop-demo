@@ -1,0 +1,17 @@
+{if sizeof($tracks) != 0}
+{foreach $tracks as $track}
+<div class="row track">
+    <div class="col-md-4">
+        <h5>{$track.update_time|date='Y年m月d日'}</h5>
+        <p>{$track.update_time|date='H:i:s'}</p>
+    </div>
+    <div class="col-md-8">
+        <h4>{$track.name}</h4>
+    </div>
+</div>
+{/foreach}
+{else}
+<div class="row track text-center">
+    <p>暂无此溯源信息</p>
+</div>
+{/if}

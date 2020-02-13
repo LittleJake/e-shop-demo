@@ -23,7 +23,10 @@ Route::get('about/index', 'index/about/index');
 Route::get('about/cert', 'index/about/cert');
 Route::get('article/index', 'index/article/index');
 Route::get('page/[:route]', 'index/page/page');
-
+Route::get('user/pay/[:id]', 'index/user/pay');
+Route::get('user/afterPay/[:id]', 'index/User/afterPay');
+Route::get('user/shipped/[:id]', 'index/User/shipped');
+Route::get('about/track', 'index/about/track');
 
 //index.any
 Route::any('user/address/add','index/user/addAddress');
@@ -34,11 +37,11 @@ Route::any('user/address','index/user/address');
 Route::any('article/[:id]', 'index/article/info');
 Route::any('register','index/login/reg');
 
+
 //index.post
 Route::post('good/order','index/good/order');
 Route::post('good/checkout','index/good/checkout');
-
-
+Route::post('about/track/[:track_no]', 'index/about/track');
 
 //admin
 //admin.get

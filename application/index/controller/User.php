@@ -14,6 +14,8 @@ use app\common\model\GoodCat;
 use app\common\model\Order;
 use app\common\model\Cart;
 use think\Db;
+use think\exception\HttpResponseException;
+
 
 class User extends Base
 {
@@ -277,8 +279,57 @@ class User extends Base
         return $this->fetch();
     }
 
-    public function payAction(){
-        return $this->fetch();
+
+    public function payAction($id = ''){
+        $modelOrder = model('Order');
+        Db::startTrans();
+        try{
+            $query = $modelOrder->where('order_no', $id)->find();
+            $Balance = new Balance();
+            if($Balance -> BalanceChange($query['total_price'])){
+                $modelOrder
+                    -> update([
+                        'status' => OrderStatus::ORDER_PAID
+                    ],['order_no' => $id, 'user_id' => $this->userid()]);
+                Db::commit();
+                $this->success('支付成功');
+            }else {
+                Db::commit();
+                $this->error('支付失败，余额不足');
+            }
+        } catch (HttpResponseException $e){
+            throw $e;
+        } catch (\Exception $e){
+            Db::rollback();
+        }
+        $this-> error('未知错误');
     }
 
+    public function afterPayAction($id){
+
+        $modelOrder = model('Order');
+        try{
+            $modelOrder
+                -> update([
+                    'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING
+                ],['order_no' => $id, 'status' => OrderStatus::ORDER_UNPAID, 'user_id' => $this->userid()]);
+            $this->success('处理成功');
+        } catch (HttpResponseException $e){
+            throw $e;
+        } catch (\Exception $e){
+            $this-> error('处理失败');
+        }
+
+    }
+
+    public function shippedAction($id){
+
+        $modelOrder = model('Order');
+
+        $modelOrder
+            -> update([
+                'status' => OrderStatus::ORDER_NEED_COMMENT
+            ],['order_no' => $id, 'user_id' => $this->userid()]);
+        $this->success('收货成功');
+    }
 }

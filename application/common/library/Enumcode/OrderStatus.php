@@ -15,6 +15,7 @@ class OrderStatus
     const ORDER_PAID = 1;
     const ORDER_UNPAID = 2;
     const ORDER_SHIPPING = 3;
-    const ORDER_NEED_COMMENT = 4;
-    const ORDER_FINISH = 5;
+    const ORDER_PAY_AFTER_SHIPPING = 4;
+    const ORDER_NEED_COMMENT = 5;
+    const ORDER_FINISH = 6;
 }
