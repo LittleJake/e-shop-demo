@@ -33,8 +33,12 @@ class Rate extends Base
         ]);
     }
 
-    public function delAction(){
-        return $this->fetch();
+    public function delAction($id = ''){
+        $rate = model('Rate');
+
+        $rate->where(['id' => $id])->delete();
+
+        return json(['code' => 1, 'msg' => '删除成功']);
     }
 
 }

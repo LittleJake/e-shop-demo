@@ -48,7 +48,7 @@
                 </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <cite>{:session('admin_user_name')}</cite>
+                        <cite>{:session('admin_username')}</cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a lay-href="{:url('admin/set/user')}">基本资料</a></dd>
@@ -98,7 +98,6 @@
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="{:url('admin/good/list')}">商品管理</a></dd>
                                     <dd><a lay-href="{:url('admin/category/index')}">商品分类管理</a></dd>
-                                    <dd><a lay-href="{:url('admin/rate/index')}">评价管理</a></dd>
                                 </dl>
                             </dd>
                             <dd data-name="shipping" class="layui-nav-itemed">
@@ -133,7 +132,6 @@
                                 <a href="javascript:;">文章系统</a>
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="{:url('admin/article/index')}">文章列表</a></dd>
-                                    <dd><a lay-href="{:url('admin/comment/index')}">评论管理</a></dd>
                                 </dl>
                             </dd>
                         </dl>

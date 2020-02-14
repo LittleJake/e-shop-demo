@@ -46,6 +46,13 @@ class Category extends Base
         return $this->fetch();
     }
 
+    public function delAction($id = ''){
+        $category = model('Category');
+
+        $category -> where('id' ,'=', $id)->delete();
+        return json(['code' => 1, 'msg' => '删除成功']);
+    }
+
     public function categoryListAction(){
         $modelCategory = model('Category');
         $query = $modelCategory ->withCount('Good')->select();

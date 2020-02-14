@@ -35,7 +35,7 @@
 
         table.render({
             elem: '#LAY-app-good-list'
-            ,url: '/admin/order/ordergoodlist?id={$id}'
+            ,url: '/admin/order/ordergoodlist?id={:input("id")}'
             ,cols: [[
                 {field: 'name', title: '商品名', minWidth: 100}
                 ,{field: 'price', title: '价格', templet: function(d){return "￥"+d.price}}

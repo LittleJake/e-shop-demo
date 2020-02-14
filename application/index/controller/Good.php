@@ -23,13 +23,13 @@ class Good extends Common
     //下单
     public function orderAction(){
         if(!$this->isLogin())
-            return $this->redirect('index/login/login', ['r' => urlencode($this->request->url())]);
+            $this->redirect('index/login/login', ['r' => urlencode($this->request->url())]);
 
         if($this->request->isPost()){
             $data = $this->request->post('a');
             $orderValidate = validate('Order');
             if(!$orderValidate->check($data))
-                return $this->error($orderValidate->getError());
+                $this->error($orderValidate->getError());
 
             $user = session('user_id');
             $time = time();
@@ -120,10 +120,10 @@ class Good extends Common
                 $this->error($e->getMessage(), url('/'));
             }
 
-            return $this->success('成功', url('index/user/order'));
+            $this->success('成功', url('index/user/order'));
         }
 
-        return $this->redirect('/');
+        $this->redirect('/');
     }
     //商品详情
     public function goodAction($id = ''){
@@ -131,7 +131,7 @@ class Good extends Common
         $comment = $modelRate->where([
             'good_id' => $id
         ])->with([
-            'Account' => function($e){return $e->withField('id,user_name');}
+            'Account' => function($e){return $e->withField('id,username');}
         ])->paginate(PAGE);
 
         $page = $comment ->render();
@@ -156,7 +156,7 @@ class Good extends Common
             ->find();
 
         if(!isset($good))
-            return $this->error('参数错误');
+            $this->error('参数错误');
 
         $this->assign('comment_total', $total);
         $this->assign('cat', $good->good_cat);
@@ -168,13 +168,13 @@ class Good extends Common
     public function checkoutAction()
     {
         if(!$this->isLogin())
-            return $this->redirect('index/login/login', ['r' =>  urlencode($this->request->url(true))]);
+            $this->redirect('index/login/login', ['r' =>  urlencode($this->request->url(true))]);
 
         if($this->request->isPost()){
             $data = $this->request->post();
             $validate = validate('Order');
             if(!$validate->scene('checkout')->check($data))
-                return $this->error($validate->getError());
+                $this->error($validate->getError());
 
             $this->assign('data', $data);
 
@@ -226,7 +226,7 @@ class Good extends Common
             return $this->fetch();
         }
 
-        return $this->redirect('/');
+        $this->redirect('/');
     }
 
 

@@ -17,7 +17,7 @@ layui.define(['table', 'form'], function(exports){
         ,cols: [[
             {type: 'checkbox', fixed: 'left'}
             ,{field: 'id', width: 100, title: 'ID', sort: true}
-            ,{field: 'user_name', title: '用户名', minWidth: 100, templet: function(e){return e.account.user_name}}
+            ,{field: 'username', title: '用户名', minWidth: 100, templet: function(e){return e.account.username}}
             ,{field: 'money', title: '金额'}
             ,{title: '操作', width: 80, align:'center', fixed: 'right', toolbar: '#table-balance-tool'}
         ]]

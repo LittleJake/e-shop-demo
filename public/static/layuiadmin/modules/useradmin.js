@@ -20,7 +20,7 @@ layui.define(['table', 'form'], function(exports){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field: 'id', width: 100, title: 'ID', sort: true}
-      ,{field: 'user_name', title: '用户名', minWidth: 100}
+      ,{field: 'username', title: '用户名', minWidth: 100}
       ,{field: 'mobile', title: '手机'}
       ,{field: 'email', title: '邮箱'}
       ,{title: '操作', width: 150, align:'center', fixed: 'right', toolbar: '#table-useradmin-webuser'}

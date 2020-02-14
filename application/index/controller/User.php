@@ -177,11 +177,11 @@ class User extends Base
             }
             catch (\Exception $e) {
                 $modelAddress->rollback();
-                return $this->error($e->getMessage()."错误",url('index/user/address'));
+                $this->error($e->getMessage()."错误",url('index/user/address'));
             }
 
 
-            return $this->success("成功",'index/user/address');
+            $this->success("成功",'index/user/address');
         }
 
         $query = $modelAddress -> where([
@@ -203,13 +203,13 @@ class User extends Base
             $validator = validate('address');
 
             if(!$validator->check($data))
-                return $this->error($validator->getError());
+                $this->error($validator->getError());
 
             $data['user_id'] = session('user_id');
 
             $modelAddress -> insert($data);
 
-            return $this->success('添加成功', url('index/user/address'));
+            $this->success('添加成功', url('index/user/address'));
 
         }
 
@@ -257,9 +257,9 @@ class User extends Base
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
-                return $this->error('错误', url('index/user/order'));
+                $this->error('错误', url('index/user/order'));
             }
-            return $this->success('成功', url('index/user/order'));
+            $this->success('成功', url('index/user/order'));
         }
 
         $order = model('Order');
@@ -331,5 +331,9 @@ class User extends Base
                 'status' => OrderStatus::ORDER_NEED_COMMENT
             ],['order_no' => $id, 'user_id' => $this->userid()]);
         $this->success('收货成功');
+    }
+
+    public function changepwdAction(){
+        return $this->fetch();
     }
 }

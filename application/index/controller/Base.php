@@ -16,7 +16,7 @@ class Base extends Common
         parent::__construct();
 
         if(!$this->isLogin())
-            return $this->redirect('index/login/login', ['r' =>  urlencode($this->request->url(true))]);
+            $this->redirect('index/login/login', ['r' =>  urlencode($this->request->url(true))]);
     }
 
     protected function userid(){

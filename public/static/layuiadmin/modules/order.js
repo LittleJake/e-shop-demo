@@ -34,23 +34,7 @@ layui.define(['table', 'form', 'util'], function(exports){
     //监听工具条
     table.on('tool(LAY-app-order-list)', function(obj){
         var data = obj.data;
-        if(obj.event === 'del'){
-            layer.confirm('确定删除此订单？', function(index){
-                $.ajax({
-                    type:'get',
-                    url:'/admin/order/del?id='+data.id,
-                    success:function (res) {
-                        if (res.code == 1) {
-                            //更新数据表
-                            obj.del();
-                            layer.close(index);
-                            //关闭弹层
-                        }
-                        layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
-                    }
-                });
-            });
-        }  else if(obj.event === 'info'){
+        if(obj.event === 'info'){
             layer.open({
                 type: 2
                 ,title: '商品明细'
@@ -104,45 +88,5 @@ layui.define(['table', 'form', 'util'], function(exports){
         ,limits: [10, 15, 20, 25, 30]
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
-
-//监听工具条
-    table.on('tool(LAY-app-rate)', function(obj){
-        var data = obj.data;
-        if(obj.event === 'del'){
-            layer.confirm('确定删除此条评论？', function(index){
-                obj.del();
-                layer.close(index);
-            });
-        } else if(obj.event === 'edit') {
-            layer.open({
-                type: 2
-                ,title: '编辑评论'
-                ,content: '../../../views/app/content/contform.html'
-                ,area: ['450px', '300px']
-                ,btn: ['确定', '取消']
-                ,yes: function(index, layero){
-                    var iframeWindow = window['layui-layer-iframe'+ index]
-                        ,submitID = 'layuiadmin-app-comm-submit'
-                        ,submit = layero.find('iframe').contents().find('#'+ submitID);
-
-                    //监听提交
-                    iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
-                        var field = data.field; //获取提交的字段
-
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        table.reload('LAY-app-content-comm'); //数据刷新
-                        layer.close(index); //关闭弹层
-                    });
-
-                    submit.trigger('click');
-                }
-                ,success: function(layero, index){
-
-                }
-            });
-        }
-    });
-
     exports('order', {})
 });

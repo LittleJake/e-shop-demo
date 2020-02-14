@@ -22,7 +22,7 @@ class Login extends Common
     public function loginAction(){
         if($this->isLogin()){
             $url = urldecode($this->request->param('r'));
-            return $this->redirect(empty($url)?"/":$url);
+            $this->redirect(empty($url)?"/":$url);
         }
 
 
@@ -32,7 +32,7 @@ class Login extends Common
             $validator = validate('user');
 
             if(!$validator -> scene('login') -> check($data))
-                return $this->error($validator->getError());
+                $this->error($validator->getError());
 
             $modelAccount = new Account();
             $query = $modelAccount -> where([
@@ -40,18 +40,18 @@ class Login extends Common
             ])->with('Balance')-> find();
 
             if(!isset($query))
-                return $this->error('邮箱不存在');
+                $this->error('邮箱不存在');
 
             if(!check_secret($data['password'], $query['password']))
-                return $this->error('密码错误');
+                $this->error('密码错误');
 
             cookie('email', $query['email']);
-            session('user', $query['user_name']);
+            session('user', $query['username']);
             session('user_id', $query['id']);
             cache('balance:'.$query['id'], $query->balance->money*100);
             $url = urldecode($this->request->param('r'));
 
-            return $this->success($query['user_name'] . '，欢迎回来', empty($url)?"/":$url);
+            $this->success($query['username'] . '，欢迎回来', empty($url)?"/":$url);
         }
 
         $this->assign('email', cookie('email'));
@@ -63,14 +63,14 @@ class Login extends Common
         session(null);
         $url = urldecode($this->request->param('r'));
 
-        return $this->success('登出成功', empty($url)?"/":$url);
+        $this->success('登出成功', empty($url)?"/":$url);
     }
 
     //注册
     public function regAction(){
         if($this->isLogin()){
             $url = urldecode($this->request->param('r'));
-            return $this->redirect(empty($url)?"/":$url);
+            $this->redirect(empty($url)?"/":$url);
         }
 
         if($this->request->isPost()){
@@ -79,7 +79,7 @@ class Login extends Common
             $validator = validate('user');
 
             if(!$validator->scene('reg')-> check($data))
-                return $this->error($validator->getError());
+                $this->error($validator->getError());
             unset($data['repassword']);
             $data['password'] = secret($data['password']);
 
@@ -98,10 +98,10 @@ class Login extends Common
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 $modelAccount -> rollback();
-                return $this->error('注册失败，事务处理失败');
+                $this->error('注册失败，事务处理失败');
             }
 
-            return $this->success('注册成功', url('index/login/login'), 1, 3);
+            $this->success('注册成功', url('index/login/login'), 1, 3);
 
         }
 
@@ -122,7 +122,7 @@ class Login extends Common
             'scope' => config('github.scope'),
         ];
 
-        return $this->redirect(config('github.github_auth_url').'?'.http_build_query($query));
+        $this->redirect(config('github.github_auth_url').'?'.http_build_query($query));
     }
 
     public function OAuthCallbackAction(){
@@ -146,16 +146,16 @@ class Login extends Common
         $query = $modelAccount -> where($data)->with('Balance')-> find();
         if(!empty($query)){
             cookie('email', $query['email']);
-            session('user', $query['user_name']);
+            session('user', $query['username']);
             session('user_id', $query['id']);
             cache('balance:'.$query['id'], $query->balance->money*100);
-            return $this->success($query['user_name'] . '，欢迎回来', "/");
+            $this->success($query['username'] . '，欢迎回来', "/");
         }
 
         $data = [
             'email' => $result['id'].'@github',
             'password' => secret($result['node_id'].random_int(0,65535)),
-            'user_name' => $result['login'],
+            'username' => $result['login'],
             'mobile' => random_str(20,'int')
         ];
 
@@ -174,7 +174,7 @@ class Login extends Common
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             $modelAccount -> rollback();
-            return $this->error('注册失败，事务处理失败');
+            $this->error('注册失败，事务处理失败');
         }
 
         $modelAccount = new Account();
@@ -182,12 +182,12 @@ class Login extends Common
         $query = $modelAccount -> where($data)->with('Balance')-> find();
         if(!empty($query)){
             cookie('email', $query['email']);
-            session('user', $query['user_name']);
+            session('user', $query['username']);
             session('user_id', $query['id']);
             cache('balance:'.$query['id'], $query->balance->money*100);
-            return $this->success($query['user_name'] . '，欢迎注册', "/");
+            $this->success($query['username'] . '，欢迎注册', "/");
         }
 
-        return $this->error('非法操作');
+        $this->error('非法操作');
     }
 }

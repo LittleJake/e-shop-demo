@@ -17,7 +17,7 @@ use think\Controller;
 class Common extends Controller
 {
     protected function isLogin() {
-        if(session('?admin_user_name') && session('?admin_user_id'))
+        if(session('?admin_username') && session('?admin_user_id'))
             return true;
 
         return false;

@@ -35,8 +35,8 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'category', 'table'], function(){
 
-        var table = layui.table;
-        var $ = layui.$, active = {
+        var table = layui.table,
+            $ = layui.$, active = {
             add: function(){
                 layer.open({
                     type: 2

@@ -13,21 +13,11 @@ class Index extends Common
         $keyword = input('get.q','');
         $modelGood = new Good();
 
-        $goods = $modelGood->withMin('GoodCat', 'price')->where([
-            ['title', 'like', "%$keyword%"]
-        ])->paginate(5);
+        $goods = $modelGood->withMin('GoodCat', 'price')->whereOr([
+            ['title', 'like', "%$keyword%"],
+            ['keyword', 'like', "%$keyword%"]
+        ])->paginate(PAGE);
 
-        /**
-        $cat = '(SELECT good_id, min(price) as p from `category` group by good_id)';
-
-        $goods = Db::table("good")
-            ->alias('G')
-            ->leftJoin("$cat C", 'G.good_id = C.good_id')
-            ->where([
-                ['G.title','like', "%$keyword%"]
-            ])
-            ->paginate(5);
-        **/
 		$this ->assign('goods', $goods);
 		$this->assign('page_title', '首页');
 

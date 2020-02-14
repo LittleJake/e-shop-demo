@@ -19,7 +19,7 @@ class Login extends Common
     /** 管理员登录 */
     public function loginAction(){
         if($this->isLogin())
-            return $this->redirect('admin/index/index');
+            $this->redirect('admin/index/index');
 
         if($this->request->isAjax()) {
             $data = input('a');
@@ -44,7 +44,7 @@ class Login extends Common
                 return json(['code' => 2, 'msg'=>'密码错误']);
 
             session('admin_user_id', $query['id']);
-            session('admin_user_name', $query['username']);
+            session('admin_username', $query['username']);
 
             return json(['code'=> 0, 'msg'=>'登陆成功']);
         }
@@ -62,7 +62,7 @@ class Login extends Common
 
     public function logoutAction(){
 
-        session('admin_user_name',null);
+        session('admin_username',null);
         session('admin_user_id',null);
 
         return json(['code' => 0, 'msg'=>'登出成功']);

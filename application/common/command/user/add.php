@@ -55,7 +55,7 @@ class add extends Command
             $result = $modelAccount
                 ->save([
                     'email' => $email,
-                    'user_name' => $username,
+                    'username' => $username,
                     'password' => secret($password),
                     'mobile' => $mobile
                 ]);

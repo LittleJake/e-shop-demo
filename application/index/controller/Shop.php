@@ -15,7 +15,7 @@ class Shop extends Base
     //店铺商品
     public function shopInfoAction($page = 1, $id){
         if($page < 1)
-            return $this->error('参数错误');
+            $this->error('参数错误');
 
         $query = Db::table('shop') -> where('shop_id', $id) -> find();
 
@@ -34,7 +34,7 @@ class Shop extends Base
     //店铺列表
     public function shopListAction($page = 1){
         if($page < 1)
-            return $this->error('参数错误');
+            $this->error('参数错误');
 
         $query = Db::query("select * from `shop`");
 
@@ -42,7 +42,7 @@ class Shop extends Base
 
 
         if($page > $m)
-            return $this->error('参数错误');
+            $this->error('参数错误');
 
         $shops = array_slice($query, ($page - 1) * PAGE, PAGE);
         $goods = array();

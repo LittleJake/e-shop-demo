@@ -104,22 +104,7 @@ layui.define(['table', 'form'], function(exports){
 
 
 
-//评论管理
-    table.render({
-        elem: '#LAY-app-comment-list'
-        ,url: '/admin/comment/commentList' //模拟接口
-        ,cols: [[
-            {field: 'id', width: 70, title: 'ID', sort: true}
-            ,{field: 'user_name', width: 130, title: '作者', templet: function (d) {return d.account.user_name;}}
-            ,{field: 'update_time', title: '时间', width: 180, sort: true, templet:function(d) {return util.toDateString(d.update_time*1000); }}
-            ,{field: 'content', width: 130, title: '评论'}
-            ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#table-comment-tool'}
-        ]]
-        ,page: true
-        ,limit: 10
-        ,limits: [10, 15, 20, 25, 30]
-        ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
-    });
+
 
 //监听工具条
     table.on('tool(LAY-app-comment-list)', function(obj){

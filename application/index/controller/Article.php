@@ -41,7 +41,7 @@ class Article extends Common
                 'article_id' => $id
             ])->with([
                 'Account'=>function($q){
-                    return $q-> withField('id,user_name');
+                    return $q-> withField('id,username');
                 }])->paginate(PAGE);
 
         $page = $query -> render();

@@ -22,4 +22,8 @@ class ArticleComment extends BaseModel
     public function getCommentCount($where = [],$field ='*'){
         return parent::getCount($where, $field);
     }
+
+    public function p(){
+        return $this->p();
+    }
 }

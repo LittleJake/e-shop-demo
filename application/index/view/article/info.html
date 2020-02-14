@@ -34,7 +34,7 @@
             {foreach $comment as $k => $v}
             <div class="row comment">
                 <div class="col-xs-11 col-md-11">
-                    <h4>{$v.account.user_name}</h4>
+                    <h4>{$v.account.username}</h4>
                     <p style="color:#888">{$v.update_time|date='Y年m月d日 H:i:s'}</p>
                     <strong>{$v.content}</strong>
                 </div>

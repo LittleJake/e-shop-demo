@@ -55,9 +55,6 @@ class Order extends Base
     }
 
     public function infoAction(){
-        $id = input('get.id',0);
-
-        $this->assign('id',$id);
         return $this->fetch();
     }
 
@@ -82,12 +79,14 @@ class Order extends Base
         return $this->fetch();
 
     }
+
     public function shipAction(){
         if($this->request->isPost()){
             $data = $this->request->post();
 
             $order = model('Order');
 
+            //全款
             $order->update([
                 'status' => OrderStatus::ORDER_SHIPPING,
                 'track_no' => $data['track_no']
@@ -95,6 +94,15 @@ class Order extends Base
                 'id' => $data['id'],
                 'status' => OrderStatus::ORDER_PAID
             ]);
+            //货到付款
+            $order->update([
+                'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING,
+                'track_no' => $data['track_no']
+            ],[
+                'id' => $data['id'],
+                'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING
+            ]);
+
             return json([
                 'code' => 1,
                 'msg' => '发货成功'
