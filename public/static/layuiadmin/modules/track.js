@@ -13,6 +13,9 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'name', title: '操作名称'}
             ,{field: 'update_time', title: '操作时间', width: 210, sort: true, templet: function(e){return util.toDateString(e.update_time*1000);}}
         ]]
+        ,page: true
+        ,limit: 10
+        ,limits: [10, 15, 20, 25, 30]
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 

@@ -76,8 +76,7 @@ class Login extends Common
         if($this->request->isPost()){
             $data = input('post.a');
 
-            $validator = validate('user');
-
+            $validator = validate('User');
             if(!$validator->scene('reg')-> check($data))
                 $this->error($validator->getError());
             unset($data['repassword']);

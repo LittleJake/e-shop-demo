@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/static/layuiadmin/layui/css/layui.css" media="all">
 {/block}
 {block name="content"}
-<div class="container">
+<div class="container content">
     <form method="post" class="form-group" id="form-rate">
         {foreach $order.order_goods as $k}
         <div class="row good-list">
@@ -13,8 +13,8 @@
             <div class="col-xs-9 col-md-9">
                 <h3>{$k.name}</h3>
                 <div id="star-{$k.good_id}"></div>
-                <input class="hidden" type="number" max="5" min="0" hidden name="rate[{$k.good_id}]" value="5">
-                <textarea class="form-control" name="content[{$k.good_id}]" style="resize:none;" rows="3" placeholder="留下你的评价"></textarea>
+                <input class="hidden" type="number" max="5" min="0" hidden name="star[{$k.good_id}]" value="5">
+                <textarea class="form-control" name="comment[{$k.good_id}]" style="resize:none;" rows="3" placeholder="留下你的评价"></textarea>
             </div>
         </div>
         {/foreach}
@@ -40,7 +40,7 @@
             elem: '#star-{$k.good_id}'  //绑定元素
             ,value: 5,
             choose: function(value){
-                $("input[name='rate[{$k.good_id}]']").val(value);
+                $("input[name='star[{$k.good_id}]']").val(value);
             }
         });
         {/foreach}

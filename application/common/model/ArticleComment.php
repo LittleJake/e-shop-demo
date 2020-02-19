@@ -23,7 +23,4 @@ class ArticleComment extends BaseModel
         return parent::getCount($where, $field);
     }
 
-    public function p(){
-        return $this->p();
-    }
 }

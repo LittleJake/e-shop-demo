@@ -45,13 +45,13 @@
             ,cols: [[
                 {field: 'id', width: 80, title: 'ID', sort: true}
                 ,{field: 'star', title: '评分', width: 100, templet:function(e){return e.star+' 分';}}
-                ,{field: 'comment', title: '评论内容', minWidth: 100}
-                ,{field: 'update_time', title: '评论时间', width: 210, sort: true, templet: function(e){return util.toDateString(e.update_time*1000);}}
+                ,{field: 'comment', title: '评价内容', minWidth: 100}
+                ,{field: 'update_time', title: '评价时间', width: 210, sort: true, templet: function(e){return util.toDateString(e.update_time*1000);}}
                 ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-app-rate'}
             ]]
             ,page: true
-            ,limit: 10
-            ,limits: [10, 15, 20, 25, 30]
+            ,limit: 5
+            ,limits: [5, 10, 15, 20, 25, 30]
             ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
         });
 

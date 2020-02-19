@@ -35,6 +35,7 @@
             <p>
                 <a class="btn btn-success" href="{:url('index/user/pay', ['id' => $k.order_no])}">支付</a>
                 <a class="btn btn-info" href="{:url('index/user/afterPay', ['id' => $k.order_no])}">货到付款</a>
+                <a class="btn btn-danger" href="{:url('index/user/cancel', ['id' => $k.order_no])}">取消订单</a>
             </p>
             {elseif $k.status == 3 || ($k.status == 4 && !empty($k.track_no))}
             运送中

@@ -233,20 +233,24 @@ class User extends Base
             $time = time();
 
             Db::startTrans();
+
+            $user = session('user_id');
+            $ins = [];
+
+            foreach ($ids as $k){
+                if(!is_numeric($data['star'][$k])||intval($data['star'][$k]) > 5 || intval($data['star'][$k]) < 0)
+                    $data['star'][$k] = 5;
+
+                $ins[] = [
+                    'good_id' => $k,
+                    'star' => $data['star'][$k],
+                    'comment' => htmlentities($data['comment'][$k]),
+                    'user_id' => $user,
+                    'update_time' => $time
+                ];
+            }
+
             try{
-                $user = session('user_id');
-                $ins = [];
-
-                foreach ($ids as $k){
-                    $ins[] = [
-                        'good_id' => $k,
-                        'star' => $data['rate'][$k],
-                        'comment' => htmlentities($data['content'][$k]),
-                        'user_id' => $user,
-                        'update_time' => $time
-                    ];
-                }
-
                 $rate->insertAll($ins);
                 $order ->update([
                     'status' => OrderStatus::ORDER_FINISH,
@@ -332,8 +336,38 @@ class User extends Base
             ],['order_no' => $id, 'user_id' => $this->userid()]);
         $this->success('收货成功');
     }
+    public function cancelAction($id){
+
+        $modelOrder = model('Order');
+
+        $modelOrder
+            -> update([
+                'status' => OrderStatus::ORDER_CLOSE
+            ],['order_no' => $id, 'user_id' => $this->userid(), 'status' => OrderStatus::ORDER_UNPAID]);
+        $this->success('取消成功');
+    }
 
     public function changepwdAction(){
+        if($this->request->isPost()){
+            $data = $this->request->post('a');
+            $valid = validate('user');
+            if(!$valid->scene('change')->check($data))
+                $this->error($valid->getError());
+
+            $account = model('Account');
+
+            $query = $account->get($this->userid());
+
+            if(check_secret($query['password'], $data['old_password']))
+                $this->error('原密码错误');
+
+            $account -> update(['password' => secret($data['password'])],[['id', '=', $this->userid()]]);
+
+            $this->success('修改成功');
+        }
+
+
+        $this->assign('page_title','修改密码');
         return $this->fetch();
     }
 }

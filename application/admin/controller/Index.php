@@ -34,7 +34,7 @@ class Index extends Base
         $this->assign('goodCount', $good ->getGoodCount());
         $this->assign('userCount', $account ->getAccountCount());
         $this->assign('inStockCount', $good ->getGoodCount(['status' => GoodStatus::GOOD_IN_STOCK]));
-        $this->assign('waitShippingCount', $order ->getOrderCount(['status' => OrderStatus::ORDER_PAID]));
+        $this->assign('waitShippingCount', $order ->getOrderCount(['status' => OrderStatus::ORDER_PAID])+$order ->getOrderCount([['status','=',OrderStatus::ORDER_PAY_AFTER_SHIPPING],['track_no' ,'NULL','']]));
         $this->assign('articleCount', $article ->getArticleCount());
 
 

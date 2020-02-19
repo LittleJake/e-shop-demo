@@ -189,7 +189,7 @@ class Good extends Common
             $this->assign('address', $query);
 
             $modelShipping = new Shipping();
-            $query = $modelShipping->select();
+            $query = $modelShipping->where('status', '=', 1)->select();
 
             $this->assign('ships', $query);
 

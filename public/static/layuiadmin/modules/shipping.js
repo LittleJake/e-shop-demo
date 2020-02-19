@@ -9,10 +9,12 @@ layui.define(['table', 'form'], function(exports){
         ,cols: [[
             {field: 'id', width: 100, title: 'ID', sort: true, fixed: 'left'}
             ,{field: 'name', title: '物流名', minWidth: 100}
-            ,{field: 'price', title: '物流价格'}
-            ,{field: 'status', title: '状态', templet: '#buttonTpl'}
+            ,{field: 'price', title: '物流价格', templet:function (e) {return "￥"+e.price}},{field: 'status', title: '状态', templet: '#buttonTpl'}
             ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#layuiadmin-app-shipping-tool'}
         ]]
+        ,page: true
+        ,limit: 10
+        ,limits: [10, 15, 20, 25, 30]
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
