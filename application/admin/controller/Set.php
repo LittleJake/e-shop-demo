@@ -17,9 +17,7 @@ class Set extends Base
         if($this->request->isPost()){
 
 
-
         }
-
 
         $query = $set -> select();
         $option = [];
@@ -30,6 +28,10 @@ class Set extends Base
         return $this->fetch();
     }
     public function userAction(){
+        $admin = model('AdminAccount');
+        $query = $admin->get($this->adminid());
+
+        $this->assign('admin', $query);
         return $this->fetch();
     }
     public function passwdAction(){

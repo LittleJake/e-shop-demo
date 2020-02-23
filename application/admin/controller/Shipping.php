@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\ShippingStatus;
+
 class Shipping extends Base
 {
 
@@ -19,12 +21,13 @@ class Shipping extends Base
     }
 
     public function shippingListAction(){
-        $modelShipping = new \app\common\model\Shipping();
-        $query = $modelShipping ->select();
+        $modelShipping = model('Shipping');
+        $where[] = ['status','<>', ShippingStatus::SHIPPING_DELETED];
+        $query = $modelShipping ->where($where)->select();
         return json([
             'code' => 0,
             'msg' => '',
-            'count' => $modelShipping->getShippingCount(),
+            'count' => $modelShipping->getShippingCount($where),
             'data' => $query
         ]);
     }
@@ -33,7 +36,7 @@ class Shipping extends Base
         if($this->request->isPost()){
             $data = $this->request->post();
 
-            $modelShipping = new \app\common\model\Shipping();
+            $modelShipping = model('Shipping');
 
             try{
                 $modelShipping->insert($data, false);
@@ -41,14 +44,14 @@ class Shipping extends Base
                 return json(['code' => 0, 'msg' => $e->getMessage()]);
             }
 
-            return json(['code' => 1, 'msg' => 'success']);
+            return json(['code' => 1, 'msg' => '添加成功']);
         }
 
         return $this->fetch();
     }
 
     public function editAction(){
-        $modelShipping = new \app\common\model\Shipping();
+        $modelShipping = model('Shipping');
         if($this->request->isPost()){
             $data = $this->request->post();
             try{
@@ -57,7 +60,7 @@ class Shipping extends Base
                 return json(['code' => 0, 'msg' => $e->getMessage()]);
             }
 
-            return json(['code' => 1, 'msg' => 'success']);
+            return json(['code' => 1, 'msg' => '编辑成功']);
         }
 
         $id = input('get.id');
@@ -68,16 +71,16 @@ class Shipping extends Base
 
     public function delAction($id = 0){
         if(empty($id))
-            return json(['code' => 0, 'msg' => 'failed']);
+            return json(['code' => 0, 'msg' => '删除失败，物流模板不存在']);
 
-        $modelShipping = new \app\common\model\Shipping();
+        $modelShipping = model('Shipping');
         try{
-            $modelShipping->where(['id' => $id])->delete();
+            $modelShipping->update(['status' => ShippingStatus::SHIPPING_DELETED],['id' => $id]);
         } catch (\Exception $e){
-            return json(['code' => 0, 'msg' => 'failed']);
+            return json(['code' => 0, 'msg' => '删除失败']);
         }
 
-        return json(['code' => 1, 'msg' => 'success']);
+        return json(['code' => 1, 'msg' => '删除成功']);
     }
 
 }

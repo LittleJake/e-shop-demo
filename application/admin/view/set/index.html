@@ -33,33 +33,33 @@
                                 <input type="text" name="orgname" value="{$option['orgname']}" class="layui-input">
                             </div>
                         </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">网站域名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="domain" lay-verify="url" value="{$option['domain']}" class="layui-input">
+                            </div>
+                        </div>
                         <!--<div class="layui-form-item">-->
-                        <!--<label class="layui-form-label">网站域名</label>-->
+                        <!--<label class="layui-form-label">缓存时间</label>-->
+                        <!--<div class="layui-input-inline" style="width: 80px;">-->
+                        <!--<input type="text" name="cache" lay-verify="number" value="0" class="layui-input">-->
+                        <!--</div>-->
+                        <!--<div class="layui-input-inline layui-input-company">分钟</div>-->
+                        <!--<div class="layui-form-mid layui-word-aux">本地开发一般推荐设置为 0，线上环境建议设置为 10。</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-form-item">-->
+                        <!--<label class="layui-form-label">最大文件上传</label>-->
+                        <!--<div class="layui-input-inline" style="width: 80px;">-->
+                        <!--<input type="text" name="cache" lay-verify="number" value="2048" class="layui-input">-->
+                        <!--</div>-->
+                        <!--<div class="layui-input-inline layui-input-company">KB</div>-->
+                        <!--<div class="layui-form-mid layui-word-aux">提示：1 M = 1024 KB</div>-->
+                        <!--</div>-->
+                        <!--<div class="layui-form-item">-->
+                        <!--<label class="layui-form-label">上传文件类型</label>-->
                         <!--<div class="layui-input-block">-->
-                        <!--<input type="text" name="domain" lay-verify="url" value="http://www.layui.com" class="layui-input">-->
+                        <!--<input type="text" name="cache" value="png|gif|jpg|jpeg|zip|rar" class="layui-input">-->
                         <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="layui-form-item">-->
-                            <!--<label class="layui-form-label">缓存时间</label>-->
-                            <!--<div class="layui-input-inline" style="width: 80px;">-->
-                                <!--<input type="text" name="cache" lay-verify="number" value="0" class="layui-input">-->
-                            <!--</div>-->
-                            <!--<div class="layui-input-inline layui-input-company">分钟</div>-->
-                            <!--<div class="layui-form-mid layui-word-aux">本地开发一般推荐设置为 0，线上环境建议设置为 10。</div>-->
-                        <!--</div>-->
-                        <!--<div class="layui-form-item">-->
-                            <!--<label class="layui-form-label">最大文件上传</label>-->
-                            <!--<div class="layui-input-inline" style="width: 80px;">-->
-                                <!--<input type="text" name="cache" lay-verify="number" value="2048" class="layui-input">-->
-                            <!--</div>-->
-                            <!--<div class="layui-input-inline layui-input-company">KB</div>-->
-                            <!--<div class="layui-form-mid layui-word-aux">提示：1 M = 1024 KB</div>-->
-                        <!--</div>-->
-                        <!--<div class="layui-form-item">-->
-                            <!--<label class="layui-form-label">上传文件类型</label>-->
-                            <!--<div class="layui-input-block">-->
-                                <!--<input type="text" name="cache" value="png|gif|jpg|jpeg|zip|rar" class="layui-input">-->
-                            <!--</div>-->
                         <!--</div>-->
 
                         <div class="layui-form-item layui-form-text">
@@ -99,9 +99,23 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">互联网药品交易服务资格证书</label>
+                            <div class="layui-input-block">
+                                <input name="ecert1-img" lay-verify="required" placeholder="证书图片URL" class="layui-input" readonly value="{$option['ecert1-img']}">
+                                <a id="upload-ecert1-img" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-picture"></i>上传证书</a>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
                             <label class="layui-form-label">互联网药品信息服务资格证书编号</label>
                             <div class="layui-input-block">
                                 <input type="text" name="ecert2" value="{$option['ecert2']}" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">互联网药品信息服务资格证书</label>
+                            <div class="layui-input-block">
+                                <input name="ecert2-img" lay-verify="required" placeholder="证书图片URL" class="layui-input" readonly value="{$option['ecert2-img']}">
+                                <a id="upload-ecert2-img" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-picture"></i>上传证书</a>
                             </div>
                         </div>
                         <div class="layui-form-item layui-form-text">
@@ -135,7 +149,40 @@
         base: '/static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'set']);
+    }).use(['index', 'set', 'upload'], function () {
+        var $ = layui.$
+            ,upload = layui.upload;
+
+        upload.render({
+            elem: '#upload-ecert1-img'
+            ,url: "{:url('admin/index/upload')}"
+            ,accept: 'images'
+            ,field: 'upload'
+            ,done: function(res){
+                if(res.uploaded == 1){
+                    $('input[name="ecert1-img"]').val(res.url);
+                    layer.msg('上传成功',{icon: 1});
+                } else {
+                    layer.msg('上传失败，'+res.error.msg,{icon: 2});
+                }
+            }
+        });
+
+        upload.render({
+            elem: '#upload-ecert2-img'
+            ,url: "{:url('admin/index/upload')}"
+            ,accept: 'images'
+            ,field: 'upload'
+            ,done: function(res){
+                if(res.uploaded == 1){
+                    $('input[name="ecert2-img"]').val(res.url);
+                    layer.msg('上传成功',{icon: 1});
+                } else {
+                    layer.msg('上传失败，'+res.error.msg,{icon: 2});
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>

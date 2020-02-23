@@ -19,8 +19,7 @@ use think\facade\Log;
 class Index extends Base
 {
     /** 首页 */
-    public function indexAction()
-    {
+    public function indexAction(){
         return $this->fetch();
     }
 

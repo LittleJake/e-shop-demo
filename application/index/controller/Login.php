@@ -131,9 +131,8 @@ class Login extends Common
         }
         $code = input('code');
         $result = GithubOAuth::getInfo($code);
-
         if(empty($result)){
-            $this->error('非法操作');
+            $this->error('OAuth API主机连接失败');
         }
 
         $data = [

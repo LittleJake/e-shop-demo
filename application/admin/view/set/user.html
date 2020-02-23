@@ -24,20 +24,19 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" value="xianxin" readonly class="layui-input">
+                                <input type="text" name="username" value="{$admin['username']}" readonly class="layui-input">
                             </div>
-                            <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
+                            <!--<div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>-->
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="email" value="" lay-verify="email" autocomplete="off" class="layui-input">
+                                <input type="text" name="email" value="{$admin['email']}" lay-verify="email" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button class="layui-btn" lay-submit lay-filter="setmyinfo">确认修改</button>
-                                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
                             </div>
                         </div>
                     </div>

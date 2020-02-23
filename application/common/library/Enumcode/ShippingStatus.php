@@ -11,6 +11,7 @@ namespace app\common\library\Enumcode;
 
 class ShippingStatus
 {
-    const SHIPPING_ON_ROAD = 0;
-    const SHIPPING_FINISH = 1;
+    const SHIPPING_DELETED = 0;
+    const SHIPPING_SHOW = 1;
+    const SHIPPING_NOT_SHOW = 2;
 }

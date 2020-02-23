@@ -14,9 +14,7 @@ use app\common\model\Address;
 use app\common\model\GoodCat;
 use app\common\model\OrderGoods;
 use app\common\model\Shipping;
-use app\index\validate\Order;
 use think\Db;
-use think\facade\Cache;
 
 class Good extends Common
 {
@@ -180,7 +178,7 @@ class Good extends Common
 
             $user = session('user_id');
 
-            $modelAddress = new Address();
+            $modelAddress =  model('Address');
             $query = $modelAddress -> where([
                 'status' => 1,
                 'user_id' => $user
@@ -188,8 +186,8 @@ class Good extends Common
 
             $this->assign('address', $query);
 
-            $modelShipping = new Shipping();
-            $query = $modelShipping->where('status', '=', 1)->select();
+            $modelShipping = model('Shipping');
+            $query = $modelShipping->where('status', '=', ShippingStatus::SHIPPING_SHOW)->select();
 
             $this->assign('ships', $query);
 

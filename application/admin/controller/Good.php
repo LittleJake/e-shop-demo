@@ -12,6 +12,7 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\GoodStatus;
 use app\common\model\Category;
 
 class Good extends Base
@@ -107,7 +108,10 @@ class Good extends Base
         !empty(input('id')) && $where[] = ['id', '=', input('id')];
         !empty(input('cate_id')) && $where[] = ['cate_id', '=', input('cate_id')];
         !empty(input('title')) && $where[] = ['title', 'like', '%'.input('title').'%'];
-        (input('status') != '') && $where[] = ['status', '=',input('status')];
+        if(input('status') != '')
+            $where[] = ['status', '=',input('status')];
+        else
+            $where[] = ['status', '<>', GoodStatus::GOOD_DELETE];
 
 
         $modelGood = new \app\common\model\Good();
@@ -126,7 +130,7 @@ class Good extends Base
 
         $modelGood = new \app\common\model\Good();
         try{
-            $modelGood->where(['id' => $id])->delete();
+            $modelGood->update(['status' => GoodStatus::GOOD_DELETE],['id' => $id]);
         } catch (\Exception $e){
             return json(['code' => 0, 'msg' => 'failed']);
         }

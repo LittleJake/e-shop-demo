@@ -1,14 +1,14 @@
 {extend name="default/base" /}
+{block name="extendcss"}
+<link rel="stylesheet" href="/static/css/jquery.fancybox.min.css" media="all">
+{/block}
 {block name="content"}
 <div class="container content">
     <h3>{$data.title}</h3>
     <p>更新时间：{:date($data.update_time)}</p>
     <p>发布者：{$data.admin_account.username}</p>
     <hr>
-
     {$data.content|raw}
-
-
 </div>
 <div class="comment">
     <div class="container">
@@ -54,6 +54,7 @@
 </div>
 {/block}
 {block name="extendjs"}
+<script src="/static/js/jquery.fancybox.min.js"></script>
 <script>
     $("#comment").on('click', ".pagination li a",function(){
         var pageObj = this;
@@ -66,6 +67,10 @@
             },
         });
         return false;
+    });
+    $(".content").find('img').each(function(i,elem){
+        $(elem).addClass('img-responsive');
+        $(elem).wrap('<a data-fancybox="gallery" href="'+$(elem).attr('src') +'"></a>');
     });
 </script>
 {/block}

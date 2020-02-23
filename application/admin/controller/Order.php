@@ -19,6 +19,10 @@ class Order extends Base
         return $this->fetch();
     }
 
+    public function needShipAction(){
+        return $this->fetch();
+    }
+
     public function orderListAction(){
         $where = [];
 
@@ -27,7 +31,30 @@ class Order extends Base
         (input('status') != '') && $where[] = ['status', '=',input('status')];
 
 
-        $modelOrder = new \app\common\model\Order();
+        $modelOrder = model('Order');
+        $query = $modelOrder->p() -> with([
+            'Account',
+            'OrderGoods',
+            'Shipping'
+        ])->where($where) ->select();
+        return json([
+            'code' => 0,
+            'msg' => '',
+            'count' => $modelOrder->getOrderCount($where),
+            'data' => $query
+        ]);
+    }
+
+    public function shipListAction(){
+        $where = [];
+
+        !empty(input('id')) && $where[] = ['id', '=', input('id')];
+        !empty(input('order_no')) && $where[] = ['order_no', 'like','%'.input('order_no').'%'];
+        $where[] = ['status', 'in', OrderStatus::ORDER_PAY_AFTER_SHIPPING.','.OrderStatus::ORDER_PAID];
+        $where[] = ['track_no' ,'NULL',''];
+
+
+        $modelOrder = model('Order');
         $query = $modelOrder->p() -> with([
             'Account',
             'OrderGoods',

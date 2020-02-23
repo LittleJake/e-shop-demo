@@ -7,7 +7,7 @@
 <div class="content">
     <div class="main-info">
         <div class="container">
-            <div class="thumbnail col-md-4 col-sm-4" id="good-img">
+            <div class="col-md-4 col-sm-4" id="good-img">
                 <img class="img-responsive" src="{$good.img_url|default='/static/img/null.png'}" alt="{$good.title}">
             </div>
             <div class="col-md-8 col-sm-8">
@@ -157,7 +157,8 @@ glyphicon glyphicon-signal"></i> 详细描述</h3>
     var height = $(".main-info .container").children().eq(1).height();
     $(".main-info .container .thumbnail").css('height',height);
     $(".content").find('img').each(function(i,elem){
-        console.log($(elem).wrap('<a data-fancybox="gallery" href="'+$(elem).attr('src') +'"></a>'));
+        $(elem).addClass('img-responsive');
+        $(elem).wrap('<a data-fancybox="gallery" href="'+$(elem).attr('src') +'"></a>');
     });
 
 
