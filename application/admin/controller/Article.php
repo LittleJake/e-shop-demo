@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\LayuiJsonCode;
+
 class Article extends Base
 {
     /** 文章操作 */
@@ -18,12 +20,16 @@ class Article extends Base
 
     public function addAction(){
         if($this->request->isPost()){
-            $modelArticle = new \app\common\model\Article();
+            $article = model('Article');
             $data = $this->request->post();
             $data['update_time'] = time();
             $data['admin_id'] = $this->adminid();
 
-            $modelArticle->insert($data);
+            try{
+                ($id = $article->insertGetId($data))&&$this->log("新建文章，ID：$id");
+            } catch (\Exception $e){
+                return json(['code' => 0, 'msg' => '新建失败']);
+            }
 
             return json([
                 'code' => 1,
@@ -34,39 +40,36 @@ class Article extends Base
         return $this->fetch();
     }
 
-    public function editAction(){
-        $modelArticle = new \app\common\model\Article();
+    public function editAction($id = 0){
+        $article = model('Article');
 
         if($this->request->isPost()){
             $data = $this->request->post();
             $data['update_time'] = time();
-
-            $modelArticle->where([
-                'id' => $data['id']
-            ])->update($data);
-
-            return json([
-                'code' => 1,
-                'msg' => '修改成功'
-            ]);
+            try{
+                $article->update($data,['id','=',$data['id']]) && $this->log("修改文章，ID：$data[id]");
+            } catch (\Exception $e){
+                return json(['code' => 0, 'msg' => '修改失败']);
+            }
+            return json(['code' => 1, 'msg' => '修改成功']);
         }
 
-        $query = $modelArticle->where([
-            'id' => input('get.id', '0', 'int')
-        ])->find();
-
-        $this->assign('article', $query);
+        $this->assign('article', $article->get($id));
         return $this->fetch();
     }
 
-    public function delAction(){
-        $modelArticle = new \app\common\model\Article();
+    public function delAction($id = 0){
+        $article = model('Article');
 
         if($this->request->isPost()){
-
-            $n = $modelArticle->where([
-                'id' => explode(',',input('post.id'))
-            ])->delete();
+            try{
+                ($n = $article->where([
+                    'id' => explode(',',input('post.id'))
+                ])->delete())
+                && $this->log('批量删除文章，ID:'.input('post.id'));
+            } catch (\Exception $e){
+                return json(['code' => 0, 'msg' => '删除失败']);
+            }
 
             return json([
                 'code' => 1,
@@ -74,12 +77,15 @@ class Article extends Base
             ]);
         }
 
-        $modelArticle->where([
-            'id' => input('get.id', '0', 'int')
-        ])->delete();
+        try{
+            $article->where(['id' => $id])->delete()
+            && $this->log("删除文章，ID:$id");
+        } catch (\Exception $e){
+            return json(['code' => 0, 'msg' => '删除失败']);
+        }
 
         return json([
-            'code' => '1',
+            'code' => 1,
             'msg' => '删除成功'
         ]);
     }
@@ -91,12 +97,13 @@ class Article extends Base
         !empty(input('title')) && $where[] = ['title', 'like', '%'.input('title').'%'];
         (input('status') != '') && $where[] = ['status', '=',input('status')];
 
-        $modelArticle = new \app\common\model\Article();
-        $query = $modelArticle->p()->with('AdminAccount') ->where($where)->select();
+        $article = model('Article');
+        $query = $article->p()->with('AdminAccount') ->where($where)->select();
+
         return json([
-            'code' => 0,
-            'msg' => '',
-            'count' => $modelArticle->getArticleCount($where),
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
+            'count' => $article->getArticleCount($where),
             'data' => $query
         ]);
     }

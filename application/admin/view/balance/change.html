@@ -60,8 +60,7 @@
             elem: '#LAY-balance-change'
             ,url: '/admin/balance/changelist/uid/{$uid}'
             ,cols: [[
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'id', width: 80, title: 'ID', sort: true}
+                {field: 'id', width: 80, title: 'ID', sort: true}
                 ,{field: 'change', title: '变动', templet: '#changeTpl'}
                 ,{field: 'update_time', title:'更新时间', minWidth: 80, align: 'center', templet:function(e){return util.toDateString(e.update_time)}}
             ]]

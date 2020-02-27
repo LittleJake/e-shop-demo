@@ -11,7 +11,6 @@
 
 namespace app\admin\controller;
 
-
 use think\Controller;
 
 class Common extends Controller
@@ -25,5 +24,14 @@ class Common extends Controller
 
     protected function adminid(){
         return session('admin_user_id');
+    }
+
+    protected function log($content = ''){
+        $log = model('AdminLog');
+        $log->insert([
+            'content'=> $content,
+            'update_time' => time(),
+            'admin_id' => $this->adminid()
+        ]);
     }
 }

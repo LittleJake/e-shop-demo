@@ -12,6 +12,10 @@ namespace app\common\model;
 class AdminLog extends BaseModel
 {
     public function AdminAccount(){
-        return $this->belongsTo('AdminAccount','id','admin_id');
+        return $this->belongsTo('AdminAccount','admin_id','id');
+    }
+
+    public function getLogCount($where = [],$field ='*'){
+        return parent::getCount($where, $field);
     }
 }

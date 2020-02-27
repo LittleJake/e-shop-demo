@@ -32,8 +32,8 @@ class Login extends Common
                     'msg' => $validate->getError()
                 ]);
 
-            $modelAdminAccount = new AdminAccount();
-            $query = $modelAdminAccount->where([
+            $account = model('AdminAccount');
+            $query = $account->where([
                 'username' => $data['username']
             ]) -> find();
 
@@ -46,6 +46,7 @@ class Login extends Common
             session('admin_user_id', $query['id']);
             session('admin_username', $query['username']);
 
+            $this->log("管理员登录，ID：$query[id]");
             return json(['code'=> 0, 'msg'=>'登陆成功']);
         }
 
@@ -61,10 +62,8 @@ class Login extends Common
     }
 
     public function logoutAction(){
-
         session('admin_username',null);
         session('admin_user_id',null);
-
         return json(['code' => 0, 'msg'=>'登出成功']);
     }
 }

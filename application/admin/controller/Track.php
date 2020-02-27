@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\LayuiJsonCode;
+
 class Track extends Base
 {
     /** 溯源码追踪 */
@@ -22,12 +24,10 @@ class Track extends Base
             $data['update_time'] = time();
             $track = model('Track');
 
-            $track->insert($data, false);
+            ($id = $track->insertGetId($data, false))
+            && $this->log("添加溯源信息，ID：$id");
 
-            return json([
-                'code' => 1,
-                'msg' => '成功'
-            ]);
+            return json(['code' => 1, 'msg' => '成功']);
         }
 
         return $this->fetch();
@@ -37,8 +37,8 @@ class Track extends Base
         $track = model('Track');
         $query = $track->p()->order('update_time desc')->select();
         return json([
-            'code' => 0,
-            'msg' => '',
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
             'count' => $track->getTrackCount(),
             'data' => $query
         ]);

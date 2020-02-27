@@ -8,8 +8,7 @@
 
 namespace app\admin\controller;
 
-
-use app\common\model\ArticleComment;
+use app\common\library\Enumcode\LayuiJsonCode;
 
 class Comment extends Base
 {
@@ -18,9 +17,14 @@ class Comment extends Base
         return $this->fetch();
     }
 
-    public function delAction($id = ''){
+    public function delAction($id = 0){
         $comment = model('ArticleComment');
-        $comment -> where('id', $id)->delete();
+        try{
+            $comment -> where('id', $id)->delete()
+            && $this->log("删除评论，ID：$id");
+        }catch (\Exception $e){
+            return json(['code' => 0, 'msg' => '删除失败']);
+        }
 
         return json(['code' => 1, 'msg' => '删除成功']);
     }
@@ -37,8 +41,8 @@ class Comment extends Base
             'Account' => function($q) {return $q->withField('id,username');},
         ])->where($where)->select();
         return json([
-            'code' => 0,
-            'msg' => '',
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
             'count' => $comm->getCommentCount($where),
             'data' => $query
         ]);

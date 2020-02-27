@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\LayuiJsonCode;
 use app\common\library\Enumcode\ShippingStatus;
 
 class Shipping extends Base
@@ -25,8 +26,8 @@ class Shipping extends Base
         $where[] = ['status','<>', ShippingStatus::SHIPPING_DELETED];
         $query = $modelShipping ->where($where)->select();
         return json([
-            'code' => 0,
-            'msg' => '',
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
             'count' => $modelShipping->getShippingCount($where),
             'data' => $query
         ]);
@@ -39,9 +40,10 @@ class Shipping extends Base
             $modelShipping = model('Shipping');
 
             try{
-                $modelShipping->insert($data, false);
+                ($id = $modelShipping->insertGetId($data, false))
+                && $this->log("添加物流方式，ID：$id");
             }catch (\Exception $e){
-                return json(['code' => 0, 'msg' => $e->getMessage()]);
+                return json(['code' => 0, 'msg' => '添加失败']);
             }
 
             return json(['code' => 1, 'msg' => '添加成功']);
@@ -50,32 +52,30 @@ class Shipping extends Base
         return $this->fetch();
     }
 
-    public function editAction(){
+    public function editAction($id = 0){
         $modelShipping = model('Shipping');
         if($this->request->isPost()){
             $data = $this->request->post();
             try{
-                $modelShipping->update($data, ['id' => $data['id']]);
+                $modelShipping->update($data, ['id','=',$data['id']])
+                && $this->log("修改物流方式，ID：$id");
             }catch (\Exception $e){
                 return json(['code' => 0, 'msg' => $e->getMessage()]);
             }
 
+
             return json(['code' => 1, 'msg' => '编辑成功']);
         }
 
-        $id = input('get.id');
-        $query = $modelShipping->where(['id' => $id]) -> find();
+        $query = $modelShipping->get($id);
         $this->assign('shipping', $query);
         return $this->fetch();
     }
 
     public function delAction($id = 0){
-        if(empty($id))
-            return json(['code' => 0, 'msg' => '删除失败，物流模板不存在']);
-
         $modelShipping = model('Shipping');
         try{
-            $modelShipping->update(['status' => ShippingStatus::SHIPPING_DELETED],['id' => $id]);
+            $modelShipping->update(['status' => ShippingStatus::SHIPPING_DELETED],['id', '=', $id]) && $this->log("删除物流方式，ID：$id");
         } catch (\Exception $e){
             return json(['code' => 0, 'msg' => '删除失败']);
         }

@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\LayuiJsonCode;
+
 class Page extends Base
 {
     /** 独立页面管理 */
@@ -20,8 +22,8 @@ class Page extends Base
         $page = model('Page');
         $query = $page ->select();
         return json([
-            'code' => 0,
-            'msg' => '',
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
             'count' => $page->getPageCount(),
             'data' => $query
         ]);
@@ -32,44 +34,35 @@ class Page extends Base
 
             $page  = model('Page');
 
-            $page->insert($data, false);
+            ($id = $page->insertGetId($data, false))
+            && $this->log("添加独立页面，ID：$id");
 
-            return json([
-                'code' => 1,
-                'msg' => '成功'
-            ]);
+            return json(['code' => 1, 'msg' => '添加成功']);
         }
 
         return $this->fetch();
     }
 
-    public function editAction(){
+    public function editAction($id = 0){
         $page = model('Page');
         if($this->request->isPost()){
             $data = $this->request->post('g');
 
-            $page->update($data, ['id'=>$data['id']]);
+            $page->update($data, ['id','=',$data['id']])
+            && $this->log("修改独立页面，ID：$id");
 
-            return json([
-                'code' => 1,
-                'msg' => '成功'
-            ]);
+            return json(['code' => 1, 'msg' => '修改成功']);
         }
-        $data = input();
-        $query = $page->get($data['id']);
+        $query = $page->get($id);
         $this->assign('page', $query);
         return $this->fetch();
     }
 
-    public function delAction(){
+    public function delAction($id = 0){
         $page = model('Page');
-        $data = input();
-        $page->where(['id'=> $data['id']])->delete();
+        $page->where('id', $id)->delete() && $this->log("删除独立页面，ID：$id");
 
-        return json([
-            'code' => 1,
-            'msg' => '成功'
-        ]);
+        return json(['code' => 1, 'msg' => '删除成功']);
     }
 
 }

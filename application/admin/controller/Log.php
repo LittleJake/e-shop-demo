@@ -9,6 +9,8 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\LayuiJsonCode;
+
 class Log extends Base
 {
     /** 操作记录 */
@@ -17,21 +19,18 @@ class Log extends Base
     }
 
     public function logListAction(){
-        $modelOrder = new \app\common\model\Order();
-        $query = $modelOrder -> with([
-            'Account',
-            'OrderGoods',
-            'Shipping'
+        $log = model('AdminLog');
+        $query = $log->with([
+            'AdminAccount' => function($query){
+                return $query->withField('id,username');
+            }
         ]) ->select();
         return json([
-            'code' => 0,
-            'msg' => '',
-            'count' => $modelOrder->getOrderCount(),
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
+            'count' => $log->getLogCount(),
             'data' => $query
         ]);
     }
 
-    public function delAction(){
-
-    }
 }

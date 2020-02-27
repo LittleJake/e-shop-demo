@@ -17,6 +17,8 @@ class Set extends Base
         if($this->request->isPost()){
 
 
+            $this->log("修改网站设置");
+            return json();
         }
 
         $query = $set -> select();

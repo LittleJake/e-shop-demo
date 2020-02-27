@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 
+use app\common\library\Enumcode\UserStatus;
 use app\common\library\GithubOAuth;
 use app\common\model\Account;
 use app\common\model\Balance;
@@ -41,6 +42,9 @@ class Login extends Common
 
             if(!isset($query))
                 $this->error('邮箱不存在');
+
+            if($query['status'] != UserStatus::USER_ACTIVE)
+                $this->error('账户被禁用，联系管理员');
 
             if(!check_secret($data['password'], $query['password']))
                 $this->error('密码错误');
@@ -97,7 +101,7 @@ class Login extends Common
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
                 $modelAccount -> rollback();
-                $this->error('注册失败，事务处理失败');
+                $this->error('注册失败');
             }
 
             $this->success('注册成功', url('index/login/login'), 1, 3);
@@ -114,8 +118,6 @@ class Login extends Common
     }
 
     public function GithubAction(){
-        var_dump(config('github.client_id'));
-
         $query = [
             'client_id'=>config('github.client_id'),
             'scope' => config('github.scope'),
@@ -136,13 +138,16 @@ class Login extends Common
         }
 
         $data = [
-            'email' => $result['id'].'@github',
+            'email' => $result['id'].'@github.com',
         ];
 
         $modelAccount = new Account();
 
         $query = $modelAccount -> where($data)->with('Balance')-> find();
         if(!empty($query)){
+            if($query['status'] != UserStatus::USER_ACTIVE)
+                $this->error('账户被禁用，联系管理员');
+
             cookie('email', $query['email']);
             session('user', $query['username']);
             session('user_id', $query['id']);
@@ -151,7 +156,7 @@ class Login extends Common
         }
 
         $data = [
-            'email' => $result['id'].'@github',
+            'email' => $result['id'].'@github.com',
             'password' => secret($result['node_id'].random_int(0,65535)),
             'username' => $result['login'],
             'mobile' => random_str(20,'int')

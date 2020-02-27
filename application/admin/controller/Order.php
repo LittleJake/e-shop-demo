@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 
+use app\common\library\Enumcode\LayuiJsonCode;
 use app\common\library\Enumcode\OrderStatus;
 use app\common\library\Kuai100;
 
@@ -38,8 +39,8 @@ class Order extends Base
             'Shipping'
         ])->where($where) ->select();
         return json([
-            'code' => 0,
-            'msg' => '',
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
             'count' => $modelOrder->getOrderCount($where),
             'data' => $query
         ]);
@@ -61,22 +62,22 @@ class Order extends Base
             'Shipping'
         ])->where($where) ->select();
         return json([
-            'code' => 0,
-            'msg' => '',
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
             'count' => $modelOrder->getOrderCount($where),
             'data' => $query
         ]);
     }
 
-    public function ordergoodListAction(){
-        $id = input('get.id', 0);
+    public function ordergoodListAction($id = 0){
         $order_good = model('OrderGoods');
-        $query = $order_good->p() ->select();
+        $where[] = ['order_id', '=', $id];
+        $query = $order_good->p()->where($where)->select();
 
         return json([
-            'code' => 0,
-            'msg' => '',
-            'count' => $order_good->getGoodCount(['order_id' => $id]),
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
+            'count' => $order_good->getGoodCount($where),
             'data' => $query
         ]);
     }
@@ -112,33 +113,29 @@ class Order extends Base
             $data = $this->request->post();
 
             $order = model('Order');
+            (
+                //全款
+                $order->update([
+                    'status' => OrderStatus::ORDER_SHIPPING,
+                    'track_no' => $data['track_no']
+                ],[
+                    'id' => $data['id'],
+                    'status' => OrderStatus::ORDER_PAID
+                ]) ||
+                //货到付款
+                $order->update([
+                    'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING,
+                    'track_no' => $data['track_no']
+                ],[
+                    'id' => $data['id'],
+                    'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING
+                ])
+            )&& $this->log("订单发货，ID：$data[id]");
 
-            //全款
-            $order->update([
-                'status' => OrderStatus::ORDER_SHIPPING,
-                'track_no' => $data['track_no']
-            ],[
-                'id' => $data['id'],
-                'status' => OrderStatus::ORDER_PAID
-            ]);
-            //货到付款
-            $order->update([
-                'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING,
-                'track_no' => $data['track_no']
-            ],[
-                'id' => $data['id'],
-                'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING
-            ]);
-
-            return json([
-                'code' => 1,
-                'msg' => '发货成功'
-            ]);
+            return json(['code' => 1, 'msg' => '发货成功']);
         }
-        return json([
-            'code' => 0,
-            'msg' => '错误'
-        ]);
+
+        return json(['code' => 0, 'msg' => '错误']);
     }
 
 }

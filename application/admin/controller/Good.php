@@ -11,93 +11,67 @@
 
 namespace app\admin\controller;
 
-
 use app\common\library\Enumcode\GoodStatus;
-use app\common\model\Category;
+use app\common\library\Enumcode\LayuiJsonCode;
 
 class Good extends Base
 {
     /** 商品操作 */
     public function indexAction(){
-        return $this->fetch();
-    }
+        $category = model('Category');
 
-    public function listAction(){
-        $modelCategory = new Category();
-
-        $category = $modelCategory -> where([
+        $query = $category -> where([
             'parent_id' => 0
         ])->select();
 
-
-        $this -> assign('category', $category);
-
+        $this -> assign('category', $query);
         return $this->fetch();
     }
 
-    public function addAction()
-    {
+    public function addAction(){
         if($this->request->isPost()){
-            $modelGood = new \app\common\model\Good();
+            $good = model('Good');
             $g = $this->request->post('g');
             $c = $this->request->post('c');
             $c['name'] = '默认';
             try{
-                $id = $modelGood->insertGetId($g);
-                $modelGood ->GoodCat()->insert(array_merge(['good_id'=> $id], $c));
+                ($id = $good->insertGetId($g))
+                && $good ->GoodCat()->insert(array_merge(['good_id'=> $id], $c))
+                    && $this->log("添加商品，ID：$id");
             } catch (\Exception $e){
-                return json(['code' => 0, 'msg' => $e->getMessage()]);
+                return json(['code' => 0, 'msg' => '添加失败']);
             }
 
-
-            return json(['code' => 1, 'msg' => 'success']);
+            return json(['code' => 1, 'msg' => '添加成功']);
         }
 
+        $category = model('Category');
 
-
-        $modelCategory = new Category();
-        $cate = $modelCategory -> select();
-
-
-        $this->assign('cate', $cate);
-
+        $this->assign('cate', $category->select());
         return $this->fetch();
     }
 
-    public function editAction()
-    {
+    public function editAction($id = 0){
+        $good = model('Good');
         if($this->request->isPost()){
-            $modelGood = new \app\common\model\Good();
-
             $g = $this->request->post('g');
             $c = $this->request->post('c');
             try{
-                $modelGood->where([
-                    'id' => $g['id']
-                ])->data($g)->update();
+                $good->update($g, ['id', '=', $g['id']])
+                &&$good->GoodCat()->update($c,['good_id', '=', $g['id']])
+                &&$this->log("修改商品信息，ID：$g[id]");
 
-                $modelGood->GoodCat()
-                    ->update($c,['good_id' => $g['id']]);
-
-            } catch (\Exception $e){
-                return json(['code' => 0, 'msg' => $e->getMessage()]);
+            }catch (\Exception $e){
+                return json(['code' => 0, 'msg' => '修改失败']);
             }
 
-
-            return json(['code' => 1, 'msg' => '成功']);
+            return json(['code' => 1, 'msg' => '修改成功']);
         }
 
-        $data = input();
-        $modelGood = new \app\common\model\Good();
-        $good = $modelGood -> where([
-            'id' =>$data['id']
-        ]) -> with('GoodCat')->find();
+        $category = model('Category');
 
-        $modelCategory = new Category();
-        $cate = $modelCategory -> select();
-
-        $this->assign('good', $good);
-        $this->assign('cate', $cate);
+        $this->assign('good', $good -> with('GoodCat')->get($id));
+        $this->assign('cate', $category -> select());
 
         return $this->fetch();
     }
@@ -113,29 +87,25 @@ class Good extends Base
         else
             $where[] = ['status', '<>', GoodStatus::GOOD_DELETE];
 
-
-        $modelGood = new \app\common\model\Good();
-        $query = $modelGood ->p()-> with('Category') -> where($where)->select();
+        $good = model('Good');
+        $query = $good ->p()-> with('Category') -> where($where)->select();
         return json([
-            'code' => 0,
-            'msg' => '',
-            'count' => $modelGood->getGoodCount($where),
+            'code' => LayuiJsonCode::SUCCESS,
+            'msg' => 'success',
+            'count' => $good->getGoodCount($where),
             'data' => $query
         ]);
     }
 
     public function delAction($id = 0){
-        if(empty($id))
-            return json(['code' => 0, 'msg' => 'failed']);
-
-        $modelGood = new \app\common\model\Good();
+        $good = model('Good');
         try{
-            $modelGood->update(['status' => GoodStatus::GOOD_DELETE],['id' => $id]);
+            $good->update(['status' => GoodStatus::GOOD_DELETE],['id' ,'=', $id])
+            && $this->log("删除商品信息，ID：$id");
         } catch (\Exception $e){
-            return json(['code' => 0, 'msg' => 'failed']);
+            return json(['code' => 0, 'msg' => '删除失败']);
         }
 
-
-        return json(['code' => 1, 'msg' => 'success']);
+        return json(['code' => 1, 'msg' => '删除成功']);
     }
 }

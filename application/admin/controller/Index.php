@@ -36,9 +36,6 @@ class Index extends Base
         $this->assign('waitShippingCount', $order ->getOrderCount(['status' => OrderStatus::ORDER_PAID])+$order ->getOrderCount([['status','=',OrderStatus::ORDER_PAY_AFTER_SHIPPING],['track_no' ,'NULL','']]));
         $this->assign('articleCount', $article ->getArticleCount());
 
-
-
-
         return $this->fetch();
     }
 
@@ -48,8 +45,6 @@ class Index extends Base
             $path = './uploads/';
             $file = $this->request->file('upload');
 
-
-            // 移动到框架应用根目录/public/uploads/ 目录下
             if($file && $file->checkImg()){
                 //判断重复文件
                 $md5 = md5_file($file->getRealPath());
@@ -68,6 +63,15 @@ class Index extends Base
                         "url"=> $query['url']
                     ]);
 
+                //压缩
+                $sourceExt = image_type_to_extension(getimagesize($file->getRealPath())[2],false);
+                in_array($sourceExt,['jpeg', 'png', 'bmp','gif']);
+                $func1 = "imagecreatefrom$sourceExt";
+                $o = $func1($file->getRealPath());
+                $func2 = "image$sourceExt";
+                $func2($o,$file->getRealPath(),5);
+
+                // 移动到框架应用根目录/public/uploads/ 目录下
                 $info = $file->move($path);
                 if($info){
                     $url = '/uploads/'.$info->getSaveName();
