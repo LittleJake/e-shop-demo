@@ -57,7 +57,7 @@ class Good extends Base
             $g = $this->request->post('g');
             $c = $this->request->post('c');
             try{
-                $good->update($g, ['id', '=', $g['id']])
+                $good->update($g, ['id'=> $g['id']])
                 &&$good->GoodCat()->update($c,['good_id', '=', $g['id']])
                 &&$this->log("修改商品信息，ID：$g[id]");
 

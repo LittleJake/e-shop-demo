@@ -361,7 +361,7 @@ class User extends Base
             if(check_secret($query['password'], $data['old_password']))
                 $this->error('原密码错误');
 
-            $account -> update(['password' => secret($data['password'])],[['id', '=', $this->userid()]]);
+            $account -> update(['password' => secret($data['password'])],[['id'=> $this->userid()]]);
 
             $this->success('修改成功');
         }

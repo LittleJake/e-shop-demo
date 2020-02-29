@@ -6,7 +6,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#</th>
+                <th>ID</th>
                 <th>时间</th>
                 <th>变动金额</th>
             </tr>
@@ -14,12 +14,12 @@
             </thead>
             <tbody>
             {if sizeof($change) > 0}
-            {foreach $change as $k}
+            {foreach $change as $v}
             <tr>
-                <td>{$k.id}</td>
-                <td>{$k.update_time|date='Y年m月d日 H:i:s'}</td>
-                <td class="{if $k.change>0}text-success{else}text-danger{/if}">
-                    {$k.change}
+                <td>{$v.id}</td>
+                <td>{$v.update_time|date='Y年m月d日 H:i:s'}</td>
+                <td class="{if $v.change>0}text-success{else}text-danger{/if}">
+                    {$v.change}
                 </td>
             </tr>
             {/foreach}

@@ -75,7 +75,7 @@ class Shipping extends Base
     public function delAction($id = 0){
         $modelShipping = model('Shipping');
         try{
-            $modelShipping->update(['status' => ShippingStatus::SHIPPING_DELETED],['id', '=', $id]) && $this->log("删除物流方式，ID：$id");
+            $modelShipping->update(['status' => ShippingStatus::SHIPPING_DELETED],['id' => $id]) && $this->log("删除物流方式，ID：$id");
         } catch (\Exception $e){
             return json(['code' => 0, 'msg' => '删除失败']);
         }

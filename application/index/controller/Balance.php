@@ -18,12 +18,11 @@ class Balance extends Base
 
     public function indexAction(){
 
-        $modelAccount = new Account();
-        $modelAccount -> where([
-            'id' => session('user_id')
-        ])->with('BalanceChange')->find();
+        $balance = model('BalanceChange');
 
-        $change = $modelAccount->BalanceChange()-> order('update_time','desc')->paginate(10);
+        $change = $balance-> where([
+            'user_id' => $this->userid()
+        ])-> order('update_time','desc')->paginate(PAGE);
 
         $this->assign('change', $change);
 

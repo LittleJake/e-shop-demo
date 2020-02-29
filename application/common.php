@@ -10,12 +10,27 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
-
+/**
+ *
+ * 密码加盐
+ *
+ * @author LittleJake
+ * @param $s String 密码
+ * @return bool|string
+ */
 function secret($s){
     return password_hash($s . 'salt',PASSWORD_BCRYPT);
 }
 
-
+/**
+ * 密码校验
+ *
+ *
+ * @author LittleJake
+ * @param $s String 加密前密码
+ * @param $password String 加密后密码
+ * @return bool
+ */
 function check_secret($s, $password){
     return password_verify($s . 'salt', $password);
 }

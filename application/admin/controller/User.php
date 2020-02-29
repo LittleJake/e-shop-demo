@@ -43,7 +43,7 @@ class User extends Base
         if($this->request->isPost()){
             $data = $this->request->post('u');
 
-            $account->update($data,['id', '=',$data['id']])
+            $account->update($data,['id' => $data['id']])
             && $this->log("修改用户信息，ID：$data[id]");
 
             return json(['code' => 1, 'msg' => '修改成功']);
@@ -111,7 +111,7 @@ class User extends Base
 
     public function adminDelAction($id = 0){
         $account = model('AdminAccount');
-        $account->update(['status' => UserStatus::USER_DEL], ['id', '=', $id])&& $this->log("管理员删除，ID：$id");
+        $account->update(['status' => UserStatus::USER_DEL], ['id'=> $id])&& $this->log("管理员删除，ID：$id");
 
         return json(['code' => 1, 'msg' => '删除成功']);
     }
