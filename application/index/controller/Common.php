@@ -45,4 +45,8 @@ class Common extends Controller
 
         return false;
     }
+
+    protected function userid(){
+        return session('user_id');
+    }
 }

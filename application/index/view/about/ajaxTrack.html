@@ -1,4 +1,8 @@
-{if sizeof($tracks) != 0}
+{if isset($error)}
+<div class="row track text-center">
+    <p>{$error}</p>
+</div>
+{elseif sizeof($tracks) != 0}
 {foreach $tracks as $track}
 <div class="row track">
     <div class="col-md-4">

@@ -14,6 +14,7 @@ use app\common\model\GoodCat;
 use app\common\model\Order;
 use app\common\model\Cart;
 use think\Db;
+use think\Exception;
 use think\exception\HttpResponseException;
 
 
@@ -73,7 +74,7 @@ class User extends Base
 
             Db::startTrans();
             try{
-                Db::table('cart')
+                Db::name('cart')
                     ->where([
                         'user_id' => $user,
                         'cat_id' => $del
@@ -136,15 +137,13 @@ class User extends Base
         return $this->fetch();
     }
     //地址
-    public function addressAction(){
+    public function addressAction($id = 0){
         $modelAddress = new Address();
+        $user = $this->userid();
 
         if($this->request->isAjax()) {
             if(!$this->isLogin())
                 return null;
-            $user = session('user_id');
-
-            $id = (int)input('id');
 
             $query = $modelAddress -> where([
                 'user_id' => $user,
@@ -156,10 +155,8 @@ class User extends Base
             return $this->fetch('index/user/ajaxAddress');
         }
 
-        $user = session('user_id');
-
-        if(input('?del'))
-        {
+        if(input('?del')) {
+            //删除地址
             $del = input('del');
 
             $modelAddress ->startTrans();
@@ -180,8 +177,28 @@ class User extends Base
                 $this->error($e->getMessage()."错误",url('index/user/address'));
             }
 
-
             $this->success("成功",'index/user/address');
+        } else if(input('?add')) {
+            //添加地址
+            if($this->request->isPost()){
+                $modelAddress = new Address();
+
+                $data = input('post.a');
+
+                $validator = validate('address');
+
+                if(!$validator->check($data))
+                    $this->error($validator->getError());
+
+                $data['user_id'] = $this->userid();
+
+                $modelAddress -> insert($data);
+
+                $this->success('添加成功', url('index/user/address'));
+            }
+
+            $this->assign('page_title', '添加地址');
+            return $this->fetch('user/add_address');
         }
 
         $query = $modelAddress -> where([
@@ -191,31 +208,6 @@ class User extends Base
 
         $this->assign('address', $query);
         $this->assign('page_title', '地址列表');
-        return $this->fetch();
-    }
-    //增加地址
-    public function addAddressAction(){
-        if($this->request->isPost()){
-            $modelAddress = new Address();
-
-            $data = input('post.a');
-
-            $validator = validate('address');
-
-            if(!$validator->check($data))
-                $this->error($validator->getError());
-
-            $data['user_id'] = session('user_id');
-
-            $modelAddress -> insert($data);
-
-            $this->success('添加成功', url('index/user/address'));
-
-        }
-
-
-
-        $this->assign('page_title', '添加地址');
         return $this->fetch();
     }
 
@@ -234,7 +226,7 @@ class User extends Base
 
             Db::startTrans();
 
-            $user = session('user_id');
+            $user = $this->userid();
             $ins = [];
 
             foreach ($ids as $k){
@@ -309,7 +301,7 @@ class User extends Base
         $this-> error('未知错误');
     }
 
-    public function afterPayAction($id){
+    public function afterPayAction($id = ''){
 
         $modelOrder = model('Order');
         try{
@@ -326,18 +318,17 @@ class User extends Base
 
     }
 
-    public function shippedAction($id){
-
+    public function shippedAction($id = ''){
         $modelOrder = model('Order');
 
         $modelOrder
             -> update([
                 'status' => OrderStatus::ORDER_NEED_COMMENT
             ],['order_no' => $id, 'user_id' => $this->userid()]);
+
         $this->success('收货成功');
     }
     public function cancelAction($id){
-
         $modelOrder = model('Order');
 
         $modelOrder
@@ -361,7 +352,7 @@ class User extends Base
             if(check_secret($query['password'], $data['old_password']))
                 $this->error('原密码错误');
 
-            $account -> update(['password' => secret($data['password'])],[['id'=> $this->userid()]]);
+            $account -> update(['password' => secret($data['password'])],['id'=> $this->userid()]);
 
             $this->success('修改成功');
         }

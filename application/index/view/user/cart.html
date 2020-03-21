@@ -3,6 +3,7 @@
 <div class="container content" id="cart">
     <h4>购物车</h4>
     <hr>
+    {if sizeof($goods) > 0}
     {foreach $goods as $v}
     <div class="row cart-list">
         <div class="col-md-3 col-sm-3 col-xs-7">
@@ -31,12 +32,14 @@
     </div>
     <hr>
     {/foreach}
-
     <form action="{:url('index/good/checkout')}" method="post" id="shop" class="text-right">
         <input name="cat" hidden>
         <input name="num" hidden>
         <input value="提交订单" class="btn btn-info"  onclick="check();" type="button">
     </form>
+    {else}
+    <h3>暂时没有商品</h3>
+    {/if}
 </div>
 {/block}
 {block name="extendjs"}

@@ -113,7 +113,6 @@ class Login extends Common
     }
 
     public function vercodeAction(){
-
         return $this -> fetch();
     }
 
@@ -127,21 +126,46 @@ class Login extends Common
     }
 
     public function OAuthCallbackAction(){
-
-        if(!input('?code')){
+        if(!input('?code'))
             $this->error('非法操作');
-        }
+
         $code = input('code');
         $result = GithubOAuth::getInfo($code);
         if(empty($result)){
             $this->error('OAuth API主机连接失败');
         }
 
-        $data = [
-            'email' => $result['id'].'@github.com',
-        ];
+        $data = ['email' => $result['id'].'@github.com',];
 
         $modelAccount = new Account();
+
+        $query = $modelAccount -> where($data)->with('Balance')-> find();
+
+        if(empty($query)){
+            $data = [
+                'email' => $result['id'].'@github.com',
+                'password' => secret($result['node_id'].random_int(0,65535)),
+                'username' => $result['login'],
+                'mobile' => random_str(20,'int')
+            ];
+
+            $modelAccount -> startTrans();
+            $modelBalance = new Balance();
+            try{
+                $modelAccount -> insert($data);
+                $id = $modelAccount ->getLastInsID();
+                $modelAccount -> commit();
+                $modelBalance->save([
+                    'user_id' => $id,
+                    'update_time' => time(),
+                    'money' => 0
+                ]);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                $modelAccount -> rollback();
+                $this->error('注册失败，事务处理失败');
+            }
+        }
 
         $query = $modelAccount -> where($data)->with('Balance')-> find();
         if(!empty($query)){
@@ -153,42 +177,6 @@ class Login extends Common
             session('user_id', $query['id']);
             cache('balance:'.$query['id'], $query->balance->money*100);
             $this->success($query['username'] . '，欢迎回来', "/");
-        }
-
-        $data = [
-            'email' => $result['id'].'@github.com',
-            'password' => secret($result['node_id'].random_int(0,65535)),
-            'username' => $result['login'],
-            'mobile' => random_str(20,'int')
-        ];
-
-        $modelAccount = new Account();
-        $modelAccount -> startTrans();
-        $modelBalance = new Balance();
-        try{
-            $modelAccount -> insert($data);
-            $id = $modelAccount ->getLastInsID();
-            $modelAccount -> commit();
-            $modelBalance->save([
-                'user_id' => $id,
-                'update_time' => time(),
-                'money' => 0
-            ]);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            $modelAccount -> rollback();
-            $this->error('注册失败，事务处理失败');
-        }
-
-        $modelAccount = new Account();
-
-        $query = $modelAccount -> where($data)->with('Balance')-> find();
-        if(!empty($query)){
-            cookie('email', $query['email']);
-            session('user', $query['username']);
-            session('user_id', $query['id']);
-            cache('balance:'.$query['id'], $query->balance->money*100);
-            $this->success($query['username'] . '，欢迎注册', "/");
         }
 
         $this->error('非法操作');

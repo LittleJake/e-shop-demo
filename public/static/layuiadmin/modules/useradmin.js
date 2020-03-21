@@ -26,9 +26,10 @@ layui.define(['table', 'form'], function(exports){
             ,{title: '操作', width: 150, align:'center', fixed: 'right', toolbar: '#table-useradmin-webuser'}
         ]]
         ,page: true
-        ,limit: 30
+        ,limit: 10
+        ,limits: [10, 15, 20, 25, 30]
+        ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
         ,height: 'full-220'
-        ,text: '对不起，加载出现异常！'
     });
 
     //监听工具条
@@ -89,7 +90,10 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'status', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
             ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
         ]]
-        ,text: '对不起，加载出现异常！'
+        ,page: true
+        ,limit: 10
+        ,limits: [10, 15, 20, 25, 30]
+        ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
     //监听工具条
@@ -166,7 +170,9 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'descr', title: '具体描述'}
             ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
         ]]
-        ,text: '对不起，加载出现异常！'
+        ,limit: 10
+        ,limits: [10, 15, 20, 25, 30]
+        ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 
     //监听工具条

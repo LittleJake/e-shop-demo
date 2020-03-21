@@ -23,11 +23,18 @@ class About extends Common
 
     public function trackAction($track_no = ''){
         if($this->request->isPost()){
+            $valid = validate('Track');
+            if(!$valid->check(['track_no'=> $track_no])){
+                $this->assign('error', $valid->getError());
+                return $this->fetch('about/ajaxTrack');
+            }
+
             $track = model('Track');
 
             $query = $track -> where('track_no', $track_no)->cache(true, 600)->select();
 
             $this->assign('tracks',$query);
+
             return $this->fetch('about/ajaxTrack');
         }
 

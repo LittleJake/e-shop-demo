@@ -1,12 +1,13 @@
 <h4>购物车</h4>
 <hr>
+{if sizeof($goods) > 0}
 {foreach $goods as $v}
 <div class="row cart-list">
     <div class="col-md-3 col-sm-3 col-xs-7">
         <div class="input-group">
-                  <span class="input-group-addon">
-                    <input type="checkbox" name="cat-id" value="{$v.cat_id}" class="checkbox-inline">
-                  </span>
+                      <span class="input-group-addon">
+                        <input type="checkbox" name="cat-id" value="{$v.cat_id}" class="checkbox-inline">
+                      </span>
             <img src="{$v.good_cat.good.img_url|default='/static/img/null.png'}" alt="{$v.good_cat.good.title}" width="120px" class="thumbnail" style="margin-bottom: 0">
         </div>
     </div>
@@ -28,9 +29,11 @@
 </div>
 <hr>
 {/foreach}
-
 <form action="{:url('index/good/checkout')}" method="post" id="shop" class="text-right">
     <input name="cat" hidden>
     <input name="num" hidden>
     <input value="提交订单" class="btn btn-info"  onclick="check();" type="button">
 </form>
+{else}
+<h3>暂时没有商品</h3>
+{/if}

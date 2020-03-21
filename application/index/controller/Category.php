@@ -28,7 +28,7 @@ class Category extends Common
             } else{
                 $goods = $modelGood -> where([
                     'cate_id' => $id
-                ]) ->withMin('GoodCat', 'price') -> paginate(15);
+                ]) ->withMin('GoodCat', 'price') -> paginate(PAGE);
 
                 $this->assign('cate_name', $modelCategory->get($id)['name']);
                 $this->assign('goods', $goods);

@@ -18,9 +18,9 @@ class Set extends Base
         $set = model('AdminSetting');
         if($this->request->isPost()){
             $data = $this->request->post();
-            foreach ($data as $k => $v){
+            foreach ($data as $k => $v)
                 $set -> update(['content' => $v],['keyword' => $k]);
-            }
+
 
             $this->log("修改网站设置");
             return json(['code'=> 1, 'msg' => '修改成功']);

@@ -8,9 +8,7 @@
 
 namespace app\admin\controller;
 
-
 use app\common\library\Enumcode\LayuiJsonCode;
-use app\common\model\BalanceChange;
 
 class Balance extends Base
 {
@@ -20,14 +18,19 @@ class Balance extends Base
     }
 
     public function balanceListAction(){
-        $balance = model('Balance');
-        $query = $balance->p()->with('Account') -> select();
+        $where = [];
+
+        !empty(input('id')) && $where[] = ['id', '=', input('id')];
+        !empty(input('username')) && $where[] = ['username', 'like', "%".input('username')."%"];
+
+        $account = model('Account');
+        $query = $account->p()->field('id,username')->with('Balance')->where($where) -> select();
 
 
         return json([
             'code' => LayuiJsonCode::SUCCESS,
             'msg' => 'success',
-            'count' => $balance->getBalanceCount(),
+            'count' => $account->getAccountCount($where),
             'data' => $query
         ]);
     }
@@ -39,10 +42,10 @@ class Balance extends Base
     }
 
     public function changeListAction($uid = 0){
-        $modelBalanceChange = new BalanceChange();
+        $modelBalanceChange = model('BalanceChange');
         $where[] = ['user_id', '=', $uid];
+        input('?id')&&$where[] = ['id', '=', input('id')];
         $query = $modelBalanceChange ->p() -> with('Account') -> where($where) -> select();
-
 
         return json([
             'code' => LayuiJsonCode::SUCCESS,

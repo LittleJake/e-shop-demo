@@ -13,7 +13,7 @@ footer
 
 .content
 {
-	min-height: calc(100vh - 160px);
+	min-height: calc(100vh - 420px);
 }
 
 .comment,

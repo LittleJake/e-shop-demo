@@ -15,9 +15,9 @@ layui.define(['table', 'form'], function(exports){
         elem: '#LAY-balance-list'
         ,url: '/admin/balance/balanceList' //模拟接口
         ,cols: [[
-            {field: 'id', width: 100, title: 'ID', sort: true}
-            ,{field: 'username', title: '用户名', minWidth: 100, templet: function(e){return e.account.username}}
-            ,{field: 'money', title: '金额'}
+            {field: 'id', width: 100, title: 'ID', sort: true, templet: function(e){return e.balance.id}}
+            ,{field: 'username', title: '用户名', minWidth: 100}
+            ,{field: 'money', title: '金额', templet: function(e){return e.balance.money}}
             ,{title: '操作', width: 80, align:'center', fixed: 'right', toolbar: '#table-balance-tool'}
         ]]
         ,page: true
@@ -36,7 +36,7 @@ layui.define(['table', 'form'], function(exports){
             layer.open({
                 type: 2
                 ,title: '流水明细'
-                ,content: '/admin/balance/change?uid='+data.user_id
+                ,content: '/admin/balance/change?uid='+data.id
                 ,maxmin: true
                 ,area: ['700px', '500px']
                 ,btn: ['确定']

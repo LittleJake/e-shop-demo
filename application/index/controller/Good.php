@@ -8,6 +8,7 @@
 
 namespace app\index\controller;
 
+use app\common\library\Enumcode\GoodStatus;
 use app\common\library\Enumcode\OrderStatus;
 use app\common\library\Enumcode\ShippingStatus;
 use app\common\model\Address;
@@ -187,7 +188,9 @@ class Good extends Common
             $this->assign('address', $query);
 
             $modelShipping = model('Shipping');
-            $query = $modelShipping->where('status', '=', ShippingStatus::SHIPPING_SHOW)->select();
+            $query = $modelShipping
+                ->where('status', '=', ShippingStatus::SHIPPING_SHOW)
+                ->select();
 
             $this->assign('ships', $query);
 
@@ -199,7 +202,7 @@ class Good extends Common
 
             $goods = $modelGoodCat
                 ->with([
-                    'Good' => function($q){return $q->where('status', '=',1);}
+                    'Good' => function($q){return $q->where('status', '=',GoodStatus::GOOD_IN_STOCK);}
                 ])
                 ->where([
                     'id' => $cat

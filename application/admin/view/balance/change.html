@@ -64,6 +64,9 @@
                 ,{field: 'change', title: '变动', templet: '#changeTpl'}
                 ,{field: 'update_time', title:'更新时间', minWidth: 80, align: 'center', templet:function(e){return util.toDateString(e.update_time)}}
             ]]
+            ,page: true
+            ,limit: 5
+            ,limits: [5, 10, 15, 20, 25, 30]
             ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
         });
         //监听搜索
@@ -76,11 +79,6 @@
             });
         });
 
-
-        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
     });
 </script>
 </body>

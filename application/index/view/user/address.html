@@ -1,7 +1,7 @@
 {extend name="default/base" /}
 {block name="content"}
 <div class="container content">
-	<a class="btn btn-default" href="{:url('index/user/addAddress')}">添加地址</a>
+	<a class="btn btn-default" href="{:url('index/user/address',['add'=>1])}">添加地址</a>
 	<hr>
 	{if sizeof($address) > 0}
 		{foreach $address as $k}
