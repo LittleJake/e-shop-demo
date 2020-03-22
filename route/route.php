@@ -27,6 +27,7 @@ Route::get('user/pay/[:id]', 'index/user/pay');
 Route::get('user/afterPay/[:id]', 'index/User/afterPay');
 Route::get('user/shipped/[:id]', 'index/User/shipped');
 Route::get('about/track', 'index/about/track');
+Route::get('uploads/[:route]', 'index/Uploads/index');
 
 //index.any
 Route::any('user/address/add','index/user/addAddress');
