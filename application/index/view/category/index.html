@@ -15,6 +15,14 @@
             <li><a href="{:url('index/category/index')}">分类</a></li>
             <li class="active">{$cate_name}</li>
         </ol>
+        <ul class="nav nav-pills">
+            <li role="presentation" {if !input('order') || input('order') == 1}class="active"{/if}><a href="?order=1&id={:input('id')}">新品</a></li>
+            <li role="presentation" {if input('order') == 2}class="active"{/if}><a href="?order=2&id={:input('id')}">价格排序↑</a></li>
+            <li role="presentation" {if input('order') == 3}class="active"{/if}><a href="?order=3&id={:input('id')}">价格排序↓</a></li>
+            <li role="presentation" {if input('order') == 4}class="active"{/if}><a href="?order=4&id={:input('id')}">销量排序↑</a></li>
+            <li role="presentation" {if input('order') == 5}class="active"{/if}><a href="?order=5&id={:input('id')}">销量排序↓</a></li>
+        </ul>
+        <br>
         <div class="tab-content panel panel-default">
             <div class="tab-pane panel-body active">
                 {if sizeof($goods) != 0}
@@ -30,10 +38,9 @@
                             {$v.title}
                         </a>
                         <p>{$v.subtitle}</p>
+                        <p class="hidden-xs text-muted">已售：{$v.order_goods_count} 件</p>
                     </div>
-
                     <div class="col-md-3 col-sm-3 col-xs-7">
-
                         <h4>￥{$v.good_cat_min} 起</h4>
                         <p>+ 邮费</p>
                     </div>

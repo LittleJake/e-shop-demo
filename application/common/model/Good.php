@@ -19,6 +19,10 @@ class Good extends BaseModel
         return $this->hasMany('Rate', 'good_id', 'id');
     }
 
+    public function OrderGoods(){
+        return $this->hasMany('OrderGoods', 'good_id', 'id');
+    }
+
     public function Category(){
         return $this->belongsTo('Category', 'cate_id', 'id');
     }

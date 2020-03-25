@@ -57,7 +57,7 @@ class Shipping extends Base
         if($this->request->isPost()){
             $data = $this->request->post();
             try{
-                $modelShipping->update($data, ['id','=',$data['id']])
+                $modelShipping->update($data, ['id' =>$data['id']])
                 && $this->log("修改物流方式，ID：$id");
             }catch (\Exception $e){
                 return json(['code' => 0, 'msg' => $e->getMessage()]);

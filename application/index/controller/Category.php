@@ -26,9 +26,21 @@ class Category extends Common
                 $this->assign('goods', []);
                 $this->assign('cate_name', '');
             } else{
-                $goods = $modelGood -> where([
+                $order = input('get.order',0);
+                switch ($order){
+                    case 2:$order = 'good_cat_min aesc';break;
+                    case 3:$order = 'good_cat_min desc';break;
+                    case 4:$order = 'order_goods_count aesc';break;
+                    case 5:$order = 'order_goods_count desc';break;
+                    default:$order = 'id desc';break;
+                }
+                $goods = $modelGood ->withCount('OrderGoods')
+                    -> where([
                     'cate_id' => $id
-                ]) ->withMin('GoodCat', 'price') -> paginate(PAGE);
+                ])
+                    ->withMin('GoodCat', 'price')
+                    ->order($order)
+                    -> paginate(PAGE);
 
                 $this->assign('cate_name', $modelCategory->get($id)['name']);
                 $this->assign('goods', $goods);
@@ -39,9 +51,21 @@ class Category extends Common
                 $this->assign('goods', []);
                 $this->assign('cate_name', '');
             } else{
-                $goods = $modelGood -> where([
+                $order = input('get.order',0);
+                switch ($order){
+                    case 2:$order = 'good_cat_min aesc';break;
+                    case 3:$order = 'good_cat_min desc';break;
+                    case 4:$order = 'order_goods_count aesc';break;
+                    case 5:$order = 'order_goods_count desc';break;
+                    default:$order = 'id desc';break;
+                }
+                $goods = $modelGood->withCount('OrderGoods')
+                    -> where([
                     'cate_id' => $category[0]['id']
-                ]) ->withMin('GoodCat', 'price') -> paginate(15);
+                ])
+                    ->withMin('GoodCat', 'price')
+                    ->order($order)
+                    ->paginate(15);
 
                 $this->assign('cate_name', $category[0]['name']);
                 $this->assign('goods', $goods);
