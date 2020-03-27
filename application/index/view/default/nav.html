@@ -36,7 +36,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="{:url('index/user/order')}"><i class="glyphicon glyphicon-list-alt"></i> 订单</a></li>
                         <li><a href="{:url('index/user/address')}"><i class="glyphicon glyphicon-flag"></i> 地址管理</a></li>
-                        <li><a href="{:url('index/balance/index')}"><i class="glyphicon glyphicon-yen"></i> 余额 ￥{:sprintf('%.2f', cache('balance:'.session('user_id')/100))}</a></li>
+                        <li><a href="{:url('index/balance/index')}"><i class="glyphicon glyphicon-yen"></i> 余额 ￥{:sprintf('%.2f', cache('balance:'.session('user_id'))/100)}</a></li>
                         <li><a href="{:url('index/user/changepwd')}"><i class="glyphicon glyphicon-cog"></i> 修改密码</a></li>
                         <li><a href="{:url('user/cart')}"> <i class="glyphicon glyphicon-shopping-cart"></i> 购物车</a></li>
                         <li><a href="{:url('index/login/logout',['r'=>urlencode(request()->url(true))])}"><i class="glyphicon glyphicon-log-out"></i> 退出</a></li>
