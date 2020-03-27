@@ -330,12 +330,22 @@ class User extends Base
     }
     public function cancelAction($id){
         $modelOrder = model('Order');
-
+        $balance = new Balance();
+        //货到付款（未发货）
         $modelOrder
-            -> update([
-                'status' => OrderStatus::ORDER_CLOSE
-            ],['order_no' => $id, 'user_id' => $this->userid(), 'status' => OrderStatus::ORDER_UNPAID]);
-        $this->success('取消成功');
+            -> where(['order_no' => $id, 'user_id' => $this->userid(), 'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING])->where('track_no' ,'NULL','') ->setField('status', OrderStatus::ORDER_CLOSE) && $this->success('取消成功');
+        //未付款
+        $modelOrder
+            -> where(['order_no' => $id, 'user_id' => $this->userid(), 'status' => OrderStatus::ORDER_UNPAID]) ->setField('status', OrderStatus::ORDER_CLOSE) && $this->success('取消成功');
+        //已付款，未发货
+        $modelOrder
+            -> where(['order_no' => $id, 'user_id' => $this->userid(), 'status' => OrderStatus::ORDER_PAID])->setField('status', OrderStatus::ORDER_CLOSE)
+        && ($query = $modelOrder
+                -> where(['order_no' => $id, 'user_id' => $this->userid()])->find())
+        && $balance->BalanceChange($query['total_price'], false)
+        && $this->success('取消成功');
+
+        $this->error('取消失败，请联系客服');
     }
 
     public function changepwdAction(){
@@ -360,5 +370,9 @@ class User extends Base
 
         $this->assign('page_title','修改密码');
         return $this->fetch();
+    }
+
+    public function uploadPrescriptionAction(){
+
     }
 }

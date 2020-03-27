@@ -56,7 +56,7 @@ class Balance extends Base
             if(Cache::dec('balance:'.session('user_id'), $amount*100) > 0){
                 $modelBalanceChange->where(['id' => session('user_id')]) -> insert([
                     'user_id' => session('user_id'),
-                    'charge' => -$amount,
+                    'change' => -$amount,
                     'update_time' => time()
                 ]);
                 return true;
@@ -67,7 +67,7 @@ class Balance extends Base
             if(Cache::inc('balance:'.session('user_id'), $amount*100)){
                 $modelBalanceChange->where(['id' => session('user_id')]) -> insert([
                     'user_id' => session('user_id'),
-                    'charge' => $amount,
+                    'change' => $amount,
                     'update_time' => time()
                 ]);
                 return true;

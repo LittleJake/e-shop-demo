@@ -50,6 +50,15 @@ class Index extends Base
                 $md5 = md5_file($file->getRealPath());
                 $size = $file->getSize();
 
+                if($size > 1024*1024*20){
+                    json([
+                        "uploaded"=> 0,
+                        "error"=>[
+                            "message"=> 'Image is too big.'
+                        ]
+                    ]);
+                }
+
                 $modelImage= new Image();
                 $query = $modelImage ->where([
                     'md5' => $md5,
