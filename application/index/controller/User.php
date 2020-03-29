@@ -93,7 +93,7 @@ class User extends Base
             'GoodCat' => function($q){
                 return $q -> with([
                     'Good'=>function($q){
-                        return $q->withField('id,title,img_url');
+                        return $q->withField('id,title,img_url,is_prescription');
                     }
                 ]);
             }
@@ -119,7 +119,7 @@ class User extends Base
                 'OrderGoods' => function($query){
                     return $query -> with([
                         'Good' => function($query){
-                            return $query->field('id,title,img_url');
+                            return $query->field('id,title,img_url,is_prescription');
                         }
                     ]);
                 }

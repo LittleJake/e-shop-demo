@@ -8,6 +8,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\Image;
 
 class Base extends Common
 {
@@ -61,7 +62,7 @@ class Base extends Common
                 $func2($o,$file->getRealPath(),5);
 
                 // 移动到框架应用根目录/public/uploads/ 目录下
-                $info = $file->move($path);
+                $info = $file->move($path, random_str(60));
                 if($info){
                     $url = '/uploads/'.$info->getSaveName();
                     $filename = $info->getFilename();

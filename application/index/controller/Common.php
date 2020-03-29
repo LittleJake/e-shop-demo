@@ -8,7 +8,6 @@
 
 namespace app\index\controller;
 
-
 use app\common\library\Enumcode\PageStatus;
 use think\Controller;
 
@@ -18,7 +17,7 @@ class Common extends Controller
         parent::__construct();
 
         //分页个数
-        !defined('PAGE')&&define('PAGE', 5);
+        !defined('PAGE')&&define('PAGE', 10);
 
 
         $this->assign('is_login', $this ->isLogin());

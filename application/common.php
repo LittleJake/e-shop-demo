@@ -51,3 +51,8 @@ function random_str($num = 8, $type = 'str'){
 
     return $rnt;
 }
+
+function get_article_description($content){
+    preg_match('/<p>(\S+)<\/p>/i',$content,$matches);
+    return isset($matches[0])?$matches[0]:'暂无简介';
+}

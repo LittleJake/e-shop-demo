@@ -28,7 +28,7 @@
             <a href="{:url('index/good/good', ['id' => $v.id])}">
                 {$v.title}
             </a>
-            <p>{$v.subtitle}</p>
+            <p>{if $v.is_prescription == 1}<span class="red">（处方药）</span>{/if}{$v.subtitle}</p>
             <p class="hidden-xs text-muted">已售：{$v.order_goods_count} 件</p>
         </div>
         <div class="col-md-2 col-sm-2 col-xs-6">

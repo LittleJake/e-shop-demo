@@ -15,6 +15,7 @@
         <a href="{:url('index/good/good', ['id' => $v.good_cat.good_id])}">
             {$v.good_cat.good.title}
         </a>
+        {if $v.good_cat.good.is_prescription == 1}<p class="red">处方药</p>{/if}
         <p>分类：{$v.good_cat.name}</p>
     </div>
 

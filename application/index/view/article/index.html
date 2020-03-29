@@ -3,34 +3,25 @@
 <div class="container content">
     <h3>文章列表</h3>
     <form onsubmit="return checkSearch();">
-        <div class="form-inline">
-            <input data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="输入文章名"  id="search-box" type="text" class="form-control" name="q" value="{:input('get.q')}" placeholder="输入文章名...">
-            <button id="search" class="btn btn-default"  type="submit"><i class="glyphicon glyphicon-search"></i> 搜索</button>
+            <div class="form-inline">
+                <input data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="输入文章名"  id="search-box" type="text" class="form-control" name="q" value="{:input('get.q')}" placeholder="输入文章名...">
+                <button id="search" class="btn btn-default"  type="submit"><i class="glyphicon glyphicon-search"></i> 搜索</button>
 
+            </div>
+        </form>
+    <hr>
+    {if sizeof($articles) > 0}
+    {foreach $articles as $k}
+    <div class="row panel">
+        <div class="panel-body">
+            <h3><a href="{:url('index/article/info', ['id'=>$k.id])}">{$k.title}</a></h3>
+            <p>{$k.update_time|date='Y年m月d日 H:i:s'} - {$k.AdminAccount.username}</p>
+            {$k.content|get_article_description|raw}
         </div>
-    </form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>文章标题</th>
-                <th>发布者</th>
-                <th>发布时间</th>
-            </tr>
-        </thead>
-        <tbody>
-        {if sizeof($articles) > 0}
-        {foreach $articles as $k}
-            <tr>
-                <td>{$k.id}</td>
-                <td><a href="{:url('index/article/info', ['id'=>$k.id])}">{$k.title}</a></td>
-                <td>{$k.AdminAccount.username}</td>
-                <td>{$k.update_time|date='Y年m月d日 H:i:s'}</td>
-            </tr>
-        {/foreach}
-        {/if}
-        </tbody>
-    </table>
+    </div>
+    {/foreach}
+    {/if}
+
     {if sizeof($articles) == 0}
     <p class="text-center text-danger">
         <i class="glyphicon glyphicon-time"></i>

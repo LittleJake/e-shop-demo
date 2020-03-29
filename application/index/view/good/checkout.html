@@ -73,11 +73,11 @@
             <div class="row cart-list">
                 <div class="col-md-2 col-sm-2 col-xs-5">
                         <img class="thumbnail" src="{$v.good.img_url|default='/static/img/null.png'}" alt="{$v.good.title}" width="120px">
-
                 </div>
                 <div class="col-md-8 col-sm-8 col-xs-6">
                     <h4>{$v.good.title}</h4>
                     <h5>分类：{$v.name}</h5>
+                    {if $v.good.is_prescription == 1}<p class="red">处方药</p>{/if}
                 </div>
                 <div class="col-md-2 col-sm-2 col-xs-6">
                     <h4>￥{$v.price}</h4>

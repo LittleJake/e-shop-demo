@@ -22,18 +22,21 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                     <h4>{$v.good.title}</h4>
-                    <p>处方药</p>
+                    {if $v.good.is_prescription == 1}<p class="red">处方药</p>{/if}
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-6">
                     <h4>￥ {:sprintf('%.2f',$v.price * $v.num)}</h4>
                     <p>数量：{$v.num}</p>
-                    <a class="btn btn-sm btn-warning upload-btn" lay-data="{data:{id:{$v.good.id}}}">上传处方</a>
+                    {if $v.good.is_prescription == 1 && $k.status != 0}
+                    <a class="btn btn-sm btn-warning upload-btn" lay-data="{data:{id:{$v.good.id}}}"><i class="
+glyphicon glyphicon-picture"></i> 上传处方</a>
+                    {/if}
                 </div>
             </div>
             {/foreach}
             {/if}
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2 col-xs-8">
             状态：
             {if $k.status == 0}
             订单关闭
@@ -55,19 +58,20 @@
             {/if}
             <h4 class="text-danger">小计 ￥{:sprintf('%.2f',$k.total_price)}</h4>
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-1 col-xs-4">
             {if $k.status == 1}
-            <p><a class="btn btn-sm btn-danger" href="{:url('index/user/cancel', ['id' => $k.order_no])}">取消订单</a></p>
+            <p><a class="btn btn-sm btn-danger" href="{:url('index/user/cancel', ['id' => $k.order_no])}"><i class="glyphicon glyphicon-ban-circle"></i> 取消订单</a></p>
             {elseif $k.status == 2}
-            <p><a class="btn btn-sm btn-success" href="{:url('index/user/pay', ['id' => $k.order_no])}">支付</a></p>
-            <p><a class="btn btn-sm btn-info" href="{:url('index/user/afterPay', ['id' => $k.order_no])}">货到付款</a></p>
-            <p><a class="btn btn-sm btn-danger" href="{:url('index/user/cancel', ['id' => $k.order_no])}">取消订单</a></p>
+            <p><a class="btn btn-sm btn-success" href="{:url('index/user/pay', ['id' => $k.order_no])}"><i class="
+glyphicon glyphicon-yen"></i> 支付</a></p>
+            <p><a class="btn btn-sm btn-info" href="{:url('index/user/afterPay', ['id' => $k.order_no])}"><i class="glyphicon glyphicon-send"></i> 货到付款</a></p>
+            <p><a class="btn btn-sm btn-danger" href="{:url('index/user/cancel', ['id' => $k.order_no])}"><i class="glyphicon glyphicon-ban-circle"></i> 取消订单</a></p>
             {elseif $k.status == 3 || ($k.status == 4 && !empty($k.track_no))}
-            <p><a class="btn btn-sm btn-success" href="{:url('index/user/shipped', ['id' => $k.order_no])}">收货</a></p>
+            <p><a class="btn btn-sm btn-success" href="{:url('index/user/shipped', ['id' => $k.order_no])}"><i class="glyphicon glyphicon-ok-circle"></i> 收货</a></p>
             {elseif $k.status == 5}
-            <p><a class="btn btn-sm btn-info" href="{:url('index/user/rate', ['order' => $k.order_no])}">评价</a></p>
+            <p><a class="btn btn-sm btn-info" href="{:url('index/user/rate', ['order' => $k.order_no])}"><i class="glyphicon glyphicon-star"></i> 评价</a></p>
             {elseif $k.status == 4}
-            <p><a class="btn btn-sm btn-danger" href="{:url('index/user/cancel', ['id' => $k.order_no])}">取消订单</a></p>
+            <p><a class="btn btn-sm btn-danger" href="{:url('index/user/cancel', ['id' => $k.order_no])}"><i class="glyphicon glyphicon-ban-circle"></i> 取消订单</a></p>
             {/if}
         </div>
         <br>

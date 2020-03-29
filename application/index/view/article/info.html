@@ -4,6 +4,9 @@
 {/block}
 {block name="content"}
 <div class="container content">
+    <div class="row">
+        <a href="javascript:window.history.back()"><i class="glyphicon glyphicon-chevron-left"></i> 文章列表</a>
+    </div>
     <h3>{$data.title}</h3>
     <p>更新时间：{:date($data.update_time)}</p>
     <p>发布者：{$data.admin_account.username}</p>
