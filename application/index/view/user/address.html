@@ -1,21 +1,26 @@
 {extend name="default/base" /}
 {block name="content"}
 <div class="container content">
-	<a class="btn btn-default" href="{:url('index/user/address',['add'=>1])}">添加地址</a>
-	<hr>
-	{if sizeof($address) > 0}
-		{foreach $address as $k}
-			<div class="address-list">
-				<h5>姓名：{$k.name}</h5>
-				<p>联系电话：{$k.contact}</p>
-				<p>地址：{$k.province} {$k.city} {$k.district} {$k.street}</p>
-				<p>邮编：{$k.code}</p>
-				<a class="btn btn-danger" href="{:url('index/user/address', ['del' => $k['id']])}">删除</a>
-			</div>
-			<hr>
-		{/foreach}
-	{else}
-		<h3>暂无可用地址</h3>
-	{/if}
+    <a class="btn btn-default" href="{:url('index/user/address',['add'=>1])}">添加地址</a>
+    <hr>
+    {if sizeof($address) > 0}
+    {foreach $address as $k}
+    <div class="panel">
+        <div class="panel-body address-list">
+            <div class="col-md-10 col-sm-10">
+                <h5>姓名：{$k.name}</h5>
+                <p>联系电话：{$k.contact}</p>
+                <p>地址：{$k.province} {$k.city} {$k.district} {$k.street}</p>
+                <p>邮编：{$k.code}</p>
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <a class="btn btn-danger" href="{:url('index/user/address', ['del' => $k['id']])}">删除</a>
+            </div>
+        </div>
+    </div>
+    {/foreach}
+    {else}
+    <h3>暂无可用地址</h3>
+    {/if}
 </div>
 {/block}
