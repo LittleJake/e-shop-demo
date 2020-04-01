@@ -27,9 +27,15 @@
                 <div class="col-md-3 col-sm-3 col-xs-6">
                     <h4>￥ {:sprintf('%.2f',$v.price * $v.num)}</h4>
                     <p>数量：{$v.num}</p>
-                    {if $v.good.is_prescription == 1 && $k.status != 0}
-                    <a class="btn btn-sm btn-warning upload-btn" lay-data="{data:{id:{$v.good.id}}}"><i class="
+                    {if $v.good.is_prescription == 1 && $k.status != 0 && (empty($v.prescription) || $v.prescription == 'false')}
+                    <a class="btn btn-sm btn-warning upload-btn" lay-data="{data:{id:{$v.id}}}"><i class="
 glyphicon glyphicon-picture"></i> 上传处方</a>
+                    {elseif $v.prescription == 'true'}
+                    <a class="btn btn-sm btn-success"><i class="
+glyphicon glyphicon-ok"></i> 审核通过</a>
+                    {elseif !empty($v.prescription)}
+                    <a class="btn btn-sm btn-info"><i class="
+glyphicon glyphicon-flag"></i> 审核中</a>
                     {/if}
                 </div>
             </div>
@@ -101,8 +107,11 @@ glyphicon glyphicon-yen"></i> 支付</a></p>
             ,accept: 'images'
             ,field: 'upload'
             ,done: function(res, index, upload){
-                //获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
-                var item = this.item;
+                layer.msg(res.msg, {icon: res.code == 1 ? 1: 2,time: 1500});
+
+                setInterval(function () {
+                    location.reload();
+                }, 3000);
             }
         })
     });

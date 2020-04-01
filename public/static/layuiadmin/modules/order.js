@@ -23,6 +23,7 @@ layui.define(['table', 'form', 'util'], function(exports){
             ,{field: 'total_price', title: '订单总价', templet: function(d){return "￥"+d.total_price}, width: 120}
             ,{field: 'status', title: '状态', templet: '#buttonTpl', width: 90, align: 'center'}
             ,{field: 'update_time', title: '更新时间', templet: function(d){return util.toDateString(d.update_time*1000); }, width: 200, align: 'center'}
+            ,{field: 'order', title: '需要审核', templet: function (d) {if(d.order_goods.length == 0)return '否';else return '是';}, width: 200, align: 'center'}
             ,{title: '操作', width: 270, align: 'center', fixed: 'right', toolbar: '#table-order-list'}
         ]]
         ,page: true

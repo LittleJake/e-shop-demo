@@ -12,6 +12,7 @@ namespace app\admin\controller;
 use app\common\library\Enumcode\LayuiJsonCode;
 use app\common\library\Enumcode\OrderStatus;
 use app\common\library\Kuai100;
+use app\common\model\OrderGoods;
 
 class Order extends Base
 {
@@ -34,10 +35,11 @@ class Order extends Base
 
         $modelOrder = model('Order');
         $query = $modelOrder->p() -> with([
-            'Account',
-            'OrderGoods',
+            'OrderGoods' => function($query){
+                return $query->withJoin('Good')->where('good.is_prescription', 1);
+            },
             'Shipping'
-        ])->where($where) ->select();
+        ])->where($where) ->order('id desc')->select();
         return json([
             'code' => LayuiJsonCode::SUCCESS,
             'msg' => 'success',
@@ -72,7 +74,11 @@ class Order extends Base
     public function ordergoodListAction($id = 0){
         $order_good = model('OrderGoods');
         $where[] = ['order_id', '=', $id];
-        $query = $order_good->p()->where($where)->select();
+        $query = $order_good->p()->with([
+            'Good' => function($query){
+                return $query->withField('id,is_prescription');
+            }
+        ])->where($where)->select();
 
         return json([
             'code' => LayuiJsonCode::SUCCESS,
@@ -136,6 +142,27 @@ class Order extends Base
         }
 
         return json(['code' => 0, 'msg' => '错误']);
+    }
+
+    public function reviewAction(){
+        $order_good = new OrderGoods();
+        $id = input('id');
+
+        if($this->request->isPost()){
+            $status = input('status');
+            $status = in_array($status, ['true', 'false'])?$status:'false';
+
+            $order_good -> where('id',$id)->update([
+                'prescription' => $status,
+            ]);
+
+
+            return json(['code' => 1, 'msg' => '成功']);
+        }
+
+        $query = $order_good->get($id);
+        $this->assign('img', $query['prescription']);
+        return $this->fetch();
     }
 
 }

@@ -13,6 +13,7 @@ use app\common\model\Address;
 use app\common\model\GoodCat;
 use app\common\model\Order;
 use app\common\model\Cart;
+use app\common\model\OrderGoods;
 use think\Db;
 use think\Exception;
 use think\exception\HttpResponseException;
@@ -373,6 +374,22 @@ class User extends Base
     }
 
     public function uploadPrescriptionAction(){
+        try{
+            $u = $this->uploadAction();
+            if($u['uploaded'] == 0)
+                throw new Exception();
 
+            $id = input('post.id');
+            $order_goods = new OrderGoods();
+            if(!empty($order_goods->withJoin('Order')->where('order.user_id', $this->userid())->where('order_goods.id', $id) -> cache(true, 600)->findOrEmpty()))
+                $order_goods->where('id', $id)->update(['prescription' => $u['url']]);
+            else
+                return json(['code' => 0, 'msg' => '失败']);
+
+            return json(['code' => 1, 'msg' => '成功']);
+        } catch (\Exception $e){
+        }
+
+        return json($u);
     }
 }

@@ -51,7 +51,7 @@ class Index extends Base
                 $size = $file->getSize();
 
                 if($size > 1024*1024*20){
-                    json([
+                    return json([
                         "uploaded"=> 0,
                         "error"=>[
                             "message"=> 'Image is too big.'

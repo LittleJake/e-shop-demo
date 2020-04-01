@@ -32,12 +32,12 @@ class Base extends Common
                 $size = $file->getSize();
 
                 if($size > 1024*1024*20){
-                    json([
+                    return [
                         "uploaded"=> 0,
                         "error"=>[
                             "message"=> 'Image is too big.'
                         ]
-                    ]);
+                    ];
                 }
 
                 $modelImage= new Image();
@@ -47,11 +47,11 @@ class Base extends Common
                 ])-> find();
 
                 if(!empty($query))
-                    return json([
+                    return [
                         "uploaded"=> 1,
                         "fileName"=> $query['name'],
                         "url"=> $query['url']
-                    ]);
+                    ];
 
                 //压缩
                 $sourceExt = image_type_to_extension(getimagesize($file->getRealPath())[2],false);
@@ -74,31 +74,30 @@ class Base extends Common
                         'url'=> $url
                     ], false);
 
-                    return json([
+                    return [
                         "uploaded"=> 1,
                         "fileName"=> $filename,
                         "url"=> $url
-
-                    ]);
+                    ];
                 }else{
                     // 上传失败获取错误信息
-                    return json([
+                    return [
                         "uploaded"=> 0,
                         "error"=>[
                             "message"=> $file->getError()
                         ]
-                    ]);
+                    ];
                 }
             }
         } catch(\Exception $e){
             Log::error($e->getMessage());
         }
 
-        return json([
+        return [
             "uploaded"=> 0,
             "error"=>[
                 "message"=> 'No input file specific.'
             ]
-        ]);
+        ];
     }
 }
