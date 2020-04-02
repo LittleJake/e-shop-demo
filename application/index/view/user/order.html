@@ -37,6 +37,9 @@ glyphicon glyphicon-ok"></i> 审核通过</a>
                     <a class="btn btn-sm btn-info"><i class="
 glyphicon glyphicon-flag"></i> 审核中</a>
                     {/if}
+                    {if $v.prescription == 'false'}
+                    <span class="text-danger">审核不通过</span>
+                    {/if}
                 </div>
             </div>
             {/foreach}
