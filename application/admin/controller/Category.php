@@ -69,7 +69,7 @@ class Category extends Base
 
     public function categoryListAction(){
         $modelCategory = model('Category');
-        $query = $modelCategory ->withCount('Good')->select();
+        $query = $modelCategory->p() ->withCount('Good')->select();
         return json([
             'code' => LayuiJsonCode::SUCCESS,
             'msg' => 'success',

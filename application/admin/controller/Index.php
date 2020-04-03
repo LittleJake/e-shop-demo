@@ -78,10 +78,10 @@ class Index extends Base
                 $func1 = "imagecreatefrom$sourceExt";
                 $o = $func1($file->getRealPath());
                 $func2 = "image$sourceExt";
-                $func2($o,$file->getRealPath(),5);
+                $func2($o,$file->getRealPath());
 
                 // 移动到框架应用根目录/public/uploads/ 目录下
-                $info = $file->move($path, random_str(60));
+                $info = $file->move($path, date('Ymd').'/'.random_str(52));
                 if($info){
                     $url = '/uploads/'.$info->getSaveName();
                     $filename = $info->getFilename();

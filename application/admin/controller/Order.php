@@ -36,10 +36,15 @@ class Order extends Base
         $modelOrder = model('Order');
         $query = $modelOrder->p() -> with([
             'OrderGoods' => function($query){
-                return $query->withJoin('Good')->where('good.is_prescription', 1);
+                return $query->withCount([
+                    'Good'=>function($q){
+                        return $q->where('is_prescription', 1);
+                    }
+                ]);
             },
             'Shipping'
         ])->where($where) ->order('id desc')->select();
+
         return json([
             'code' => LayuiJsonCode::SUCCESS,
             'msg' => 'success',
