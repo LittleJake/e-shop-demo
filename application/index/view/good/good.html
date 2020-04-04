@@ -171,7 +171,7 @@ glyphicon glyphicon-signal"></i> 详细描述</h3>
     });
 
     function setPrice(a, b){
-        $('#price').html('<span class="red">¥ '+ a +'</span>');
+        $('#price').html('<span class="red">¥ '+ (a+"00").substring(0,(a+"00").indexOf(".")+3) +'</span>');
         $('#sku').html('库存 '+ b +' 件');
     }
 
@@ -192,7 +192,6 @@ glyphicon glyphicon-signal"></i> 详细描述</h3>
         var cat = $("input:radio[name='cat']:checked").val();
         var num = $("input[name='num']").val();
 
-
         $.ajax({
             type: 'post',
             url: "{:url('index/user/addCart')}",
@@ -211,6 +210,8 @@ glyphicon glyphicon-signal"></i> 详细描述</h3>
                     }, 1500);
                 }
                 else if(xhr.status == -3) {
+                    $('#cat').prop('title', xhr.msg);
+                    $('#cat').prop('data-original-title', xhr.msg);
                     $('#cat').tooltip('toggle');
                     setTimeout( function () {
                         $('#cat').tooltip('hide');

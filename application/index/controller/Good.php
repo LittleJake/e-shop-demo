@@ -80,7 +80,7 @@ class Good extends Common
                 }
 
                 if(sizeof($ins) == 0)
-                    throw new Exception('商品库存不足');
+                    throw new Exception('商品库存错误');
 
                 //运费计算
                 $ship = model('Shipping');
