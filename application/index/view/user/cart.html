@@ -9,7 +9,7 @@
         <div class="col-md-3 col-sm-3 col-xs-7">
             <div class="input-group">
                   <span class="input-group-addon">
-                    <input type="checkbox" name="cat-id" value="{$v.cat_id}" class="checkbox-inline">
+                    <input type="checkbox" name="cat-id" value="{$v.cat_id}" class="checkbox-inline checkbox">
                   </span>
                 <img src="{$v.good_cat.good.img_url|default='/static/img/null.png'}" alt="{$v.good_cat.good.title}" width="120px" class="thumbnail" style="margin-bottom: 0">
             </div>
@@ -24,15 +24,14 @@
 
         <div class="input-group col-md-3 col-sm-3 col-xs-5">
             <h4>￥{$v.good_cat.price}</h4>
-            <input type="number" class="input-sm form-control" name="cat-num" data-id="{$v.cat_id}" value="{$v.num}" min="1" style="width: 70px">
+            <input type="number" class="input-sm form-control" name="cat-num" data-id="{$v.cat_id}" value="{$v.num}" max="99" min="1" style="width: 70px">
             <input type="button" class="btn btn-sm btn-default" onclick="del({$v.cat_id});" value="删除">
 
         </div>
-
-
     </div>
     <hr>
     {/foreach}
+    <label><input id="checkall" class="text-left" type="checkbox" onclick="checkall()"> 全选</label>
     <form action="{:url('index/good/checkout')}" method="post" id="shop" class="text-right">
         <input name="cat" hidden>
         <input name="num" hidden>
@@ -54,10 +53,7 @@
             data: {'del': cat_id},
             success:function(res){
                 $("#cart").html(res);
-
             },
-
-
         });
         return false;
     }
@@ -68,9 +64,7 @@
         $('input[name=cat-id]:checked').each(function() {
             cat.push($(this).val());
             num.push($('input[data-id="'+$(this).val()+'"]').val());
-
         });
-
 
         var cat = cat.join(',');
         var num = num.join(',');
@@ -82,6 +76,11 @@
             $('#shop').submit();
     }
 
-
+    function checkall(){
+        if ($('#checkall').is(':checked'))
+            $('.checkbox').prop('checked', true);
+        else
+            $('.checkbox').prop('checked', false);
+    }
 </script>
 {/block}

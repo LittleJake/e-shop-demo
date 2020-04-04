@@ -12,6 +12,9 @@
 namespace app\index\controller;
 
 
+use think\exception\HttpException;
+use think\exception\HttpResponseException;
+
 class Category extends Common
 {
     public function indexAction($id = 0){
@@ -26,6 +29,12 @@ class Category extends Common
                 $this->assign('goods', []);
                 $this->assign('cate_name', '');
             } else{
+                try{
+                    $this->assign('cate_name', $modelCategory->getOrfail($id)['name']);
+                } catch (\Exception $e){
+                    throw new HttpException(404);
+                }
+
                 $order = input('get.order',0);
                 switch ($order){
                     case 2:$order = 'good_cat_min aesc';break;
@@ -42,7 +51,6 @@ class Category extends Common
                     ->order($order)
                     -> paginate(PAGE);
 
-                $this->assign('cate_name', $modelCategory->get($id)['name']);
                 $this->assign('goods', $goods);
             }
         }

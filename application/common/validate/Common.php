@@ -26,4 +26,14 @@ class Common extends Validate
         else
             return false;
     }
+
+    protected function isGoodNum($value,$rule='',$data='', $field=''){
+        $num = explode(',', $value);
+
+        foreach ($num as $v)
+            if(!is_numeric($v) || !is_int($v+0) || ($v+0)<0)
+                return false;
+
+        return true;
+    }
 }

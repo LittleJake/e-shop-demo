@@ -16,6 +16,7 @@ use app\common\model\Cart;
 use app\common\model\OrderGoods;
 use think\Db;
 use think\Exception;
+use think\exception\HttpException;
 use think\exception\HttpResponseException;
 
 
@@ -218,11 +219,19 @@ class User extends Base
 
         if($this->request->isPost()){
             $data = $this->request->post();
+            $valid = validate('Rate');
+            if(!$valid->check($data))
+                $this->error($valid->getError());
 
-            $ids = array_keys($data['rate']);
 
             $rate = model('Rate');
             $order = model('Order');
+            try{
+                $goods = $order->where('order_no',$id)->where('user_id',$this->userid())->with('OrderGoods')->findOrFail();
+            }catch (\Exception $e){
+                throw new HttpException(404);
+            }
+
             $time = time();
 
             Db::startTrans();
@@ -230,14 +239,14 @@ class User extends Base
             $user = $this->userid();
             $ins = [];
 
-            foreach ($ids as $k){
-                if(!is_numeric($data['star'][$k])||intval($data['star'][$k]) > 5 || intval($data['star'][$k]) < 0)
-                    $data['star'][$k] = 5;
+            foreach ($goods['order_goods'] as $k){
+                if(!is_numeric($data['star'][$k['good_id']])||intval($data['star'][$k['good_id']]) > 5 || intval($data['star'][$k['good_id']]) < 0)
+                    $data['star'][$k['good_id']] = 5;
 
                 $ins[] = [
-                    'good_id' => $k,
-                    'star' => $data['star'][$k],
-                    'comment' => htmlentities($data['comment'][$k]),
+                    'good_id' => $k['good_id'],
+                    'star' => $data['star'][$k['good_id']],
+                    'comment' => empty($data['comment'][$k['good_id']])?'暂无评论':htmlentities(mb_substr($data['comment'][$k['good_id']],0,100)),
                     'user_id' => $user,
                     'update_time' => $time
                 ];
@@ -358,7 +367,7 @@ class User extends Base
 
             $account = model('Account');
 
-            $query = $account->get($this->userid());
+            $query = $account->getOrFail($this->userid());
 
             if(check_secret($query['password'], $data['old_password']))
                 $this->error('原密码错误');

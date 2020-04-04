@@ -14,7 +14,7 @@
                 <h3>{$k.name}</h3>
                 <div id="star-{$k.good_id}"></div>
                 <input class="hidden" type="number" max="5" min="0" hidden name="star[{$k.good_id}]" value="5">
-                <textarea class="form-control" name="comment[{$k.good_id}]" style="resize:none;" rows="3" placeholder="留下你的评价"></textarea>
+                <textarea class="form-control" name="comment[{$k.good_id}]" style="resize:none;" rows="3" placeholder="留下你的评价" maxlength="100"></textarea>
             </div>
         </div>
         {/foreach}

@@ -22,14 +22,21 @@
         {else}
         <p>{:session('user')}，<a href="{:url('index/login/logout',[ 'r'=>urlencode(request()->url(true))])}">这不是您？</a></p>
         {/if}
-        <form action="" method="POST">
+        <form method="POST">
             <div class="form-group">
-                <textarea style="resize: none" class="form-control" placeholder="留下你的评论" rows="3" name="comment"></textarea>
+                <textarea style="resize: none" class="form-control" placeholder="留下你的评论" rows="3" name="comment" maxlength="100"></textarea>
             </div>
+            <ul class="list-inline">
+                <li>
+                    <input placeholder="验证码" name="captcha" class="form-control" type="text" maxlength="4">
+                </li>
+                <li>
+                    <img onclick="getCaptcha()" src="{:captcha_src()}" alt="captcha" id="captcha">
+                </li>
+            </ul>
             <div class="form-group">
                 <input type="submit" value="提交" class="btn btn-info">
             </div>
-
         </form>
         <hr>
         <div id="comment">
@@ -40,9 +47,6 @@
                     <h4>{$v.account.username}</h4>
                     <p style="color:#888">{$v.update_time|date='Y年m月d日 H:i:s'}</p>
                     <strong>{$v.content}</strong>
-                </div>
-                <div class="col-xs-1 col-md-1">
-                    <p>#{$k+1}</p>
                 </div>
             </div>
             {/foreach}
@@ -59,6 +63,10 @@
 {block name="extendjs"}
 <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 <script>
+    function getCaptcha(){
+        document.getElementById('captcha').src = '{:captcha_src()}';
+    }
+
     $("#comment").on('click', ".pagination li a",function(){
         var pageObj = this;
         var url = pageObj.href;

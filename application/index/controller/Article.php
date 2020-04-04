@@ -12,11 +12,12 @@
 namespace app\index\controller;
 
 
+use think\exception\HttpException;
+
 class Article extends Common
 {
     public function indexAction(){
         $modelArticle = new \app\common\model\Article();
-
 
         $article = $modelArticle
             -> with([
@@ -33,16 +34,28 @@ class Article extends Common
     }
 
     public function infoAction($id = 0){
-        if($this->request->isPost()){}
-
         $comment = model('ArticleComment');
+
+        if($this->request->isPost()){
+            $valid = validate('Comment');
+            $data = $this->request->post();
+            if(!$valid->check($data))
+                $this->error($valid->getError());
+
+            $comment->insert([
+                'article_id' => $id,
+                'content' => $data['comment'],
+                'user_id' => $this->userid(),
+                'update_time' => time()
+            ]);
+        }
 
         $query = $comment->where([
                 'article_id' => $id
             ])->with([
                 'Account'=>function($q){
                     return $q-> withField('id,username');
-                }])->paginate(PAGE);
+                }])->order('id desc')->paginate(PAGE);
 
         $page = $query -> render();
         $this->assign('comment', $query);
@@ -53,11 +66,15 @@ class Article extends Common
 
         $article = model('Article');
 
-        $data = $article->with([
-            'AdminAccount' => function($e){
-                return $e->withField('id,username');
-            }
-        ])->get($id);
+        try{
+            $data = $article->with([
+                'AdminAccount' => function($e){
+                    return $e->withField('id,username');
+                }
+            ])->getOrFail($id);
+        } catch (\Exception $e){
+            throw new HttpException(404);
+        }
 
 
         $this->assign('page_title', '文章 '. $data['title']);

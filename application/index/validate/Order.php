@@ -14,7 +14,7 @@ class Order extends Common
 {
     protected $rule = [
         'cat' => 'require',
-        'num' => 'require',
+        'num' => 'require|isGoodNum',
         'pay' => 'require|isPositiveInteger',
         'add_id' => 'require|isPositiveInteger',
         'ship' => 'require|isPositiveInteger',
@@ -25,6 +25,7 @@ class Order extends Common
         'add_id.require' => '地址不存在',
         'add_id.isPositiveInteger' => '地址不存在',
         'num.require' => '物品数量错误',
+        'num.isGoodNum' => '物品数量错误',
         'pay.require' => '付款方式不存在',
         'pay.isPositiveInteger' => '付款方式不存在',
         'ship.require' => '邮寄方式不存在',

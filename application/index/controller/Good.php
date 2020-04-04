@@ -16,6 +16,7 @@ use app\common\model\GoodCat;
 use app\common\model\OrderGoods;
 use app\common\model\Shipping;
 use think\Db;
+use think\Exception;
 
 class Good extends Common
 {
@@ -51,9 +52,7 @@ class Good extends Common
                     ->with([
                         'Good' => function($q){return $q->where('status', '=',1);}
                     ])
-                    ->where([
-                        'id' => $cat
-                    ])
+                    ->where(['id' => $cat])
                     ->select();
                 $modelGoodCat->update();
 
@@ -79,6 +78,10 @@ class Good extends Common
                         $total += $order[$good['id']] * $good['price'];
                     }
                 }
+
+                if(sizeof($ins) == 0)
+                    throw new Exception('商品库存不足');
+
                 //运费计算
                 $ship = model('Shipping');
                 $query = $ship->where([
@@ -119,7 +122,10 @@ class Good extends Common
                 $this->error($e->getMessage(), url('/'));
             }
 
-            $this->success('成功', url('index/user/order'));
+            if(sizeof($cat) != sizeof($ins))
+                $this->success('下单成功，部分商品库存不足。', url('index/user/order'));
+
+            $this->success('下单成功', url('index/user/order'));
         }
 
         $this->redirect('/');

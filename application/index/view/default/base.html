@@ -4,24 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{$page_title}—{$option['sitename']}</title>
-    {include file="default/css" /}
+    <title>{$page_title|default="错误"}—{$option['sitename']}</title>
+    {include file="index@default/css" /}
     {block name="extendcss"}
     {/block}
 </head>
 <body>
-{include file="default/nav" /}
+{include file="index@default/nav" /}
 {block name="content"}
 {/block}
 
 <br>
 <footer>
     <div class="container">
-        {include file="default/footer-icon"}
-        {include file="default/footer-copyright"}
+        {include file="index@default/footer-icon"}
+        {include file="index@default/footer-copyright"}
     </div>
 </footer>
-{include file="default/js" /}
+{include file="index@default/js" /}
 {block name="extendjs"}
 {/block}
 <script>
