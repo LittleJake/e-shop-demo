@@ -88,7 +88,7 @@ class Good extends Base
             $where[] = ['status', '<>', GoodStatus::GOOD_DELETE];
 
         $good = model('Good');
-        $query = $good ->p()-> with('Category') -> where($where)->select();
+        $query = $good ->p()-> with('Category') -> where($where)->field('id,cate_id,title,status,subtitle')->select();
         return json([
             'code' => LayuiJsonCode::SUCCESS,
             'msg' => 'success',

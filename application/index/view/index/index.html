@@ -13,10 +13,10 @@
     <div class="row">
         <ul class="nav nav-pills">
             <li role="presentation" {if !input('order') || input('order') == 1}class="active"{/if}><a href="?order=1&q={:input('q')}">新品</a></li>
-            <li role="presentation" {if input('order') == 2}class="active"{/if}><a href="?order=2&q={:input('q')}">价格排序↑</a></li>
-            <li role="presentation" {if input('order') == 3}class="active"{/if}><a href="?order=3&q={:input('q')}">价格排序↓</a></li>
-            <li role="presentation" {if input('order') == 4}class="active"{/if}><a href="?order=4&q={:input('q')}">销量排序↑</a></li>
-            <li role="presentation" {if input('order') == 5}class="active"{/if}><a href="?order=5&q={:input('q')}">销量排序↓</a></li>
+            <li role="presentation" {if input('order') == 2}class="active"{/if}><a href="?order=2&q={:input('q')}">价格↑</a></li>
+            <li role="presentation" {if input('order') == 3}class="active"{/if}><a href="?order=3&q={:input('q')}">价格↓</a></li>
+            <li role="presentation" {if input('order') == 4}class="active"{/if}><a href="?order=4&q={:input('q')}">销量↑</a></li>
+            <li role="presentation" {if input('order') == 5}class="active"{/if}><a href="?order=5&q={:input('q')}">销量↓</a></li>
         </ul>
     </div>
     {if sizeof($goods) != 0}
