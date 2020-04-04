@@ -1,0 +1,5 @@
+{if isset($address)}
+<p class="name-info">{$address['name']} <span class="contact-info">{$address['contact']}</span></p>
+<p class="address-info">{$address['province']} {$address['city']} {$address['district']} {$address['street']} {$address['code']}</p>
+<input class="btn btn-sm btn-default" data-toggle="modal" data-target="#changeAddress" value="更换地址" type="button">
+{/if}

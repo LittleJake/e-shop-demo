@@ -154,7 +154,7 @@ class User extends Base
             ]) -> find();
 
             $this->assign('address', $query);
-            return $this->fetch('index/user/ajaxAddress');
+            return $this->fetch('user/ajaxAddress');
         }
 
         if(input('?del')) {
