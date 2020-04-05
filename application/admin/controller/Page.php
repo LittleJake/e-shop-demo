@@ -20,7 +20,7 @@ class Page extends Base
 
     public function pageListAction(){
         $page = model('Page');
-        $query = $page ->field('id,route,title	,status')->select();
+        $query = $page ->field('id,route,title	,status')->order('id desc')->select();
         return json([
             'code' => LayuiJsonCode::SUCCESS,
             'msg' => 'success',

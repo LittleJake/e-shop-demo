@@ -12,6 +12,7 @@ namespace app\admin\controller;
 use app\common\library\Enumcode\ArticleStatus;
 use app\common\library\Enumcode\GoodStatus;
 use app\common\library\Enumcode\OrderStatus;
+use app\common\library\Enumcode\PageStatus;
 use app\common\model\Account;
 use app\common\model\Image;
 use think\facade\Log;
@@ -27,12 +28,14 @@ class Index extends Base
         $account = model('Account');
         $good = model('Good');
         $order = model('Order');
+        $page = model('Page');
         $article = model('Article');
 
         /** 右侧数量挂件 */
-        $this->assign('goodCount', $good ->getGoodCount());
+        $this->assign('goodCount', $good ->getGoodCount([['status', '<>', GoodStatus::GOOD_DELETE]]));
         $this->assign('userCount', $account ->getAccountCount());
         $this->assign('inStockCount', $good ->getGoodCount(['status' => GoodStatus::GOOD_IN_STOCK]));
+        $this->assign('pageCount', $page ->getPageCount());
         $this->assign('waitShippingCount', $order ->getOrderCount(['status' => OrderStatus::ORDER_PAID])+$order ->getOrderCount([['status','=',OrderStatus::ORDER_PAY_AFTER_SHIPPING],['track_no' ,'NULL','']]));
         $this->assign('articleCount', $article ->getArticleCount());
 

@@ -20,11 +20,11 @@ class Log extends Base
 
     public function logListAction(){
         $log = model('AdminLog');
-        $query = $log->with([
+        $query = $log -> p()->with([
             'AdminAccount' => function($query){
                 return $query->withField('id,username');
             }
-        ]) ->select();
+        ]) ->order('id desc')->select();
         return json([
             'code' => LayuiJsonCode::SUCCESS,
             'msg' => 'success',

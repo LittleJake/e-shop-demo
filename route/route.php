@@ -32,6 +32,7 @@ Route::get('uploads/[:route]', 'index/Uploads/index');
 //index.any
 Route::any('user/address/add','index/user/addAddress');
 Route::any('user/charge', 'index/balance/charge');
+Route::any('login/reset/[:token]', 'index/login/reset');
 Route::any('login', 'index/login/login');
 Route::any('oauth/callback', 'index/login/OAuthCallback');
 Route::any('user/address','index/user/address');

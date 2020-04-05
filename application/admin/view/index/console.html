@@ -100,11 +100,17 @@
                             </ul>
                             <ul class="layui-row layui-col-space10">
                                 <li class="layui-col-xs6">
-                                    <a lay-href="{:url('admin/article/index')}" class="layadmin-backlog-body">
-                                        <h3>文章数</h3>
-                                        <p><cite>{$articleCount}</cite></p>
+                                <a lay-href="{:url('admin/article/index')}" class="layadmin-backlog-body">
+                                    <h3>文章数</h3>
+                                    <p><cite>{$articleCount}</cite></p>
+                                </a>
+                                <li class="layui-col-xs6">
+                                    <a lay-href="{:url('admin/page/index')}" class="layadmin-backlog-body">
+                                        <h3>独立页面数</h3>
+                                        <p><cite>{$pageCount}</cite></p>
                                     </a>
                                 </li>
+                            </li>
                             </ul>
                         </div>
                     </div>

@@ -20,7 +20,7 @@
         <div class="layui-card-body">
             <table id="LAY-app-shipping" lay-filter="LAY-app-shipping"></table>
             <script type="text/html" id="buttonTpl">
-                {{#  if(d.status){ }}
+                {{#  if(d.status == 1){ }}
                 <button class="layui-btn layui-btn-xs">可用</button>
                 {{#  } else { }}
                 <button class="layui-btn layui-btn-danger layui-btn-xs">禁用</button>

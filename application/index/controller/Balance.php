@@ -33,7 +33,11 @@ class Balance extends Base
     public function chargeAction(){
         if($this->request->isPost()){
             $pay = new Hkrt();
-            $qr = $pay->createUnionQR(input('post.amount'));
+            $amount = input('post.amount');
+            if(!(is_int($amount) || is_double($amount)) || $amount > 1000 || $amount < 0)
+                $this->error('金额必须大于0，小于1000');
+
+            $qr = $pay->createUnionQR($amount);
 
             if($qr['code'] != 1)
                 return false;

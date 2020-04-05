@@ -13,7 +13,11 @@ use app\common\library\Enumcode\UserStatus;
 use app\common\library\GithubOAuth;
 use app\common\model\Account;
 use app\common\model\Balance;
-use think\Config;
+use PHPMailer\PHPMailer\PHPMailer;
+use think\Exception;
+use think\exception\HttpException;
+use \think\facade\Cache;
+use think\facade\Config;
 use think\facade\Log;
 
 
@@ -112,7 +116,78 @@ class Login extends Common
         return $this->fetch();
     }
 
-    public function vercodeAction(){
+    public function forgetAction(){
+        if ($this->request->isPost()){
+            $data = $this->request->post('a');
+            $valid = validate('Mail');
+
+            $user = model('Account');
+
+            if( !$valid-> check($data))
+                $this->error($valid->getError());
+
+            if(!empty($query =  $user->where('email',$data['email'])->find())){
+                $token = random_str(32);
+                try{
+                    $mail = new PHPMailer(true);
+                    $mail->CharSet ="UTF-8";
+                    $mail->SMTPDebug = 0;
+                    $mail->isSMTP();
+                    $mail->Host = Config::get('mail.smtp_host');
+                    $mail->SMTPAuth = true;
+                    $mail->Username = Config::get('mail.username');
+                    $mail->Password = Config::get('mail.password');
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port = 465;
+
+                    $mail->setFrom(Config::get('mail.username'));
+                    $mail->addAddress($data['email']);
+                    //Content
+                    $mail->isHTML(true);
+                    $mail->Subject = '请求重置密码';
+                    $mail->Body    = '<h1>请求重置密码</h1>'.
+                        '<p><a href="'.url('index/login/reset', ['token' => $token]).'">点此重置密码</a></p>'
+                        .'<p>连接有效期一小时</p>'
+                        . '<p>'.date('Y-m-d H:i:s').'</p>';
+                    $mail->AltBody = '复制'.url('index/login/reset', ['token' => $token]).'到浏览器重置密码';
+
+                    $mail->send();
+                    Cache::set('reset:'.$token,$query['id'],60*60);
+                } catch (\Exception $e){
+                    Log::error($e->getMessage());
+                }
+            }
+            else
+                sleep(random_int(4,6));
+
+            $this->success('如果电子邮箱正确，你会收到一封重置密码链接的邮件', url('index/login/login'));
+        }
+        $this->assign('page_title', '忘记密码');
+        return $this -> fetch();
+    }
+
+    public function resetAction($token = ''){
+        if(!Cache::has("reset:".$token))
+            throw new HttpException(404);
+
+        if ($this->request->isPost()){
+            $user_id = Cache::get("reset:".$token);
+
+            $data = $this->request->post('a');
+            $valid = validate('User');
+            if(!$valid->scene('reset')->check($data))
+                $this->error($valid->getError());
+
+            Cache::rm("reset:".$token);
+
+            $user = model('Account');
+
+            $user -> update(['password' => secret($data['password'])], ['id' => $user_id]);
+
+            $this->success('修改成功，请重新登录', url('index/login/login'));
+        }
+
+        $this->assign('page_title', '重置密码');
         return $this -> fetch();
     }
 

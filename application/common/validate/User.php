@@ -41,7 +41,8 @@ class User extends Common
     protected $scene = [
         'reg' => ['email', 'username', 'password', 'mobile', 'repassword'],
         'login' => ['email', 'password'],
-        'change' => ['password', 'repassword', 'old_password']
+        'change' => ['password', 'repassword', 'old_password'],
+        'reset' => ['password', 'repassword'],
     ];
 
 }

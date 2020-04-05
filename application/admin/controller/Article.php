@@ -98,7 +98,7 @@ class Article extends Base
         (input('status') != '') && $where[] = ['status', '=',input('status')];
 
         $article = model('Article');
-        $query = $article->p()->with('AdminAccount') ->where($where)->field('title,status,id,update_time,admin_id')->select();
+        $query = $article->p()->with('AdminAccount') ->where($where)->field('title,status,id,update_time,admin_id')->order('id desc')->select();
 
         return json([
             'code' => LayuiJsonCode::SUCCESS,
