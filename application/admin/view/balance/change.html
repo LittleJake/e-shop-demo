@@ -62,7 +62,7 @@
             ,cols: [[
                 {field: 'id', width: 80, title: 'ID', sort: true}
                 ,{field: 'change', title: '变动', templet: '#changeTpl'}
-                ,{field: 'update_time', title:'更新时间', minWidth: 80, align: 'center', templet:function(e){return util.toDateString(e.update_time)}}
+                ,{field: 'update_time', title:'更新时间', minWidth: 80, align: 'center', templet:function(e){return util.toDateString(e.update_time*1000)}}
             ]]
             ,page: true
             ,limit: 5

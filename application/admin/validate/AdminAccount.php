@@ -30,6 +30,5 @@ class AdminAccount extends Common
         'password.length' => '密码长度为1-32',
         'vercode.length' => '验证码长度不正确',
         'vercode.captcha' => '验证码不正确',
-
     ];
 }

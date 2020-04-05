@@ -44,8 +44,8 @@ class Balance extends Base
     public function changeListAction($uid = 0){
         $modelBalanceChange = model('BalanceChange');
         $where[] = ['user_id', '=', $uid];
-        input('?id')&&$where[] = ['id', '=', input('id')];
-        $query = $modelBalanceChange ->p() -> with('Account') -> where($where) -> select();
+        !empty(input('id'))&&$where[] = ['id', '=', input('id')];
+        $query = $modelBalanceChange ->p() -> with('Account') -> where($where) ->order('id desc')-> select();
 
         return json([
             'code' => LayuiJsonCode::SUCCESS,

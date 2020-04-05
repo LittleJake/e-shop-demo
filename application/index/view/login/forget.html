@@ -14,7 +14,7 @@
                 <input name="a[captcha]" class="form-control" maxlength="20" placeholder="验证码" required type="text">
             </div>
             <div class="col-sm-4">
-                <img src="{:captcha_src()}">
+                <img onclick="getCaptcha()" src="{:captcha_src()}" id="captcha" alt="captcha">
             </div>
         </div>
         <div class="form-group">
@@ -26,4 +26,11 @@
     </form>
 </div>
 
+{/block}
+{block name="extendjs"}
+<script>
+    function getCaptcha(){
+        document.getElementById('captcha').src = '{:captcha_src()}';
+    }
+</script>
 {/block}

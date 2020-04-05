@@ -15,14 +15,14 @@ layui.define(['table', 'form'], function(exports){
         elem: '#LAY-balance-list'
         ,url: '/admin/balance/balanceList' //模拟接口
         ,cols: [[
-            {field: 'id', width: 100, title: 'ID', sort: true, templet: function(e){return e.balance.id}}
+            {field: 'id', width: 100, title: 'ID', sort: true}
             ,{field: 'username', title: '用户名', minWidth: 100}
             ,{field: 'money', title: '金额', templet: function(e){return e.balance.money}}
-            ,{title: '操作', width: 80, align:'center', fixed: 'right', toolbar: '#table-balance-tool'}
+            ,{title: '操作', align:'center', fixed: 'right', toolbar: '#table-balance-tool'}
         ]]
         ,page: true
-        ,limit: 30
-        ,height: 'full-220'
+        ,limit: 10
+        ,limits: [10, 15, 20, 25, 30]
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
     });
 

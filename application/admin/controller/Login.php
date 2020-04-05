@@ -12,8 +12,6 @@
 namespace app\admin\controller;
 
 
-use app\common\model\AdminAccount;
-
 class Login extends Common
 {
     /** 管理员登录 */
