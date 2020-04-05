@@ -40,7 +40,7 @@
     </div>
     {/foreach}
     <br>
-    {$goods->render()|raw}
+    {$goods->render(['q'=>1])|raw}
     {else}
     <h3>暂时没有商品</h3>
     {/if}

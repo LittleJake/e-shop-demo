@@ -96,7 +96,7 @@ layui.define(['table', 'form'], function(exports){
                 ,content: '/admin/rate/index.html?good_id='+ data.id
                 ,maxmin: true
                 ,area: ['800px', '500px']
-                ,btn: ['确定', '取消']
+                ,btn: ['确定']
             });
         }
     });

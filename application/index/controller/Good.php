@@ -11,10 +11,6 @@ namespace app\index\controller;
 use app\common\library\Enumcode\GoodStatus;
 use app\common\library\Enumcode\OrderStatus;
 use app\common\library\Enumcode\ShippingStatus;
-use app\common\model\Address;
-use app\common\model\GoodCat;
-use app\common\model\OrderGoods;
-use app\common\model\Shipping;
 use think\Db;
 use think\Exception;
 
@@ -42,9 +38,9 @@ class Good extends Common
 
             $order_no =  $date. substr('0000' . rand(0, 9999),-4,4);
 
-            $modelOrder = new \app\common\model\Order();
-            $modelGoodCat = new GoodCat();
-            $modelOrderGoods = new OrderGoods();
+            $modelOrder = model('Order');
+            $modelGoodCat = model('GoodCat');
+            $modelOrderGoods = model('OrderGoods');
 
             Db::startTrans();
             try{
@@ -108,7 +104,7 @@ class Good extends Common
 
                 $modelOrderGoods ->insertAll($ins);
 
-                $Balance = new Balance();
+                $Balance = model('Balance');
                 if($Balance -> BalanceChange($total)){
                     $modelOrder
                         -> update([
@@ -201,7 +197,7 @@ class Good extends Common
             $this->assign('ships', $query);
 
             /** 处理商品，显示总额 */
-            $modelGoodCat = new GoodCat();
+            $modelGoodCat = model('GoodCat');
 
             $cat = explode(',', $data['cat']);
             $num = explode(',', $data['num']);

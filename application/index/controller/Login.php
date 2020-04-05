@@ -11,10 +11,7 @@ namespace app\index\controller;
 
 use app\common\library\Enumcode\UserStatus;
 use app\common\library\GithubOAuth;
-use app\common\model\Account;
-use app\common\model\Balance;
 use PHPMailer\PHPMailer\PHPMailer;
-use think\Exception;
 use think\exception\HttpException;
 use \think\facade\Cache;
 use think\facade\Config;
@@ -39,7 +36,7 @@ class Login extends Common
             if(!$validator -> scene('login') -> check($data))
                 $this->error($validator->getError());
 
-            $modelAccount = new Account();
+            $modelAccount = model('Account');
             $query = $modelAccount -> where([
                 'email' => $data['email']
             ])->with('Balance')-> find();
@@ -90,9 +87,9 @@ class Login extends Common
             unset($data['repassword']);
             $data['password'] = secret($data['password']);
 
-            $modelAccount = new Account();
+            $modelAccount = model('Account');
             $modelAccount -> startTrans();
-            $modelBalance = new Balance();
+            $modelBalance = model('Balance');
             try{
                 $modelAccount -> insert($data);
                 $id = $modelAccount ->getLastInsID();
@@ -212,7 +209,7 @@ class Login extends Common
 
         $data = ['email' => $result['id'].'@github.com',];
 
-        $modelAccount = new Account();
+        $modelAccount = model('Account');
 
         $query = $modelAccount -> where($data)->with('Balance')-> find();
 
@@ -225,7 +222,7 @@ class Login extends Common
             ];
 
             $modelAccount -> startTrans();
-            $modelBalance = new Balance();
+            $modelBalance = model('Balance');
             try{
                 $modelAccount -> insert($data);
                 $id = $modelAccount ->getLastInsID();

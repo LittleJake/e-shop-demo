@@ -15,7 +15,6 @@ use app\common\library\Enumcode\ShippingStatus;
 class Shipping extends Base
 {
 
-
     /** 物流模板 */
     public function indexAction(){
         return $this->fetch();

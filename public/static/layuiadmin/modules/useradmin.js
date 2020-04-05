@@ -29,7 +29,6 @@ layui.define(['table', 'form'], function(exports){
         ,limit: 10
         ,limits: [10, 15, 20, 25, 30]
         ,text: {none: '暂无数据', error: '对不起，加载出现异常！'}
-        ,height: 'full-220'
     });
 
     //监听工具条
@@ -88,7 +87,7 @@ layui.define(['table', 'form'], function(exports){
             ,{field: 'email', title: '邮箱'}
             ,{field: 'name', title: '账户类型', templet: function(d){return d.admin_role.name}}
             ,{field: 'status', title:'状态', templet: '#buttonTpl', minWidth: 80, align: 'center'}
-            ,{title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
+            ,{title: '操作', width: 200, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin'}
         ]]
         ,page: true
         ,limit: 10

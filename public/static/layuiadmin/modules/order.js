@@ -42,7 +42,7 @@ layui.define(['table', 'form', 'util'], function(exports){
                 ,content: '/admin/order/info.html?id='+ data.id
                 ,maxmin: true
                 ,area: ['800px', '500px']
-                ,btn: ['确定', '取消']
+                ,btn: ['确定']
             });
         } else if(obj.event === 'ship'){
             layer.prompt({title: '输入运单号', formType: 3}, function(text, index){

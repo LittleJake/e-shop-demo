@@ -17,7 +17,7 @@ use think\exception\HttpException;
 class Article extends Common
 {
     public function indexAction(){
-        $modelArticle = new \app\common\model\Article();
+        $modelArticle = model('Article');
 
         $article = $modelArticle
             -> with([

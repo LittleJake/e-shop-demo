@@ -9,12 +9,8 @@
 namespace app\admin\controller;
 
 
-use app\common\library\Enumcode\ArticleStatus;
 use app\common\library\Enumcode\GoodStatus;
 use app\common\library\Enumcode\OrderStatus;
-use app\common\library\Enumcode\PageStatus;
-use app\common\model\Account;
-use app\common\model\Image;
 use think\facade\Log;
 
 class Index extends Base
@@ -62,7 +58,7 @@ class Index extends Base
                     ]);
                 }
 
-                $modelImage= new Image();
+                $modelImage= model('Image');
                 $query = $modelImage ->where([
                     'md5' => $md5,
                     'size' => $size

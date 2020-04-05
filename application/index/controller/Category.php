@@ -18,8 +18,8 @@ use think\exception\HttpResponseException;
 class Category extends Common
 {
     public function indexAction($id = 0){
-        $modelCategory = new \app\common\model\Category();
-        $modelGood = new \app\common\model\Good();
+        $modelCategory = model('Category');
+        $modelGood = model('Good');
         $category = $modelCategory->withCount('Good') ->select();
 
         $this->assign('category', $category);
@@ -49,7 +49,7 @@ class Category extends Common
                 ])
                     ->withMin('GoodCat', 'price')
                     ->order($order)
-                    -> paginate(PAGE);
+                    -> paginate(PAGE,false,['query'=>$this->request->param()]);
 
                 $this->assign('goods', $goods);
             }
@@ -73,7 +73,7 @@ class Category extends Common
                 ])
                     ->withMin('GoodCat', 'price')
                     ->order($order)
-                    ->paginate(15);
+                    ->paginate(PAGE,false,['query'=>$this->request->get()]);
 
                 $this->assign('cate_name', $category[0]['name']);
                 $this->assign('goods', $goods);

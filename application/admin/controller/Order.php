@@ -12,7 +12,6 @@ namespace app\admin\controller;
 use app\common\library\Enumcode\LayuiJsonCode;
 use app\common\library\Enumcode\OrderStatus;
 use app\common\library\Kuai100;
-use app\common\model\OrderGoods;
 
 class Order extends Base
 {
@@ -150,7 +149,7 @@ class Order extends Base
     }
 
     public function reviewAction(){
-        $order_good = new OrderGoods();
+        $order_good = model('OrderGoods');
         $id = input('id');
 
         if($this->request->isPost()){
@@ -160,7 +159,6 @@ class Order extends Base
             $order_good -> where('id',$id)->update([
                 'prescription' => $status,
             ]);
-
 
             return json(['code' => 1, 'msg' => '成功']);
         }

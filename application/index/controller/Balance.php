@@ -9,9 +9,7 @@
 namespace app\index\controller;
 
 use app\common\library\Hkrt;
-use app\common\model\BalanceChange;
 use think\facade\Cache;
-use app\common\model\Account;
 
 class Balance extends Base
 {
@@ -54,7 +52,7 @@ class Balance extends Base
     }
 
     public function BalanceChange($amount = 0, $dec = true){
-        $modelBalanceChange = new BalanceChange();
+        $modelBalanceChange = model('BalanceChange');
 
         if ($dec){
             if(Cache::dec('balance:'.session('user_id'), $amount*100) > 0){

@@ -8,7 +8,6 @@
 
 namespace app\index\controller;
 
-use app\common\model\Image;
 
 class Base extends Common
 {
@@ -40,7 +39,7 @@ class Base extends Common
                     ];
                 }
 
-                $modelImage= new Image();
+                $modelImage= model('Image');
                 $query = $modelImage ->where([
                     'md5' => $md5,
                     'size' => $size

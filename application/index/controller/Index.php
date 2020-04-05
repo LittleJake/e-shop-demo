@@ -2,7 +2,6 @@
 namespace app\index\controller;
 
 use app\common\library\Enumcode\GoodStatus;
-use app\common\model\Good;
 
 class Index extends Common
 {	
@@ -18,7 +17,7 @@ class Index extends Common
             case 5:$order = 'order_goods_count desc';break;
             default:$order = 'id desc';break;
         }
-        $modelGood = new Good();
+        $modelGood = model('Good');
 
         $goods = $modelGood->withMin('GoodCat', 'price')
             ->withCount('OrderGoods')
@@ -28,7 +27,7 @@ class Index extends Common
             })
             ->where([['status','=', GoodStatus::GOOD_IN_STOCK]])
             ->order($order)
-            ->paginate(PAGE);
+            ->paginate(PAGE,false,['query'=>$this->request->param()]);
 
 		$this ->assign('goods', $goods);
 		$this->assign('page_title', '首页');

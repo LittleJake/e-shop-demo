@@ -9,11 +9,6 @@
 namespace app\index\controller;
 
 use app\common\library\Enumcode\OrderStatus;
-use app\common\model\Address;
-use app\common\model\GoodCat;
-use app\common\model\Order;
-use app\common\model\Cart;
-use app\common\model\OrderGoods;
 use think\Db;
 use think\Exception;
 use think\exception\HttpException;
@@ -33,8 +28,8 @@ class User extends Base
 
             $user = $this->userid();
 
-            $modelGoodCat = new GoodCat();
-            $modelCart = new Cart();
+            $modelGoodCat = model('GoodCat');
+            $modelCart = model('Cart');
 
             try{
                 $query = $modelGoodCat
@@ -88,7 +83,7 @@ class User extends Base
             }
         }
 
-        $modelCart = new Cart();
+        $modelCart = model('Cart');
         $goods = $modelCart->where([
             'user_id' => $user
         ])->with([
@@ -112,7 +107,7 @@ class User extends Base
     }
     //个人订单
     public function orderAction(){
-        $modelOrder = new Order();
+        $modelOrder = model('Order');
         $orders = $modelOrder
             -> where([
                 'user_id' => session('user_id')
@@ -140,7 +135,7 @@ class User extends Base
     }
     //地址
     public function addressAction($id = 0){
-        $modelAddress = new Address();
+        $modelAddress = model('Address');
         $user = $this->userid();
 
         if($this->request->isAjax()) {
@@ -183,7 +178,7 @@ class User extends Base
         } else if(input('?add')) {
             //添加地址
             if($this->request->isPost()){
-                $modelAddress = new Address();
+                $modelAddress = model('Address');
 
                 $data = input('post.a');
 
@@ -291,7 +286,7 @@ class User extends Base
         Db::startTrans();
         try{
             $query = $modelOrder->where('order_no', $id)->find();
-            $Balance = new Balance();
+            $Balance = model('Balance');
             if($Balance -> BalanceChange($query['total_price'])){
                 $modelOrder
                     -> update([
@@ -340,7 +335,7 @@ class User extends Base
     }
     public function cancelAction($id){
         $modelOrder = model('Order');
-        $balance = new Balance();
+        $balance = model('Balance');
         //货到付款（未发货）
         $modelOrder
             -> where(['order_no' => $id, 'user_id' => $this->userid(), 'status' => OrderStatus::ORDER_PAY_AFTER_SHIPPING])->where('track_no' ,'NULL','') ->setField('status', OrderStatus::ORDER_CLOSE) && $this->success('取消成功');
@@ -389,7 +384,7 @@ class User extends Base
                 throw new Exception();
 
             $id = input('post.id');
-            $order_goods = new OrderGoods();
+            $order_goods = model('OrderGoods');
             if(!empty($order_goods->withJoin('Order')->where('order.user_id', $this->userid())->where('order_goods.id', $id) -> cache(true, 600)->findOrEmpty()))
                 $order_goods->where('id', $id)->update(['prescription' => $u['url']]);
             else
